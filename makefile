@@ -1,6 +1,6 @@
 #### PROJECT SETTINGS ####
 # The name of the executable to be created
-BIN_NAME := Game
+BIN_NAME := game
 # Compiler used
 CXX ?= g++
 # Extension of source files used in the project
@@ -32,9 +32,9 @@ DESTDIR = /
 # Install path (bin/ is appended automatically)
 INSTALL_PREFIX = usr/local
 # Main entry point
-MAIN_ENTRY_POINT = $(SRC_PATH)/Core/Main.cpp
+MAIN_ENTRY_POINT = $(SRC_PATH)/core/main.cpp
 # Tests entry point
-TEST_ENTRY_POINT = $(SRC_PATH)/Tests/Tests.cpp
+TEST_ENTRY_POINT = $(SRC_PATH)/tests/tests.cpp
 #### END PROJECT SETTINGS ####
 
 # Generally should not need to edit below this line
