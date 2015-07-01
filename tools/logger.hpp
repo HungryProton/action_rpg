@@ -2,7 +2,7 @@
 #define TOOLS_LOGGER_HPP
 
 #define log(x) Logger(x, __FILE__, __FUNCTION__, __LINE__)
-//#define log(x,y) Logger(x, __FILE__, __FUNCTION__, __LINE__, y)
+#define flog(x,y) Logger(x, __FILE__, __FUNCTION__, __LINE__, y)
 
 #include <iostream>
 
@@ -20,12 +20,12 @@ namespace game{
             BG_BLUE     = 44,
             BG_DEFAULT  = 49
         };
-        std::ostream& operator<<(std::ostream& os, Code code) {
+        inline std::ostream& operator<<(std::ostream& os, Code code) {
             return os << "\033[" << static_cast<int>(code) << "m";
         }
     }
 
-    enum Level{INFO, WARNING, ERROR};
+    enum Level{SILENT, INFO, WARNING, ERROR};
 
     class Logger{
         public:
@@ -44,37 +44,45 @@ namespace game{
 
             template <typename T>
             Logger& operator<<(const T &a) {
-                color::Code color_code;
+                color::Code id_color_code;
+                color::Code text_color_code;
                 std::string identifier;
 
                 switch(this->level){
                     case INFO:
-                        color_code = color::FG_DEFAULT;
+                        id_color_code = color::FG_GREEN;
+                        text_color_code = color::FG_DEFAULT;
                         identifier = "info : ";
                         break; 
                     case WARNING:
-                        color_code = color::FG_YELLOW;
+                        id_color_code = text_color_code = color::FG_YELLOW;
                         identifier = "warning : ";
                         break;
                     case ERROR:
-                        color_code = color::FG_RED;
+                        id_color_code = text_color_code = color::FG_RED;
                         identifier = "error : ";
                         break;
+                    case SILENT:
+                        id_color_code = color::FG_DEFAULT;
+                        text_color_code = color::FG_DEFAULT;
+                        this->begining = false;
                     default:
-                        color_code = color::FG_DEFAULT;
+                        id_color_code = color::FG_YELLOW;
+                        text_color_code = color::FG_DEFAULT;
+                        identifier = "unknow :";
                 }
 
-                output << color_code;
 
                 // Display message type
                 if(this->begining){ 
                     output << this->file << " - ";
                     output << this->function << ":" << this->line << " "; 
+                    output << id_color_code;
                     output << identifier;
                     this->begining = false;
                 }
 
-                output << a << color::FG_DEFAULT;
+                output << text_color_code << a << color::FG_DEFAULT;
                 return *this;
             }
 

@@ -6,7 +6,7 @@ CXX ?= g++
 # Extension of source files used in the project
 SRC_EXT = cpp
 # Path to the source directory, relative to the makefile
-SRC_PATH = ./
+SRC_PATH = .
 # General compiler flags
 COMPILE_FLAGS = -std=c++11 -Wall -Wextra -Wuninitialized -g 
 # Additional release-specific flags
@@ -74,9 +74,9 @@ debug: export EXCLUDED_ENTRY_POINT = $(TEST_ENTRY_POINT)
 test: export BUILD_PATH := $(BUILD_DIR)/release
 test: export BIN_PATH := $(BUILD_DIR)/bin/release
 test: export EXCLUDED_ENTRY_POINT = $(MAIN_ENTRY_POINT)
-test: export BIN_NAME := $(BIN_NAME)_tests
+#test: export BIN_NAME := $(BIN_NAME)_tests
 install: export BIN_PATH := $(BUILD_DIR)/bin/release
-print-%: export EXCLUDED_ENTRY_POINT = $(TEST_ENTRY_POINT)
+print-%: export EXCLUDED_ENTRY_POINT = $(MAIN_ENTRY_POINT)
 
 # Find all source files in the source directory, sorted by most
 # recently modified
@@ -176,15 +176,18 @@ uninstall:
 # Compile and run test suites
 .PHONY: test
 test:
+	@$(START_TIME)
 	@$(MAKE) all --no-print-directory
-	@$(CXX) $(CXXFLAGS) $(INCLUDES) $(LDFLAGS) -o $(BIN_NAME) $(OBJECTS) && ./$(BIN_NAME) -p	
+	@echo -n "Total build time: "
+	@$(END_TIME)
+	@./$(BIN_NAME) -p	
 
 # Removes all build files
 .PHONY: clean
 clean:
 	@echo "Deleting $(BIN_NAME) symlink"
 	@$(RM) $(BIN_NAME)
-	@$(RM) $(BIN_NAME)_tests
+	#@$(RM) $(BIN_NAME)_tests
 	@echo "Deleting directories"
 	@$(RM) -r $(BUILD_DIR)/* 
 
