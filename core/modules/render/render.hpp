@@ -10,15 +10,15 @@ namespace game{
         public:
             Render();
             ~Render();
-            void Start();
-            void Stop();
             void HandleMessage(Message msg);
 
         private:
-            void Process();
-
+            void Run();
+            void Update();
+            void CreateWindow();
+            void InitializeOpenGL();
+            void LoadParametersFromFile(std::string file_path);
     };
-
 }
 
 #endif // GAME_CORE_MODULE_RENDER_HPP

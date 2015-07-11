@@ -1,4 +1,5 @@
 #include "module.hpp"
+#include "tools/logger.hpp"
 
 namespace game{
 
@@ -14,12 +15,12 @@ namespace game{
 
     void Module::Start(){
         if( !this->initialized_ ){
-            this->thread_ = new std::thread(&Module::Process, this);
+            this->thread_ = new std::thread(&Module::Run, this);
             this->initialized_ = true;
         }
     }
 
     void Module::Stop(){
-
+        this->thread_->join();
     }
 }

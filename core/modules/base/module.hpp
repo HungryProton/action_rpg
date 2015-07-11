@@ -16,7 +16,7 @@ namespace game{
             virtual void HandleMessage(Message m) = 0;
 
         protected:
-            virtual void Process() = 0;
+            virtual void Run() = 0;
 
             bool initialized_;
             std::thread* thread_;
