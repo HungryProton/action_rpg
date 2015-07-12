@@ -16,11 +16,16 @@ namespace game{
     void Module::Start(){
         if( !this->initialized_ ){
             this->thread_ = new std::thread(&Module::Run, this);
+            this->thread_->join();
             this->initialized_ = true;
         }
     }
 
+    ModuleState Module::GetState(){
+        return this->module_state_;
+    }
+
     void Module::Stop(){
-        this->thread_->join();
+        this->module_state_ = EXITING;
     }
 }

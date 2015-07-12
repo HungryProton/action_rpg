@@ -3,6 +3,7 @@
 
 #include "core/modules/base/module.hpp"
 #include "tools/message.hpp"
+#include "tools/opengl.hpp"
 
 namespace game{
 
@@ -10,14 +11,32 @@ namespace game{
         public:
             Render();
             ~Render();
+
             void HandleMessage(Message msg);
 
         private:
             void Run();
+
             void Update();
+
             void CreateWindow();
+            
             void InitializeOpenGL();
-            void LoadParametersFromFile(std::string file_path);
+
+            bool LoadParametersFromFile(std::string file_path);
+
+            void ClearScreen();
+
+
+            GLFWwindow* window_;
+
+            // Graphics parameters
+            const char* game_name_;
+            int opengl_major_version_;
+            int opengl_minor_version_;
+            int antialiasing_level_; 
+            int x_resolution_;
+            int y_resolution_;
     };
 }
 

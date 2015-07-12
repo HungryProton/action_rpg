@@ -6,6 +6,8 @@
 
 namespace game{
 
+    enum ModuleState{UNINITIALIZED, RUNNING, PAUSED, EXITING};
+
     class Module{
         public:
             Module();
@@ -14,6 +16,7 @@ namespace game{
             virtual void Start();
             virtual void Stop();
             virtual void HandleMessage(Message m) = 0;
+            ModuleState GetState();
 
         protected:
             virtual void Run() = 0;
@@ -21,6 +24,7 @@ namespace game{
             bool initialized_;
             std::thread* thread_;
 
+            ModuleState module_state_;
     };
 }
 
