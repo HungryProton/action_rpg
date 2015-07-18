@@ -1,9 +1,10 @@
 #include <iostream>
 #include "opengl.hpp"
+#include "logger.hpp"
 
 namespace game{
 
-     bool _check_gl_error(const char *file, int line) {
+     bool OpenGL::CheckForErrors(const char *file, int line) {
         GLenum err (glGetError());
         bool error_occured = false; 
 
@@ -28,13 +29,22 @@ namespace game{
                     error="INVALID_FRAMEBUFFER_OPERATION";
                     break;
                 default:
-                    error="UNHANDLED_ERROR" + err;
+                    error="UNHANDLED_ERROR" + std::to_string(err);
             }
-
             std::cout << "GL_" << error.c_str() <<" - "<<file<<":"<<line<<std::endl;
             err=glGetError();
         }
 
         return error_occured;
     }
+
+    bool OpenGL::IsInitialized(){
+        return initialized_;
+    }
+
+    void OpenGL::SetInitialized(bool value){
+        initialized_ = value;
+    }
+
+    bool OpenGL::initialized_ = false;
 }

@@ -71,8 +71,8 @@ release: export EXCLUDED_ENTRY_POINT = $(TEST_ENTRY_POINT)
 debug: export BUILD_PATH := $(BUILD_DIR)/debug
 debug: export BIN_PATH := $(BUILD_DIR)/bin/debug
 debug: export EXCLUDED_ENTRY_POINT = $(TEST_ENTRY_POINT)
-test: export BUILD_PATH := $(BUILD_DIR)/release
-test: export BIN_PATH := $(BUILD_DIR)/bin/release
+test: export BUILD_PATH := $(BUILD_DIR)/test
+test: export BIN_PATH := $(BUILD_DIR)/bin/test
 test: export EXCLUDED_ENTRY_POINT = $(MAIN_ENTRY_POINT)
 #test: export BIN_NAME := $(BIN_NAME)_tests
 install: export BIN_PATH := $(BUILD_DIR)/bin/release
@@ -154,6 +154,15 @@ endif
 	@echo -n "Total build time: "
 	@$(END_TIME)
 
+# Compile and run test suites
+.PHONY: test
+test: dirs
+	@$(START_TIME)
+	@$(MAKE) all --no-print-directory
+	@echo -n "Total build time: "
+	@$(END_TIME)
+	@./$(BIN_NAME) -p	
+
 # Create the directories used in the build
 .PHONY: dirs
 dirs:
@@ -173,14 +182,6 @@ uninstall:
 	@echo "Removing $(DESTDIR)$(INSTALL_PREFIX)/bin/$(BIN_NAME)"
 	@$(RM) $(DESTDIR)$(INSTALL_PREFIX)/bin/$(BIN_NAME)
 
-# Compile and run test suites
-.PHONY: test
-test:
-	@$(START_TIME)
-	@$(MAKE) all --no-print-directory
-	@echo -n "Total build time: "
-	@$(END_TIME)
-	@./$(BIN_NAME) -p	
 
 # Removes all build files
 .PHONY: clean

@@ -27,6 +27,7 @@ namespace game{
 
     static int run_render_test_suite(int argc, char** argv){
 
+        log(SILENT) << std::endl;
         log(SILENT) << "#--------------------" << std::endl;
         log(SILENT) << "# Render test suite " << std::endl;
         log(SILENT) << "#--------------------" << std::endl << std::endl;

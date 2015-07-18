@@ -4,8 +4,8 @@
 namespace game{
 
     Module::Module(){
-        this->initialized_ = false;
         this->thread_ = nullptr;
+        this->state_ = UNINITIALIZED;
     }
 
     Module::~Module(){
@@ -14,18 +14,22 @@ namespace game{
     }
 
     void Module::Start(){
-        if( !this->initialized_ ){
+        if( this->state_ == UNINITIALIZED ){
+            this->state_ = RUNNING;
             this->thread_ = new std::thread(&Module::Run, this);
-            this->thread_->join();
-            this->initialized_ = true;
+
+            if(!this->thread_){
+                log(ERROR) << "Cannot start rendering thread" << std::endl;
+                this->state_ = UNINITIALIZED;
+            }
         }
     }
 
     ModuleState Module::GetState(){
-        return this->module_state_;
+        return this->state_;
     }
 
     void Module::Stop(){
-        this->module_state_ = EXITING;
+        this->state_ = EXITING;
     }
 }

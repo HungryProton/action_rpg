@@ -2,7 +2,7 @@
 #define CORE_MODULE_HPP
 
 #include <thread>
-#include "tools/message.hpp"
+#include "core/messaging/message.hpp"
 
 namespace game{
 
@@ -21,10 +21,9 @@ namespace game{
         protected:
             virtual void Run() = 0;
 
-            bool initialized_;
             std::thread* thread_;
 
-            ModuleState module_state_;
+            ModuleState state_;
     };
 }
 

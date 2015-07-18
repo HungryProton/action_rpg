@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include "tools/logger.hpp"
 #include "render.hpp"
+#include "tools/opengl.hpp"
 
 namespace game{
 
@@ -25,7 +26,6 @@ namespace game{
     }
 
     void Render::Run(){
-        log(INFO) << "Render process method was called !!!!!!! " << std::endl;
         this->LoadParametersFromFile("config/system.conf"); 
         this->CreateWindow();
         this->InitializeOpenGL();
@@ -33,8 +33,7 @@ namespace game{
     }
 
     void Render::Update(){
-        log(INFO) << "called update" << std::endl;
-        while(this->module_state_ == RUNNING){
+        while(this->state_ == RUNNING){
             this->ClearScreen();
         }
     }
@@ -58,26 +57,30 @@ namespace game{
     }
 
     void Render::InitializeOpenGL(){
-        glewExperimental = GL_TRUE;
+        if(!OpenGL::IsInitialized()){
+            glewExperimental = GL_TRUE;
 
-        GLenum err = glewInit();
-        if (GLEW_OK != err){
-            log(ERROR) << "GlewInit failed for reason : " << 
-            glewGetErrorString(err) << std::endl;
+            GLenum err = glewInit();
+            if (GLEW_OK != err){
+                log(ERROR) << "GlewInit failed for reason : " << 
+                glewGetErrorString(err) << std::endl;
+                OpenGL::SetInitialized(false);
+                return;
+            }
+
+            glDepthFunc(GL_LESS);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glAlphaFunc(GL_GREATER, 0.1f);
+            glEnable(GL_DEPTH_TEST);
+            glEnable(GL_BLEND);
+            glEnable(GL_CULL_FACE);
+            glClearColor(0.3, 0.3, 0.3, 1);
+
+            OpenGL::SetInitialized(true);
         }
-
-        glDepthFunc(GL_LESS);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glAlphaFunc(GL_GREATER, 0.1f);
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND);
-        glEnable(GL_CULL_FACE);
-        glClearColor(0.3, 0.3, 0.3, 1);
-
     }
 
     bool Render::LoadParametersFromFile(std::string file_path){
-        log(INFO) << "Reading parameters from " << file_path << std::endl;
 
         return EXIT_SUCCESS;
     }

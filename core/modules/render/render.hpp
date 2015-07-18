@@ -2,7 +2,7 @@
 #define GAME_CORE_MODULE_RENDER_HPP
 
 #include "core/modules/base/module.hpp"
-#include "tools/message.hpp"
+#include "core/messaging/message.hpp"
 #include "tools/opengl.hpp"
 
 namespace game{
@@ -20,7 +20,7 @@ namespace game{
             void Update();
 
             void CreateWindow();
-            
+
             void InitializeOpenGL();
 
             bool LoadParametersFromFile(std::string file_path);
@@ -31,6 +31,7 @@ namespace game{
             GLFWwindow* window_;
 
             // Graphics parameters
+            bool opengl_is_initialized_;
             const char* game_name_;
             int opengl_major_version_;
             int opengl_minor_version_;
