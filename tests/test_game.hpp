@@ -12,9 +12,13 @@ namespace game{
 
     const lest::test game[] = {
         
-        CASE("Should start the game"){
+       /* CASE("Should start and stop the game"){
             Game::Start();
-        },
+            EXPECT( Game::GetState() == RUNNING );
+
+            Game::Stop();
+            EXPECT( Game::GetState() == EXITING );
+        }, */
 
         CASE("Should open a window"){
             Render* render = new Render();
