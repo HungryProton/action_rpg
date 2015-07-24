@@ -11,6 +11,7 @@ namespace game{
             Render();
             ~Render();
 
+            void Update();
             GLFWwindow* GetWindow();
 
         private:
