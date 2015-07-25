@@ -1,7 +1,7 @@
 #ifndef GAME_CORE_SERVICES_RENDER_HPP
 #define GAME_CORE_SERVICES_RENDER_HPP
 
-#include <map>
+#include <vector>
 #include <typeindex>
 #include "tools/opengl.hpp" 
 #include "core/services/service.hpp"
@@ -14,7 +14,9 @@ namespace game{
             Render();
             ~Render();
 
+            void ClearMemory();
             void Update();
+
             GLFWwindow* GetWindow();
 
         private:
@@ -26,7 +28,7 @@ namespace game{
             void RegisterHelper();
 
             GLFWwindow* window_;
-            std::multimap<std::type_index, Service*> helpers_;
+            std::vector<Service*> helpers_;
     };
 }
 

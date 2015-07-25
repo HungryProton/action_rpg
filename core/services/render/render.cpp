@@ -12,7 +12,16 @@ namespace game{
     }
 
     Render::~Render(){
+        this->ClearMemory();
+    }
 
+    void Render::ClearMemory(){
+        auto it = this->helpers_.begin();
+
+        while( it != this->helpers_.end() ){
+            Service* service = (*it);
+            Locator::Remove(service);
+        }
     }
 
     void Render::InitializeGLFW(){
