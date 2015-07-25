@@ -1,6 +1,7 @@
 #include <iostream>
 #include "render.hpp"
 #include "tools/logger.hpp"
+#include "helpers/image_helper.hpp"
 
 namespace game{
 
@@ -35,6 +36,10 @@ namespace game{
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
         glClearColor(0.3, 0.3, 0.3, 1);
+    }
+
+    void Render::InitializeHelpers(){
+        this->RegisterHelper<ImageHelper>();
     }
 
     void Render::Update(){
