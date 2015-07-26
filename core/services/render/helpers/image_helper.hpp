@@ -17,6 +17,7 @@ namespace game{
 
         private:
             Image* GetAlreadyLoadedImage(std::string);
+
             std::map<std::string, Image*> images_;
     };
 }

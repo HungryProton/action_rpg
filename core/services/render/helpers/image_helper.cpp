@@ -1,10 +1,9 @@
-#include <iostream>
-#include "image_helper.hpp"
-#include "image.hpp"
-#include "tools/logger.hpp"
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "deps/stb_image.h"
+
+#include <iostream>
+#include "image_helper.hpp"
+#include "tools/logger.hpp"
 
 namespace game{
 
@@ -45,7 +44,7 @@ namespace game{
 
         if( !i->data ){ // Loading failed
             log(ERROR) << "Error : Cannot load file " << file_path << std::endl;
-            return NULL;
+            return nullptr;
         }
 
         // Generates OpenGL buffer. This will be stored and passed to the 
