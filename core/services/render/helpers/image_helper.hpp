@@ -12,7 +12,11 @@ namespace game{
             ImageHelper();
             ~ImageHelper();
 
+            void ClearMemory();
+            Image* LoadFromFile(std::string);
+
         private:
+            Image* GetAlreadyLoadedImage(std::string);
             std::map<std::string, Image*> images_;
     };
 }

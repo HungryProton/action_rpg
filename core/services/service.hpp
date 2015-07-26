@@ -6,7 +6,8 @@ namespace game{
     class Service{
         public:
             Service();
-            virtual ~Service() = 0;
+            virtual ~Service();
+            virtual void ClearMemory() = 0;
     };
 }
 

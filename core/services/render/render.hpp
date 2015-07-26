@@ -6,6 +6,10 @@
 #include "tools/opengl.hpp" 
 #include "core/services/service.hpp"
 
+// -- Helpers inclusions
+#include "helpers/image.hpp"
+#include "helpers/image_helper.hpp"
+
 namespace game{
 
     class Render : public Service{
