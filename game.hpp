@@ -1,7 +1,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "core/services/render/render.hpp"
+#include "core/service/render/render.hpp"
 
 namespace game{
 
@@ -9,14 +9,14 @@ namespace game{
 
     class Game{
         public:
-            static void Start();
+            static void Initialize();
+            static void Play();
             static void Stop();
 
             static State GetState();
 
         private:
             static void ClearMemory();
-            static void Update();
             static Render* render_;
             static State state_;
     };

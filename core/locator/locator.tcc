@@ -2,7 +2,6 @@
 
 namespace game{
 
-
     template <class T>
     T* Locator::Get(){
         for( auto it = services_.begin();
@@ -16,6 +15,4 @@ namespace game{
         }
         return nullptr; 
     }
-
-
 }

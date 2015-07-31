@@ -4,7 +4,7 @@
 #include <vector>
 #include <typeindex>
 #include "tools/opengl.hpp" 
-#include "core/services/service.hpp"
+#include "core/service/service.hpp"
 
 // -- Helpers inclusions
 #include "helpers/image.hpp"

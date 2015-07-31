@@ -6,14 +6,15 @@
 #include "deps/lest.hpp"
 #include "tools/logger.hpp"
 #include "game.hpp"
-#include "components/texture.hpp"
 
 namespace game{
 
     const lest::test game[] = {
 
         CASE("Should create a playable character"){
-
+            Game::Initialize();
+            GameObject* character = Locator::Get<CharacterMaker>().Create(PLAYABLE);
+            EXPECT( character != nullptr );
         },
 
         CASE("Should create some NPCs"){
@@ -21,7 +22,9 @@ namespace game{
         },
 
         CASE("Should generate a simple world"){
-
+            Game::Initialize();
+            //World* world = Locator::Get<WorldBuilder>().GenerateRandomWorld();
+            //EXPECT( world != nullptr );
         },
 
         CASE("Character should move upon player input"){

@@ -1,15 +1,13 @@
 #include "game.hpp"
-#include "core/services/render/render.hpp"
+#include "core/service/render/render.hpp"
 #include "tools/logger.hpp"
 
 namespace game{
 
-    void Game::Start(){
-        log(INFO) << "Starting game" << std::endl;
-        render_ = new Render();
-        state_ = RUNNING;
+    void Game::Initialize(){
+        log(INFO) << "Initialize game" << std::endl;
 
-        Update();
+        render_ = new Render();
     }
 
     void Game::Stop(){
@@ -20,7 +18,9 @@ namespace game{
         delete render_;
     }
 
-    void Game::Update(){
+    void Game::Play(){
+        state_ = RUNNING;
+
         while(state_ == RUNNING){
             render_->Update();
         }

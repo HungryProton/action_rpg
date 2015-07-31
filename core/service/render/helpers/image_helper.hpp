@@ -2,7 +2,7 @@
 #define GAME_SERVICE_IMAGE_HELPER_HPP
 
 #include <map>
-#include "core/services/service.hpp"
+#include "core/service/service.hpp"
 #include "image.hpp"
 
 namespace game{

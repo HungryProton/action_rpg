@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include "core/services/render/render.hpp"
+#include "core/service/render/render.hpp"
 #include "core/locator/locator.hpp"
 #include "texture.hpp"
 

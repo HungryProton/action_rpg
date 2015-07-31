@@ -3,7 +3,7 @@
 
 #include <map>
 #include <typeindex>
-#include "core/services/service.hpp"
+#include "core/service/service.hpp"
 
 namespace game{
 
