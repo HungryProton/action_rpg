@@ -6,6 +6,7 @@
 #include "deps/lest.hpp"
 #include "tools/logger.hpp"
 #include "game.hpp"
+#include "core/entity/gameobject/game_object.hpp"
 
 namespace game{
 
