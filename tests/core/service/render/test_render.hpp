@@ -5,8 +5,7 @@
 #include <fstream>
 #include "deps/lest.hpp"
 #include "tools/logger.hpp"
-#include "core/services/render/render.hpp"
-#include "components/texture.hpp"
+#include "core/service/render/render.hpp"
 
 namespace game{
 
@@ -18,11 +17,6 @@ namespace game{
 
             delete render;
         },
-
-        CASE("Should load a texture from file"){
-            Texture texture("data/tests/1.png");
-            EXPECT( texture.IsValid() == true );
-        }
 
     };
 

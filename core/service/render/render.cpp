@@ -7,6 +7,7 @@ namespace game{
 
     Render::Render(){
         this->window_ = nullptr;
+        this->InitializeHelpers();
         this->InitializeGLFW();
         this->InitializeOpenGL();
     }
@@ -21,6 +22,7 @@ namespace game{
         while( it != this->helpers_.end() ){
             Service* service = (*it);
             Locator::Remove(service);
+            it++;
         }
     }
 
