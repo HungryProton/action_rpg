@@ -3,10 +3,11 @@
 
 #include <string>
 #include "tools/opengl.hpp"
+#include "core/entity/component/component.hpp"
 
 namespace game{
 
-    struct Texture{ 
+    struct Texture : public Component{ 
 
         GLuint texture;
         int width;

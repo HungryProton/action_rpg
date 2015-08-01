@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include "tools/logger.hpp"
 #include "core/service/render/render.hpp"
 #include "core/locator/locator.hpp"
 #include "texture.hpp"
@@ -15,7 +16,16 @@ namespace game{
     }
 
     Texture::Texture(std::string file_path) : Texture(){
-        Image *img = Locator::Get<ImageHelper>()->LoadFromFile(file_path);  
+
+        // Get the image helper that actually load images
+        ImageHelper* image_helper = Locator::Get<ImageHelper>();
+        if( !image_helper ){
+            log(ERROR) << "ImageHelper service has not been loaded yet" << std::endl;
+            return;
+        }
+
+        // Load the image
+        Image *img = image_helper->LoadFromFile(file_path);  
         if(!img){
             std::cerr << "Loading texture " << file_path << " failed" << std::endl;
             return;
