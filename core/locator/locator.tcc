@@ -1,4 +1,5 @@
 #include "locator.hpp"
+#include "tools/logger.hpp"
 
 namespace game{
 
@@ -13,6 +14,7 @@ namespace game{
                 return service;
             }
         }
+        log(ERROR) << "Could not find service " << typeid(T).name() << std::endl;
         return nullptr; 
     }
 }
