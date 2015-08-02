@@ -1,13 +1,11 @@
 #include <iostream>
 #include "render.hpp"
 #include "tools/logger.hpp"
-#include "helpers/image_helper.hpp"
 
 namespace game{
 
     Render::Render(){
         this->window_ = nullptr;
-        this->InitializeHelpers();
         this->InitializeGLFW();
         this->InitializeOpenGL();
     }
@@ -17,13 +15,7 @@ namespace game{
     }
 
     void Render::ClearMemory(){
-        auto it = this->helpers_.begin();
 
-        while( it != this->helpers_.end() ){
-            Service* service = (*it);
-            Locator::Remove(service);
-            it++;
-        }
     }
 
     void Render::InitializeGLFW(){
@@ -47,10 +39,6 @@ namespace game{
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
         glClearColor(0.3, 0.3, 0.3, 1);
-    }
-
-    void Render::InitializeHelpers(){
-        this->RegisterHelper<ImageHelper>();
     }
 
     void Render::Update(){
