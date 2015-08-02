@@ -7,8 +7,7 @@
 #include "core/service/service.hpp"
 
 // -- Helpers inclusions
-#include "helpers/image.hpp"
-#include "helpers/image_helper.hpp"
+#include "core/service/helper/image_helper.hpp"
 
 namespace game{
 
@@ -32,7 +31,6 @@ namespace game{
             void RegisterHelper();
 
             GLFWwindow* window_;
-            std::vector<Service*> helpers_;
     };
 }
 

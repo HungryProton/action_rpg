@@ -10,13 +10,6 @@
 #include "game.hpp"
 
 namespace game{
-    
-    // DummyComponent, does nothings, only inherits from abstract component class
-    struct DummyComponent : public Component{
-        DummyComponent() : Component(){ /*nop*/ }
-        DummyComponent(GameObject* p) : Component(p) { /*nop*/ }
-        ~DummyComponent(){ /*nop*/ }
-    };
 
     const lest::test components[] = {
 
@@ -24,11 +17,13 @@ namespace game{
             GameObject* game_object = new GameObject();
             Component* component = new Component();
 
+            // Attach manually
             EXPECT( component->is_attached == false );
             game_object->AttachComponent( component );
 
             EXPECT( component->is_attached == true );
 
+            // Attached automatically by constructor
             Component* component2 = new Component( game_object );
             EXPECT( component2->is_attached == true );
 
@@ -40,6 +35,9 @@ namespace game{
             Game::Initialize();
             Texture texture("tests/resources/1.png");
             EXPECT( texture.IsValid() == true );
+
+            Texture unknow_texture("this/file/does/not/exists.png");
+            EXPECT( unknow_texture.IsValid() == false );
         }
 
     };
