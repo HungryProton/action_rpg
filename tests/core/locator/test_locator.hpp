@@ -6,6 +6,7 @@
 #include "deps/lest.hpp"
 #include "tools/logger.hpp"
 #include "core/service/render/render.hpp"
+#include "core/locator/locator.hpp"
 
 namespace game{
 

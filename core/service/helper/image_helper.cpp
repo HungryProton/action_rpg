@@ -43,7 +43,7 @@ namespace game{
                             0);
 
         if( !i->data ){ // Loading failed
-            log(ERROR) << "Error : Cannot load file " << file_path << std::endl;
+            log(WARNING) << "Cannot load file " << file_path << std::endl;
             return nullptr;
         }
 

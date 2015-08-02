@@ -2,6 +2,7 @@
 #include "game.hpp"
 
 int main(){
-    game::Game::Start();
+    game::Game::Initialize();
+    game::Game::Play();
     return EXIT_SUCCESS;
 }

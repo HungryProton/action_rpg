@@ -14,7 +14,6 @@ namespace game{
                 return service;
             }
         }
-        log(ERROR) << "Could not find service " << typeid(T).name() << std::endl;
         return nullptr; 
     }
 }

@@ -32,7 +32,6 @@ namespace game{
         },
 
         CASE("Should create a texture component from file"){
-            Game::Initialize();
             Texture texture("tests/resources/1.png");
             EXPECT( texture.IsValid() == true );
 
