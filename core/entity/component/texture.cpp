@@ -5,10 +5,14 @@
 #include "core/service/render/render.hpp"
 #include "core/locator/locator.hpp"
 #include "texture.hpp"
+#include "game.hpp"
 
 namespace game{
 
     Texture::Texture(){
+        // Inform the game that this component needs the ImageHelper service
+        Game::RequestForService<ImageHelper>();
+
         this->texture = 0;
         this->width = 0;
         this->height = 0;
@@ -27,7 +31,6 @@ namespace game{
         // Load the image
         Image *img = image_helper->LoadFromFile(file_path);  
         if(!img){
-            std::cerr << "Loading texture " << file_path << " failed" << std::endl;
             return;
         }
         this->texture = img->GL_texture;

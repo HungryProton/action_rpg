@@ -8,6 +8,13 @@ namespace game{
             virtual ~Service(){};
             virtual void ClearMemory() = 0;
     };
+
+    class CoreService : public Service{
+        public:
+            virtual ~CoreService(){};
+            virtual void ClearMemory() = 0;
+            virtual void Update() = 0;
+    };
 }
 
 #endif //GAME_SERVICE_HPP

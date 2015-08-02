@@ -1,13 +1,17 @@
 #include "game.hpp"
-#include "core/service/render/render.hpp"
 #include "tools/logger.hpp"
+#include "core/locator/locator.hpp"
+#include "core/service/input/input.hpp"
+#include "core/service/render/render.hpp"
 
 namespace game{
 
+    // Create the core services. 
+    // /!\ CAUTION /!\ Instanciation order is important, main loop 
+    // will go through and ask services to update in this particular order
     void Game::Initialize(){
-        log(INFO) << "Initialize game" << std::endl;
-
-        render_ = new Render();
+        RequestForCoreService<Input>();
+        RequestForCoreService<Render>();
     }
 
     void Game::Stop(){
@@ -15,14 +19,17 @@ namespace game{
     }
 
     void Game::ClearMemory(){
-        delete render_;
+        DeleteServices( &secondary_services_ );
+        DeleteServices( &core_services_ );
     }
 
     void Game::Play(){
         state_ = RUNNING;
 
         while(state_ == RUNNING){
-            render_->Update();
+            for( auto service : core_services_ ){
+                service->Update();
+            }
         }
 
         ClearMemory();
@@ -32,6 +39,7 @@ namespace game{
         return state_;
     } 
     
-    Render* Game::render_;
+    std::vector<CoreService*> Game::core_services_;
+    std::vector<Service*> Game::secondary_services_;;
     State Game::state_ = UNINITIALIZED;
 }

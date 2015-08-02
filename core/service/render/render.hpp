@@ -11,7 +11,7 @@
 
 namespace game{
 
-    class Render : public Service{
+    class Render : public CoreService{
 
         public:
             Render();
@@ -23,7 +23,6 @@ namespace game{
             GLFWwindow* GetWindow();
 
         private:
-            void InitializeHelpers();
             void InitializeOpenGL();
             void InitializeGLFW();
 
@@ -33,7 +32,5 @@ namespace game{
             GLFWwindow* window_;
     };
 }
-
-#include "render.tcc"
 
 #endif // GAME_CORE_SERVICES_RENDER_HPP
