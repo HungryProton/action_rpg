@@ -1,4 +1,5 @@
-#include "core/service/input/input.hpp"
+#include "game.hpp"
+#include "input.hpp"
 
 namespace game{
     
@@ -13,21 +14,27 @@ namespace game{
     }
 
     void Input::Update(){
-
         glfwPollEvents();
 
-        Message msg;
+        InputMessage msg;
         msg.subject = EMPTY;
 
         // Move backward
-        if (glfwGetKey( window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
-            Game::Quit();
+        if (glfwGetKey( this->window_, GLFW_KEY_ESCAPE) == GLFW_PRESS){
+            Game::Stop();
         }
 
         SendMessageToListeners(msg);
     }
 
-     void Input::RegisterListener(System* listener){
+    void Input::RegisterListener(IMessageHandler* listener){
         this->listeners_.push_back(listener);
     }
+
+    void Input::SendMessageToListeners(InputMessage message){
+        for( auto listener : this->listeners_ ){
+            message.Dispatch( listener );
+        }
+    }
+
 }

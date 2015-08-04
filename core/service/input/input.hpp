@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "core/service/service.hpp"
-#include "core/entity/system/system.hpp"
+#include "core/messaging/input_message.hpp"
 #include "tools/opengl.hpp"
 
 namespace game{
@@ -16,11 +16,11 @@ namespace game{
             void Initialize(GLFWwindow*);
             void ClearMemory();
             void Update();
-            void RegisterListener(System*);
+            void RegisterListener(IMessageHandler*);
 
         private:
-            void SendMessageToListeners(Message);
-            std::vector<System*> listeners_;
+            void SendMessageToListeners(InputMessage);
+            std::vector<IMessageHandler*> listeners_;
             GLFWwindow* window_;
     };
 }
