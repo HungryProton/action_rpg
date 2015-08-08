@@ -1,5 +1,7 @@
 #include "game.hpp"
 #include "input.hpp"
+#include "core/locator/locator.hpp"
+#include "core/service/render/render.hpp"
 
 namespace game{
     
@@ -7,6 +9,10 @@ namespace game{
 
     Input::~Input(){
         this->ClearMemory();
+    }
+
+    void Input::Initialize(GLFWwindow* window){
+        this->window_ = window;
     }
 
     void Input::ClearMemory(){
@@ -19,9 +25,25 @@ namespace game{
         InputMessage msg;
         msg.subject = EMPTY;
 
-        // Move backward
         if (glfwGetKey( this->window_, GLFW_KEY_ESCAPE) == GLFW_PRESS){
             Game::Stop();
+        }
+
+        if (glfwGetKey( this->window_, GLFW_KEY_UP) == GLFW_PRESS){
+            msg.status = KEY_PRESSED;
+            msg.command = MOVE_UP;
+        }
+        if (glfwGetKey( this->window_, GLFW_KEY_DOWN) == GLFW_PRESS){
+            msg.status = KEY_PRESSED;
+            msg.command = MOVE_DOWN;
+        }
+        if (glfwGetKey( this->window_, GLFW_KEY_LEFT) == GLFW_PRESS){
+            msg.status = KEY_PRESSED;
+            msg.command = MOVE_LEFT;
+        }
+        if (glfwGetKey( this->window_, GLFW_KEY_RIGHT) == GLFW_PRESS){
+            msg.status = KEY_PRESSED;
+            msg.command = MOVE_RIGHT;
         }
 
         SendMessageToListeners(msg);

@@ -21,14 +21,14 @@ namespace game{
             template<class T>
             static void RequestForService();
 
-            template<class T>
-            static void RequestForCoreService();
-
         private:
             static void ClearMemory();
 
             template<class T>
             static void DeleteServices(std::vector<T*>*);
+
+            template<class T>
+            static void RequestForCoreService();
 
             static std::vector<CoreService*> core_services_;
             static std::vector<Service*> secondary_services_;

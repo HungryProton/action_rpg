@@ -19,7 +19,9 @@ namespace game{
             void RegisterListener(IMessageHandler*);
 
         private:
+            void LoadKeymapFromFile(std::string);
             void SendMessageToListeners(InputMessage);
+
             std::vector<IMessageHandler*> listeners_;
             GLFWwindow* window_;
     };

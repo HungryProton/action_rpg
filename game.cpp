@@ -10,8 +10,14 @@ namespace game{
     // /!\ CAUTION /!\ Instanciation order is important, main loop 
     // will go through and ask services to update in this particular order
     void Game::Initialize(){
+        // Create all services
         RequestForCoreService<Input>();
         RequestForCoreService<Render>();
+
+        // Initialize needed services
+        Input* input = Locator::Get<Input>();
+        Render* render = Locator::Get<Render>();
+        input->Initialize( render->GetWindow() );
     }
 
     void Game::Stop(){
