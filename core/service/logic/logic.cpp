@@ -6,4 +6,16 @@ namespace game{
 
     }
 
+    Logic::~Logic(){
+        this->ClearMemory();
+    }
+
+    void Logic::ClearMemory(){
+
+    }
+
+    void Logic::Update(){
+
+    }
+
 }

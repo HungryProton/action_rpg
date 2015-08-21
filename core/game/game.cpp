@@ -3,6 +3,7 @@
 #include "core/locator/locator.hpp"
 #include "core/service/input/input.hpp"
 #include "core/service/render/render.hpp"
+#include "core/service/logic/logic.hpp"
 
 namespace game{
 
@@ -12,9 +13,11 @@ namespace game{
     void Game::Initialize(){
         // Create all services
         InstantiateCoreService<Input>();
+        InstantiateCoreService<Logic>();
         InstantiateCoreService<Render>();
 
         // Initialize needed services
+        // Input service needs a window (or a context) to capture user input
         Input* input = Locator::Get<Input>();
         Render* render = Locator::Get<Render>();
         input->Initialize( render->GetWindow() );
