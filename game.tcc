@@ -22,7 +22,7 @@ namespace game{
     }
 
     template<class T>
-    void Game::RequestForCoreService(){
+    void Game::InstantiateCoreService(){
 
         T* service = Locator::Get<T>();
         if(service){

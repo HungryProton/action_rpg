@@ -28,7 +28,7 @@ namespace game{
             static void DeleteServices(std::vector<T*>*);
 
             template<class T>
-            static void RequestForCoreService();
+            static void InstantiateCoreService();
 
             static std::vector<CoreService*> core_services_;
             static std::vector<Service*> secondary_services_;

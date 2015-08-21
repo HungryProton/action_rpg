@@ -11,8 +11,8 @@ namespace game{
     // will go through and ask services to update in this particular order
     void Game::Initialize(){
         // Create all services
-        RequestForCoreService<Input>();
-        RequestForCoreService<Render>();
+        InstantiateCoreService<Input>();
+        InstantiateCoreService<Render>();
 
         // Initialize needed services
         Input* input = Locator::Get<Input>();
