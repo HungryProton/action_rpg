@@ -32,7 +32,7 @@ DESTDIR = /
 # Install path (bin/ is appended automatically)
 INSTALL_PREFIX = usr/local
 # Main entry point
-MAIN_ENTRY_POINT = $(SRC_PATH)/core/main.cpp
+MAIN_ENTRY_POINT = $(SRC_PATH)/main.cpp
 # Tests entry point
 TEST_ENTRY_POINT = $(SRC_PATH)/tests/tests.cpp
 #### END PROJECT SETTINGS ####

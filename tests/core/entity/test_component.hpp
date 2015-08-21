@@ -7,7 +7,7 @@
 #include "tools/logger.hpp"
 #include "core/entity/component/texture.hpp"
 #include "core/entity/gameobject/game_object.hpp"
-#include "game.hpp"
+#include "core/game/game.hpp"
 
 namespace game{
 

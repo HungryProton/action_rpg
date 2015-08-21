@@ -5,7 +5,7 @@
 #include "core/service/render/render.hpp"
 #include "core/locator/locator.hpp"
 #include "texture.hpp"
-#include "game.hpp"
+#include "core/game/game.hpp"
 
 namespace game{
 

@@ -1,4 +1,4 @@
-#include "game.hpp"
+#include "core/game/game.hpp"
 #include "input.hpp"
 #include "core/locator/locator.hpp"
 #include "core/service/render/render.hpp"
