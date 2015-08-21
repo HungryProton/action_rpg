@@ -1,5 +1,5 @@
-#ifndef TEST_SERVICE_RENDER_HPP
-#define TEST_SERVICE_RENDER_HPP
+#ifndef TEST_SERVICE_LOCATOR_HPP
+#define TEST_SERVICE_LOCATOR_HPP
 
 #include <iostream>
 #include <fstream>

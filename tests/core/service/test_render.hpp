@@ -2,7 +2,6 @@
 #define TEST_SERVICE_RENDER_HPP
 
 #include <iostream>
-#include <fstream>
 #include "deps/lest.hpp"
 #include "tools/logger.hpp"
 #include "core/service/render/render.hpp"
@@ -29,6 +28,7 @@ namespace game{
 
         return lest::run( render, argc, argv, std::cout );
     }
+
 }
 
 #endif //TEST_TOOLS_LOGGER_HPP
