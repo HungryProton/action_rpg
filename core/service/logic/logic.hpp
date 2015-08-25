@@ -11,10 +11,14 @@ namespace game{
             Logic();
             ~Logic();
 
+            void Initialize();
+
             void ClearMemory();
             void Update();
 
         private:
+
+
 
 
     };
