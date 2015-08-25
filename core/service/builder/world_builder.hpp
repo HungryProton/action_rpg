@@ -19,8 +19,8 @@ namespace game{
             void RebuildWorldFromSave(std::string);
 
         private:
-            TerrainBuilder* terrain_builder;
-            NPCBuilder* npc_builder;
+            TerrainBuilder* terrain_builder_;
+            NPCBuilder* npc_builder_;
 
     };
 }
