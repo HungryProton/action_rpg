@@ -1,4 +1,4 @@
-#include "npc_builder.cpp"
+#include "npc_builder.hpp"
 
 namespace game{
 
