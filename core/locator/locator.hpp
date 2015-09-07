@@ -3,10 +3,10 @@
 
 #include <map>
 #include <typeindex>
-#include "core/service/service.hpp"
 
 namespace game{
 
+    class Service;
     class Locator{
         public:
             static void Provide(Service*);

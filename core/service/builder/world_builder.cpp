@@ -1,5 +1,5 @@
-#include "core/locator/locator.hpp"
 #include "core/game/game.hpp"
+#include "core/locator/locator.hpp"
 #include "world_builder.hpp"
 
 namespace game{

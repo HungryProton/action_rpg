@@ -1,4 +1,5 @@
 #include "locator.hpp"
+#include "core/service/service.hpp"
 
 namespace game{
 
@@ -13,6 +14,7 @@ namespace game{
                   it++){
 
             if( it->first == typeid(*service) ){
+                it->second->ClearMemory();
                 services_.erase(it);
                 return;
             }
