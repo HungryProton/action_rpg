@@ -2,18 +2,22 @@
 #define CORE_SERVICE_TERRAIN_BUILDER_HPP
 
 #include "tools/opengl.hpp"
-#include "core/service/service.hpp"
 
 namespace game{
 
-    class TerrainBuilder : public Service{
+    class TerrainBuilder{
         public: 
             TerrainBuilder();
             ~TerrainBuilder();
 
             void ClearMemory();
 
+            void SetMapSize(float, float);
+            void SetMaxAltitudeVariation(float);
+
         private:
+            glm::vec2 size_;
+            float max_altitude_variation_; 
 
 
     };

@@ -26,7 +26,7 @@ namespace game{
     }
 
     void WorldBuilder::GenerateRandomWorld(){
-
+        this->terrain_builder_->SetMapSize(20, 20);
     }
 }
 

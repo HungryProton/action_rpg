@@ -2,8 +2,11 @@
 #define GAME_SERVICE_WORLD_BUILDER_HPP
 
 #include <string>
-#include "core/service/builder/terrain_builder.hpp"
-#include "core/service/builder/npc_builder.hpp"
+#include <cstdlib>
+#include <iostream>
+#include "core/service/service.hpp"
+#include "core/service/builder/helper/terrain_builder.hpp"
+#include "core/service/builder/helper/npc_builder.hpp"
 
 namespace game{
 

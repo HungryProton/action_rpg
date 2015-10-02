@@ -1,11 +1,9 @@
 #ifndef CORE_SERVICE_NPC_BUILDER_HPP
 #define CORE_SERVICE_NPC_BUILDER_HPP
 
-#include "core/service/service.hpp"
-
 namespace game{
 
-    class NPCBuilder : public Service{
+    class NPCBuilder{
         public: 
             NPCBuilder();
             ~NPCBuilder();

@@ -5,6 +5,7 @@
 #include "core/locator/test_locator.hpp"
 #include "core/entity/test_component.hpp"
 #include "core/service/test_image_helper.hpp"
+#include "core/service/test_terrain_builder.hpp"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ int main( int argc, char * argv[] ){
     game::run_components_test_suite(argc, argv);
     game::run_image_helper_test_suite(argc, argv);
     game::run_render_test_suite(argc, argv);
+    game::run_terrain_builder_test_suite(argc, argv);
 
     //game::run_game_test_suite(argc, argv);
 
