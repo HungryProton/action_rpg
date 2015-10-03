@@ -1,12 +1,12 @@
 #ifndef TOOLS_LOGGER_HPP
 #define TOOLS_LOGGER_HPP
 
-#define log(x) Logger(x, __FILE__, __FUNCTION__, __LINE__)
-#define flog(x,y) Logger(x, __FILE__, __FUNCTION__, __LINE__, y)
-
 #include <iostream>
 
 namespace game{
+
+#define LOG(x) Logger(x, __FILE__, __FUNCTION__, __LINE__)
+#define FLOG(x,y) Logger(x, __FILE__, __FUNCTION__, __LINE__, y)
 
     namespace color {
         enum Code {

@@ -7,7 +7,7 @@
 #include "tools/logger.hpp"
 
 namespace game{
-    
+
     enum MessageType{
        GENERIC,
        INPUT,
@@ -24,7 +24,7 @@ namespace game{
         bool children_recursive;
 
         virtual void Dispatch(IMessageHandler* message_handler){
-            log(INFO) << "type id : " << typeid(*this).name() << std::endl;
+            LOG(INFO) << "type id : " << typeid(*this).name() << std::endl;
             message_handler->On(*this);
         }
     };

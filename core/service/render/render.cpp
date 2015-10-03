@@ -22,7 +22,7 @@ namespace game{
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         this->window_ = glfwCreateWindow( 1440, 900, "Game", NULL, NULL);
         glfwMakeContextCurrent(this->window_);
     }
@@ -31,8 +31,8 @@ namespace game{
         glewExperimental=GL_TRUE;
         GLenum err = glewInit();
         if (GLEW_OK != err){
-            log(INFO) << "GlewInit failed" << std::endl;
-            log(INFO) << glewGetErrorString(err) << std::endl;
+            LOG(ERROR) << "GlewInit failed" << std::endl;
+            LOG(ERROR) << glewGetErrorString(err) << std::endl;
         }
 
         glDepthFunc(GL_LESS);

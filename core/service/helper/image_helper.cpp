@@ -16,7 +16,7 @@ namespace game{
     }
 
     void ImageHelper::ClearMemory(){
-        auto it = this->images_.begin(); 
+        auto it = this->images_.begin();
         while(it != this->images_.end()){
             Image* img = it->second;
             it++;
@@ -29,28 +29,28 @@ namespace game{
     Image* ImageHelper::LoadFromFile(std::string file_path){
 
         // If Image was already loaded, return if
-        Image* i = this->GetAlreadyLoadedImage(file_path); 
+        Image* i = this->GetAlreadyLoadedImage(file_path);
         if(i){
             return i;
         }
 
         // If the Image wasn't previously loaded, load it now
         i = new Image();
-        i->data = stbi_load(file_path.c_str(), 
-                            &i->width, 
-                            &i->height, 
-                            &i->comp, 
+        i->data = stbi_load(file_path.c_str(),
+                            &i->width,
+                            &i->height,
+                            &i->comp,
                             0);
 
         if( !i->data ){ // Loading failed
-            log(WARNING) << "Cannot load file " << file_path << std::endl;
+            LOG(WARNING) << "Cannot load file " << file_path << std::endl;
             return nullptr;
         }
 
-        // Generates OpenGL buffer. This will be stored and passed to the 
+        // Generates OpenGL buffer. This will be stored and passed to the
         // rendering service to fetch the texture
         glGenTextures(1, &i->GL_texture);
-        
+
         glBindTexture(GL_TEXTURE_2D, i->GL_texture);
 
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

@@ -24,18 +24,18 @@ namespace game{
         // Get the image helper that actually load images
         ImageHelper* image_helper = Locator::Get<ImageHelper>();
         if( !image_helper ){
-            log(ERROR) << "ImageHelper service has not been loaded yet" << std::endl;
+            LOG(ERROR) << "ImageHelper service has not been loaded yet" << std::endl;
             return;
         }
 
         // Load the image
-        Image *img = image_helper->LoadFromFile(file_path);  
+        Image *img = image_helper->LoadFromFile(file_path);
         if(!img){
             return;
         }
         this->texture = img->GL_texture;
         this->width = img->width;
-        this->height = img->height; 
+        this->height = img->height;
         this->transparent = false;
     }
 
