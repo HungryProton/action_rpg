@@ -8,23 +8,23 @@ SRC_EXT = cpp
 # Path to the source directory, relative to the makefile
 SRC_PATH = .
 # General compiler flags
-COMPILE_FLAGS = -std=c++11 -Wall -Wextra -Wuninitialized -g 
+COMPILE_FLAGS = -std=c++11 -Wall -Wextra -Wuninitialized -g
 # Additional release-specific flags
 RCOMPILE_FLAGS = -D NDEBUG
 # Additional debug-specific flags
 DCOMPILE_FLAGS = -D DEBUG -D_GLIBCXX_DEBUG
 # Add additional include paths
-INCLUDES = -I $(SRC_PATH)/ 
+INCLUDES = -I $(SRC_PATH)/
 # GLFW link flags
 GLFW_LINK_FLAGS = -lglfw -lpthread
 #OpenGL link flags
-OPENGL_LINK_FLAGS = -lGL -lGLU -lGLEW 
+OPENGL_LINK_FLAGS = -lGL -lGLU -lGLEW
 # General linker settings
 LINK_FLAGS = $(GLFW_LINK_FLAGS) $(OPENGL_LINK_FLAGS)
 # Additional release-specific linker settings
-RLINK_FLAGS = 
+RLINK_FLAGS =
 # Additional debug-specific linker settings
-DLINK_FLAGS = 
+DLINK_FLAGS =
 # Build target folder
 BUILD_DIR = ../build
 # Destination directory, like a jail or mounted system
