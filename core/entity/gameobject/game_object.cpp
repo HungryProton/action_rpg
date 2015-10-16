@@ -11,7 +11,7 @@
 namespace game{
 
     GameObject::GameObject(){
-        this->components.clear();
+        this->components_.clear();
     }
 
     GameObject::~GameObject(){
@@ -26,9 +26,9 @@ namespace game{
              * trouble (Segmentation fault)
              */
 
-        std::multimap<std::type_index, Component*>::iterator it = this->components.begin();
+        std::multimap<std::type_index, Component*>::iterator it = this->components_.begin();
 
-        while(it!=this->components.end() ){
+        while(it!=this->components_.end() ){
             Component* c = it->second;
             it++;
             delete c;
@@ -43,14 +43,14 @@ namespace game{
         }
 
         // Once everything have been removed, we clear the maps, just to be sure
-        this->components.clear();
+        this->components_.clear();
         this->systems.clear();
 
     }
 
     void GameObject::AttachComponent(Component* c){
         if(!c->is_attached){
-            this->components.insert(std::pair<std::type_index, Component*>(typeid(*c), c));
+            this->components_.insert(std::pair<std::type_index, Component*>(typeid(*c), c));
             c->is_attached = true;
             Message update;
             update.subject = UPDATE;
@@ -60,25 +60,22 @@ namespace game{
         }
     }
 
-    void GameObject::AttachSystem(System* s){
-        if(!s->IsAttached()){
-            this->systems.push_back(s);
-            s->Attach();
-        }else{
-            std::cout << "Error : System already attached to a gameObject" << std::endl;
-        }
-    }
+		std::vector<Component*> GameObject::GetAllComponents(){
+			std::vector<Component*> components;
+
+			for(auto it = this->components_.begin();
+					it != this->components_.end();
+					it++){
+				components.push_back(it->second);
+			}
+			return components;
+		}
 
     void GameObject::RelayMessage(Message message){
 
-        std::vector<System*>::iterator it;
-        for(it = this->systems.begin(); it != this->systems.end(); it++){
-            (*it)->HandleMessage(message);
-        }
-
         if(message.children_recursive){
-            for(unsigned int i=0; i < this->children.size(); i++){
-                this->children[i]->RelayMessage(message);
+            for(unsigned int i=0; i < this->children_.size(); i++){
+                this->children_[i]->RelayMessage(message);
             }
         }
     }

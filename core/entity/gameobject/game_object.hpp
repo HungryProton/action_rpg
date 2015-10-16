@@ -44,13 +44,6 @@ namespace game{
             void AttachComponent(Component* c);
 
 
-            /** \brief Add a new System
-             *
-             *  \param type : type of the system to add
-             */
-            void AttachSystem(System* s);
-
-
             /** \brief Relay the message to all of the other systems
              *
              * \param Message : The message that will be relayed.
@@ -68,27 +61,29 @@ namespace game{
 
 
             /** \brief Get all the matching components
-             * 
              *
-             * \return std::vector<T*> : Vector containing all 
+             *
+             * \return std::vector<T*> : Vector containing all
              *      the components that matched the type you asked for
              */
             template<class T>
-            std::vector<T*> GetAllComponents();
+            std::vector<T*> GetAllMatchingComponents();
+
+
+						std::vector<Component*> GetAllComponents();
 
         private:
 
             /** \brief Stores pointers to the components attached
              *  to the current GameObject
              */
-            std::multimap<std::type_index, Component*> components;
+            std::multimap<std::type_index, Component*> components_;
 
-            std::vector<System*> systems;
 
             /** \brief Pointers to the GameObject's
              *  direct children
              */
-            std::vector<GameObject*> children;
+            std::vector<GameObject*> children_;
     };
 }
 
