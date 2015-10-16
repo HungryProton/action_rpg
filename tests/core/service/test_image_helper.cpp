@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "deps/lest.hpp"
+#include "deps/lest-module.hpp"
 #include "tools/logger.hpp"
 #include "core/service/helper/image_helper.hpp"
 
@@ -22,15 +23,8 @@ namespace game{
 
     };
 
-    static int run_image_helper_test_suite(int argc, char** argv){
-
-        log(SILENT) << std::endl;
-        log(SILENT) << "#--------------------" << std::endl;
-        log(SILENT) << "# Image Helper test suite " << std::endl;
-        log(SILENT) << "#--------------------" << std::endl << std::endl;
-
-        return lest::run( image_helper, argc, argv, std::cout );
-    }
+    extern lest::tests & specifications();
+    lest_ADD_MODULE(specifications(), image_helper);
 }
 
 #endif //TEST_SERVICE_INPUT_HPP

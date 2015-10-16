@@ -4,18 +4,18 @@ using namespace std;
 
 namespace game{
 
-    lest::tests& specification(){
+    lest::tests & specifications(){
         static lest::tests tests;
         return tests;
     }
-    
-    int RunTests( int argc, char** argv ){
-        return lest::run(specification(), argc, argv);
+
+    int RunRegisteredTests( int argc, char** argv ){
+        return lest::run( specifications(), lest::texts(argv + 1, argv + argc) );
     }
 }
 
 int main( int argc, char** argv ){
-    game::RunTests( argc, argv );
+    game::RunRegisteredTests( argc, argv );
     return EXIT_SUCCESS;
 }
 

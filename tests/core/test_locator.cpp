@@ -1,9 +1,7 @@
-#ifndef TEST_SERVICE_LOCATOR_HPP
-#define TEST_SERVICE_LOCATOR_HPP
-
 #include <iostream>
 #include <fstream>
 #include "deps/lest.hpp"
+#include "deps/lest-module.hpp"
 #include "tools/logger.hpp"
 #include "core/service/render/render.hpp"
 #include "core/locator/locator.hpp"
@@ -30,15 +28,6 @@ namespace game{
         },
     };
 
-    static int run_locator_test_suite(int argc, char** argv){
-
-        log(SILENT) << std::endl;
-        log(SILENT) << "#--------------------" << std::endl;
-        log(SILENT) << "# Locator test suite " << std::endl;
-        log(SILENT) << "#--------------------" << std::endl << std::endl;
-
-        return lest::run( locator, argc, argv, std::cout );
-    }
+    extern lest::tests & specifications();
+    lest_ADD_MODULE(specifications(), locator);
 }
-
-#endif //TEST_TOOLS_LOGGER_HPP

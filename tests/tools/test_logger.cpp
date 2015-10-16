@@ -4,22 +4,23 @@
 #include <iostream>
 #include <fstream>
 #include "deps/lest.hpp"
+#include "deps/lest-module.hpp"
 #include "tools/logger.hpp"
 
 namespace game{
 
     const lest::test logger[] = {
-        
+
         CASE("Should output a string to the standard console"){
-            log(INFO) << "Success" << std::endl;
+            LOG(INFO) << "Success" << std::endl;
         },
 
         CASE("Should write a string to a file"){
             // Write to file
             std::ofstream outfile ("tests/logs.txt", std::ios::binary);
-            flog(INFO, outfile) << "Line of log";
+            FLOG(INFO, outfile) << "Line of log";
 
-            // Read from file to check 
+            // Read from file to check
             std::ifstream infile ("tests/logs.txt", std::ifstream::in | std::ios::binary);
 
             if (infile){
@@ -31,15 +32,8 @@ namespace game{
         },
     };
 
-    static int run_logger_test_suite(int argc, char** argv){
-
-        log(SILENT) << std::endl;
-        log(SILENT) << "#--------------------" << std::endl;
-        log(SILENT) << "# Logger test suite " << std::endl;
-        log(SILENT) << "#--------------------" << std::endl << std::endl;
-
-        return lest::run( logger, argc, argv, std::cout );
-    }
+    extern lest::tests & specifications();
+    lest_ADD_MODULE(specifications(), logger);
 }
 
 #endif //TEST_TOOLS_LOGGER_HPP

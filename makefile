@@ -34,7 +34,7 @@ INSTALL_PREFIX = usr/local
 # Main entry point
 MAIN_ENTRY_POINT = $(SRC_PATH)/main.cpp
 # Tests entry point
-TEST_ENTRY_POINT = $(SRC_PATH)/tests/tests.cpp
+TEST_PATH = $(SRC_PATH)/tests/*
 #### END PROJECT SETTINGS ####
 
 # Generally should not need to edit below this line
@@ -67,10 +67,10 @@ test: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(RLINK_FLAGS)
 # Build and output paths
 release: export BUILD_PATH := $(BUILD_DIR)/release
 release: export BIN_PATH := $(BUILD_DIR)/bin/release
-release: export EXCLUDED_ENTRY_POINT = $(TEST_ENTRY_POINT)
+release: export EXCLUDED_ENTRY_POINT = $(TEST_PATH)
 debug: export BUILD_PATH := $(BUILD_DIR)/debug
 debug: export BIN_PATH := $(BUILD_DIR)/bin/debug
-debug: export EXCLUDED_ENTRY_POINT = $(TEST_ENTRY_POINT)
+debug: export EXCLUDED_ENTRY_POINT = $(TEST_PATH)
 test: export BUILD_PATH := $(BUILD_DIR)/test
 test: export BIN_PATH := $(BUILD_DIR)/bin/test
 test: export EXCLUDED_ENTRY_POINT = $(MAIN_ENTRY_POINT)
