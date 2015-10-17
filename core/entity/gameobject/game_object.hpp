@@ -72,6 +72,7 @@ namespace game{
 
 						std::vector<Component*> GetAllComponents();
 
+						GameObject* Clone();
         private:
 
             /** \brief Stores pointers to the components attached

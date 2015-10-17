@@ -8,10 +8,10 @@ namespace game{
     template<class T>
     T* GameObject::GetComponent(){
         std::multimap<std::type_index, Component*>::iterator it;
-        for( it = this->components.begin();
-             it != this->components.end();
+        for( it = this->components_.begin();
+             it != this->components_.end();
              it ++ ){
-            
+
             if( it->first == typeid(T) ){
                 T* component = static_cast<T*>(it->second);
                 return component;
@@ -22,12 +22,12 @@ namespace game{
 
     // Get all the components that match the given type
     template<class T>
-    std::vector<T*> GameObject::GetAllComponents(){
+    std::vector<T*> GameObject::GetAllMatchingComponents(){
 
         std::vector<T*> selected_components;
         std::multimap<std::type_index, Component*>::iterator it;
 
-        for(it = this->components.begin(); it != this->components.end(); it++){
+        for(it = this->components_.begin(); it != this->components_.end(); it++){
             if( it->first == typeid(T) ){
                 selected_components.push_back( static_cast<T*>(it->second) );
             }

@@ -34,18 +34,7 @@ namespace game{
             delete c;
         }
 
-        std::vector<System*>::iterator it2 = this->systems.begin();
-
-        while(it2!=this->systems.end() ){
-            System* s = *it2;
-            it2++;
-            delete s;
-        }
-
-        // Once everything have been removed, we clear the maps, just to be sure
         this->components_.clear();
-        this->systems.clear();
-
     }
 
     void GameObject::AttachComponent(Component* c){
@@ -79,4 +68,20 @@ namespace game{
             }
         }
     }
+
+		GameObject* GameObject::Clone(){
+
+			GameObject* new_game_object = new GameObject();
+
+			std::vector<Component*> components_to_clone;
+
+			for(auto it = this->components_.begin();
+					it != this->components_.end();
+					it++){
+				Component* cloned_component = it->second->Clone();
+				new_game_object->AttachComponent(cloned_component);
+			}
+
+			return new_game_object;
+		}
 }
