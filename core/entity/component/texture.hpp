@@ -7,7 +7,7 @@
 
 namespace game{
 
-    struct Texture : public Component{ 
+    struct Texture : public Component{
 
         GLuint texture;
         int width;
@@ -16,9 +16,12 @@ namespace game{
 
         // ---- Helper methods ---- //
         Texture();
-        Texture(std::string);
+				Texture(GameObject*);
+        Texture(std::string, GameObject* p=nullptr);
+				Texture(Texture*);
         bool IsValid();
         void Bind(GLenum);
+				virtual Texture* Clone();
     };
 }
 

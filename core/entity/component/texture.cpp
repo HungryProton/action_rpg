@@ -9,7 +9,7 @@
 
 namespace game{
 
-    Texture::Texture(){
+    Texture::Texture() : Component(){
         // Inform the game that this component needs the ImageHelper service
         Game::RequestForService<ImageHelper>();
 
@@ -19,7 +19,18 @@ namespace game{
         this->transparent = false;
     }
 
-    Texture::Texture(std::string file_path) : Texture(){
+		Texture::Texture(GameObject* parent) : Component(parent){
+
+		}
+
+		Texture::Texture(Texture* texture) : Texture(){
+			this->texture = texture->texture;
+			this->width = texture->width;
+			this->height = texture->height;
+			this->transparent = texture->transparent;
+		}
+
+    Texture::Texture(std::string file_path, GameObject* parent) : Texture(parent){
 
         // Get the image helper that actually load images
         ImageHelper* image_helper = Locator::Get<ImageHelper>();
@@ -47,5 +58,9 @@ namespace game{
     bool Texture::IsValid(){
         return this->texture != 0;
     }
+
+		Texture* Texture::Clone(){
+			return new Texture(this);
+		}
 }
 
