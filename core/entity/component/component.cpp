@@ -1,7 +1,7 @@
 #include "component.hpp"
 
 namespace game{
-    
+
     Component::Component(){
         this->is_attached = false;
     }
@@ -11,7 +11,9 @@ namespace game{
     }
 
     Component::Component(GameObject* parent){
-        parent->AttachComponent(this); // This method will define whether the
-                                       // component was attached properly
-    }
+			if(!parent)
+				return;
+			parent->AttachComponent(this); // This method will define whether the
+																		 // component was attached properly
+  	}
 }

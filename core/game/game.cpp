@@ -7,8 +7,8 @@
 
 namespace game{
 
-    // Create the core services. 
-    // /!\ CAUTION /!\ Instanciation order is important, main loop 
+    // Create the core services.
+    // /!\ CAUTION /!\ Instanciation order is important, main loop
     // will go through and ask services to update in this particular order
     void Game::Initialize(){
         // Create all services
@@ -46,8 +46,8 @@ namespace game{
 
     State Game::GetState(){
         return state_;
-    } 
-    
+    }
+
     std::vector<CoreService*> Game::core_services_;
     std::vector<Service*> Game::secondary_services_;;
     State Game::state_ = UNINITIALIZED;
