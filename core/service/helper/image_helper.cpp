@@ -59,8 +59,9 @@ namespace game{
             // Default format to RGB, but if 4 components are found instead
             // of 3, it is RGBA
             GLenum format = GL_RGB;
-            if(i->comp == 4)
-                format = GL_RGBA;
+            if(i->comp == 4){
+							format = GL_RGBA;
+						}
 
             glTexImage2D(GL_TEXTURE_2D,
                          0,
