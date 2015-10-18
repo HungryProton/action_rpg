@@ -9,58 +9,62 @@
 
 namespace game{
 
-    Texture::Texture() : Component(){
-        // Inform the game that this component needs the ImageHelper service
-        Game::RequestForService<ImageHelper>();
+	void Texture::Init(){
+		// Inform the game that this component needs the ImageHelper service
+		Game::RequestForService<ImageHelper>();
 
-        this->texture = 0;
-        this->width = 0;
-        this->height = 0;
-        this->transparent = false;
-    }
+		this->texture = 0;
+		this->width = 0;
+		this->height = 0;
+		this->transparent = false;
+	}
 
-		Texture::Texture(GameObject* parent) : Component(parent){
+	Texture::Texture() : Component(){
+		this->Init();
+	}
 
+	Texture::Texture(GameObject* parent) : Component(parent){
+		this->Init();
+	}
+
+	Texture::Texture(Texture* texture) : Texture(){
+		this->texture = texture->texture;
+		this->width = texture->width;
+		this->height = texture->height;
+		this->transparent = texture->transparent;
+	}
+
+	Texture::Texture(std::string file_path, GameObject* parent) : Texture(parent){
+
+		// Get the image helper that actually load images
+		ImageHelper* image_helper = Locator::Get<ImageHelper>();
+		if( !image_helper ){
+				LOG(ERROR) << "ImageHelper service has not been loaded yet" << std::endl;
+				return;
 		}
 
-		Texture::Texture(Texture* texture) : Texture(){
-			this->texture = texture->texture;
-			this->width = texture->width;
-			this->height = texture->height;
-			this->transparent = texture->transparent;
+		// Load the image
+		Image *img = image_helper->LoadFromFile(file_path);
+		if(!img){
+				return;
 		}
+		this->texture = img->GL_texture;
+		this->width = img->width;
+		this->height = img->height;
+		this->transparent = false;
+	}
 
-    Texture::Texture(std::string file_path, GameObject* parent) : Texture(parent){
+	void Texture::Bind(GLenum active_texture = GL_TEXTURE0){
+		glActiveTexture(active_texture);
+		glBindTexture( GL_TEXTURE_2D, this->texture);
+	}
 
-        // Get the image helper that actually load images
-        ImageHelper* image_helper = Locator::Get<ImageHelper>();
-        if( !image_helper ){
-            LOG(ERROR) << "ImageHelper service has not been loaded yet" << std::endl;
-            return;
-        }
+	bool Texture::IsValid(){
+		return this->texture != 0;
+	}
 
-        // Load the image
-        Image *img = image_helper->LoadFromFile(file_path);
-        if(!img){
-            return;
-        }
-        this->texture = img->GL_texture;
-        this->width = img->width;
-        this->height = img->height;
-        this->transparent = false;
-    }
-
-    void Texture::Bind(GLenum active_texture = GL_TEXTURE0){
-        glActiveTexture(active_texture);
-        glBindTexture( GL_TEXTURE_2D, this->texture);
-    }
-
-    bool Texture::IsValid(){
-        return this->texture != 0;
-    }
-
-		Texture* Texture::Clone(){
-			return new Texture(this);
-		}
+	Texture* Texture::Clone(){
+		return new Texture(this);
+	}
 }
 

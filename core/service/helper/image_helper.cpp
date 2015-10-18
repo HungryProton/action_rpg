@@ -62,23 +62,23 @@ namespace game{
             if(i->comp == 4)
                 format = GL_RGBA;
 
-            glTexImage2D(GL_TEXTURE_2D, 
-                         0, 
-                         format, 
-                         i->width, 
-                         i->height, 
-                         0, 
-                         format, 
-                         GL_UNSIGNED_BYTE, 
+            glTexImage2D(GL_TEXTURE_2D,
+                         0,
+                         format,
+                         i->width,
+                         i->height,
+                         0,
+                         format,
+                         GL_UNSIGNED_BYTE,
                          i->data);
 
         glBindTexture(GL_TEXTURE_2D, 0);
 
-        //stbi_image_free(i.data);  // TODO : Looks weird but was like that 
-                                    // before, revert changes if anything is 
+        //stbi_image_free(i.data);  // TODO : Looks weird but was like that
+                                    // before, revert changes if anything is
                                     // broken
-                                    
-        // Store new image for future use 
+
+        // Store new image for future use
         this->images_.insert( std::pair<std::string, Image*>( file_path, i ) );
         return i;
     }
@@ -90,7 +90,7 @@ namespace game{
 
         if(it != this->images_.end()){
             return it->second;
-        } 
+        }
         return nullptr;
     }
 }

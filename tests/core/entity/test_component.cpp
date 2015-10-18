@@ -9,6 +9,7 @@
 #include "core/entity/component/texture.hpp"
 #include "core/entity/gameobject/game_object.hpp"
 #include "core/game/game.hpp"
+#include "tests/common/common.hpp"
 
 namespace game{
 
@@ -41,11 +42,15 @@ namespace game{
 		},
 
 		CASE("Should create a texture component from file"){
+			Common::CreateOpenGLContext();
+
 			Texture texture("tests/resources/1.png");
 			EXPECT( texture.IsValid() == true );
 
 			Texture unknow_texture("this/file/does/not/exists.png");
 			EXPECT( unknow_texture.IsValid() == false );
+
+			Common::DestroyOpenGLContext();
 		}
 
 	};

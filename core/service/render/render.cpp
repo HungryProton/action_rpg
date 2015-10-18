@@ -15,7 +15,7 @@ namespace game{
     }
 
     void Render::ClearMemory(){
-
+			glfwDestroyWindow(this->window_);
     }
 
     void Render::InitializeGLFW(){

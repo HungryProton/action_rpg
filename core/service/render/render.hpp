@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <typeindex>
-#include "tools/opengl.hpp" 
+#include "tools/opengl.hpp"
 #include "core/service/service.hpp"
 
 // -- Helpers inclusions
