@@ -13,7 +13,7 @@ namespace game{
         Component();
         Component(GameObject* p);
         virtual ~Component();
-				virtual Component* Clone() = 0;
+        virtual Component* Clone() = 0;
     };
 }
 

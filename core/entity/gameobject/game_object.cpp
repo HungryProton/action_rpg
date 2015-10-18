@@ -7,6 +7,7 @@
 #include "game_object.hpp"
 #include "core/entity/component/component.hpp"
 #include "core/entity/system/system.hpp"
+#include "tools/logger.hpp"
 
 namespace game{
 
@@ -49,24 +50,39 @@ namespace game{
         }
     }
 
-		std::vector<Component*> GameObject::GetAllComponents(){
-			std::vector<Component*> components;
+    void GameObject::AttachSystem(System* s){
+        if(!s->IsAttached()){
+          this->systems_.push_back(s);
+          s->Attach();
+        } else {
+          LOG(WARNING) << "System is already attached to a GameObject" << std::endl;
+        }
+    }
 
-			for(auto it = this->components_.begin();
-					it != this->components_.end();
-					it++){
-				components.push_back(it->second);
-			}
-			return components;
-		}
+    std::vector<Component*> GameObject::GetAllComponents(){
+        std::vector<Component*> components;
+
+        for(auto it = this->components_.begin();
+                it != this->components_.end();
+                it++){
+            components.push_back(it->second);
+        }
+        return components;
+    }
 
     void GameObject::RelayMessage(Message message){
 
-        if(message.children_recursive){
-            for(unsigned int i=0; i < this->children_.size(); i++){
-                this->children_[i]->RelayMessage(message);
-            }
-        }
+      for(auto it = this->systems_.begin();
+          it != this->systems_.end();
+          it++ ){
+        (*it)->HandleMessage(message);
+      }
+
+      if(message.children_recursive){
+          for(unsigned int i=0; i < this->children_.size(); i++){
+              this->children_[i]->RelayMessage(message);
+          }
+      }
     }
 
 		GameObject* GameObject::Clone(){

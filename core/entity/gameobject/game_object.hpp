@@ -18,7 +18,7 @@ namespace game{
 
             /** \brief The base class of the game.
              *
-             *  Every single game entity is a GameObject. No class should 
+             *  Every single game entity is a GameObject. No class should
              *  inherit from this class. To create any Game Entity, create a
              *  GameObject and attach different components on it to produce the
              *  desired behavior.
@@ -42,6 +42,9 @@ namespace game{
              *  game ComponentManager.
              */
             void AttachComponent(Component* c);
+
+
+            void AttachSystem(System* c);
 
 
             /** \brief Relay the message to all of the other systems
@@ -79,6 +82,8 @@ namespace game{
              *  to the current GameObject
              */
             std::multimap<std::type_index, Component*> components_;
+
+            std::vector<System*> systems_;
 
 
             /** \brief Pointers to the GameObject's
