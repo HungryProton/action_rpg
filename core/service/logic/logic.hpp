@@ -1,27 +1,27 @@
 #ifndef CORE_SERVICE_LOGIC_HPP
 #define CORE_SERVICE_LOGIC_HPP
 
+#include <vector>
 #include "core/service/service.hpp"
+#include "core/entity/gameobject/game_object.hpp"
 
 namespace game{
 
-    class Logic : public CoreService{
+	class Logic : public CoreService{
 
-        public:
-            Logic();
-            ~Logic();
+		public:
+			Logic();
+			~Logic();
 
-            void Initialize();
+			void Initialize();
 
-            void ClearMemory();
-            void Update();
+			void ClearMemory();
+			void Update();
 
-        private:
+		private:
+			std::vector<GameObject*> game_objects_;
 
-
-
-
-    };
+	};
 }
 
 #include "logic.tcc"

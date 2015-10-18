@@ -28,6 +28,10 @@ namespace game{
 
     }
 
+		void System::Update(){
+
+		}
+
     bool System::IsAttached(){
         return this->attached;
     }

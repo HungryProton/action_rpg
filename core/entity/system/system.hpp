@@ -18,6 +18,7 @@ namespace game{
 
             virtual void HandleMessage(Message m);
             virtual void UpdateTargetComponents();
+						virtual void Update();
             bool IsAttached();
             void Attach();
 

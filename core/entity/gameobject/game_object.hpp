@@ -47,6 +47,9 @@ namespace game{
             void AttachSystem(System* c);
 
 
+						void Update();
+
+
             /** \brief Relay the message to all of the other systems
              *
              * \param Message : The message that will be relayed.
