@@ -1,6 +1,3 @@
-#ifndef TEST_SERVICE_IMAGE_HELPER_HPP
-#define TEST_SERVICE_IMAGE_HELPER_HPP
-
 #include <iostream>
 #include "deps/lest.hpp"
 #include "deps/lest-module.hpp"
@@ -68,5 +65,3 @@ namespace game{
 	extern lest::tests & specifications();
 	lest_ADD_MODULE(specifications(), game_object_builder);
 }
-
-#endif //TEST_SERVICE_INPUT_HPP

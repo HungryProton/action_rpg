@@ -1,6 +1,3 @@
-#ifndef TEST_TOOLS_LOGGER_HPP
-#define TEST_TOOLS_LOGGER_HPP
-
 #include <iostream>
 #include <fstream>
 #include "deps/lest.hpp"
@@ -35,5 +32,3 @@ namespace game{
     extern lest::tests & specifications();
     lest_ADD_MODULE(specifications(), logger);
 }
-
-#endif //TEST_TOOLS_LOGGER_HPP

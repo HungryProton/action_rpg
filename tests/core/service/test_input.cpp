@@ -1,6 +1,3 @@
-#ifndef TEST_SERVICE_INPUT_HPP
-#define TEST_SERVICE_INPUT_HPP
-
 #include <iostream>
 #include <fstream>
 #include "deps/lest.hpp"
@@ -29,7 +26,5 @@ namespace game{
     };
 
     extern lest::tests& specification();
-    MODULE( specification(), module );
+    MODULE( specification(), input);
 }
-
-#endif //TEST_SERVICE_INPUT_HPP

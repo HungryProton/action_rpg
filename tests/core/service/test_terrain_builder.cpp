@@ -1,6 +1,3 @@
-#ifndef TEST_SERVICE_TERRAIN_BUILDER_HPP
-#define TEST_SERVICE_TERRAIN_BUILDER_HPP
-
 #include <iostream>
 #include "deps/lest.hpp"
 #include "deps/lest-module.hpp"
@@ -21,5 +18,3 @@ namespace game{
     extern lest::tests & specifications();
     lest_ADD_MODULE(specifications(), terrain_builder);
 }
-
-#endif //TEST_SERVICE_INPUT_HPP

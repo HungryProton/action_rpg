@@ -29,10 +29,10 @@ namespace game{
 
     class Logger{
         public:
-            Logger( Level l, 
-                    const char* file, 
-                    const char* function, 
-                    int line, 
+            Logger( Level l,
+                    const char* file,
+                    const char* function,
+                    int line,
                     std::ostream &o = std::cout) : output(o){
 
                 this->level = l;
@@ -53,7 +53,7 @@ namespace game{
                         id_color_code = color::FG_GREEN;
                         text_color_code = color::FG_DEFAULT;
                         identifier = "info : ";
-                        break; 
+                        break;
                     case WARNING:
                         id_color_code = text_color_code = color::FG_YELLOW;
                         identifier = "warning : ";
@@ -72,11 +72,10 @@ namespace game{
                         identifier = "unknow :";
                 }
 
-
                 // Display message type
-                if(this->begining){ 
+                if(this->begining){
                     output << this->file << " - ";
-                    output << this->function << ":" << this->line << " "; 
+                    output << this->function << ":" << this->line << " ";
                     output << id_color_code;
                     output << identifier;
                     this->begining = false;

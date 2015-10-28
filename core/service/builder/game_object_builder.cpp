@@ -27,8 +27,8 @@ namespace game{
 	void GameObjectBuilder::RegisterPreset(std::string name, GameObject* object){
 		auto preset = this->presets_.find(name);
 		if(preset != this->presets_.end()){
-			LOG(WARNING) << "The preset " << name << " is already registered.";
-			LOG(WARNING) << "The new preset will not be saved." << std::endl;
+			LOG(WARNING) << "The preset " << name << " is already registered." <<
+			" It can not be saved again." << std::endl;
 			return;
 		}
 		this->presets_.insert(std::pair<std::string, GameObject*>(name, object));
