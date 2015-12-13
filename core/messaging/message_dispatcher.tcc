@@ -1,7 +1,7 @@
 #include "message_dispatcher.hpp"
 #include "message_handler.hpp"
 
-namespace ansamb{
+namespace game{
 
 	template<class T>
 	void MessageDispatcher<T>::Push(T* message){

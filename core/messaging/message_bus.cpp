@@ -1,6 +1,6 @@
 #include "message_bus.hpp"
 
-namespace ansamb{
+namespace game{
 
 	void MessageBus::ResetHealthReport(){
 		health_report_.received_messages_count = 0;

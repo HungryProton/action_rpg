@@ -1,11 +1,11 @@
-#ifndef ANSAMB_CORE_MESSAGE_BUS_HPP
-#define ANSAMB_CORE_MESSAGE_BUS_HPP
+#ifndef GAME_CORE_MESSAGE_BUS_HPP
+#define GAME_CORE_MESSAGE_BUS_HPP
 
 #include <map>
 #include <deque>
 #include <vector>
 
-namespace ansamb{
+namespace game{
 
 	struct MessageBusHealthReport{
 		int registered_handler_count;
@@ -37,4 +37,4 @@ namespace ansamb{
 
 #include "message_bus.tcc"
 
-#endif //ANSAMB_CORE_MESSAGE_BUS_HPP
+#endif //GAME_CORE_MESSAGE_BUS_HPP

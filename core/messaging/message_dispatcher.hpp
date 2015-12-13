@@ -1,9 +1,9 @@
-#ifndef ANSAMB_CORE_COMMUNICATION_MESSAGE_DISPATCHER_HPP
-#define ANSAMB_CORE_COMMUNICATION_MESSAGE_DISPATCHER_HPP
+#ifndef GAME_CORE_MESSAGING_MESSAGE_DISPATCHER_HPP
+#define GAME_CORE_MESSAGING_MESSAGE_DISPATCHER_HPP
 
 #include <vector>
 
-namespace ansamb{
+namespace game{
 
 	template<class T>
 	class MessageHandler;
@@ -21,4 +21,4 @@ namespace ansamb{
 }
 
 #include "message_dispatcher.tcc"
-#endif //ANSAMB_CORE_COMMUNICATION_MESSAGE_DISPATCHER_HPP
+#endif //GAME_CORE_MESSAGING_MESSAGE_DISPATCHER_HPP

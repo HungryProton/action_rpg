@@ -2,7 +2,7 @@
 #include "message_dispatcher.hpp"
 #include "message_handler.hpp"
 
-namespace ansamb{
+namespace game{
 
 	template<class T>
 	void MessageBus::Push(T* message){

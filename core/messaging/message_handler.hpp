@@ -1,9 +1,9 @@
-#ifndef ANSAMB_CORE_COMMUNICATION_MESSAGE_HANDLER_HPP
-#define ANSAMB_CORE_COMMUNICATION_MESSAGE_HANDLER_HPP
+#ifndef GAME_CORE_MESSAGING_MESSAGE_HANDLER_HPP
+#define GAME_CORE_MESSAGING_MESSAGE_HANDLER_HPP
 
 #include <vector>
 
-namespace ansamb{
+namespace game{
 
 	template<class T>
 	class MessageHandler{
@@ -19,4 +19,4 @@ namespace ansamb{
 
 #include "message_handler.tcc"
 
-#endif //ANSAMB_CORE_COMMUNICATION_MESSAGE_HANDLER_HPP
+#endif //GAME_CORE_MESSAGING_MESSAGE_HANDLER_HPP

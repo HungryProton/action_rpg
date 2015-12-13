@@ -1,7 +1,7 @@
 #include "message_bus.hpp"
 #include "message_handler.hpp"
 
-namespace ansamb{
+namespace game{
 
 	template<class T>
 	MessageHandler<T>::MessageHandler(){
