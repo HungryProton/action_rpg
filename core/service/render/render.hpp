@@ -25,6 +25,7 @@ namespace game{
         private:
             void InitializeOpenGL();
             void InitializeGLFW();
+						static void GLFWErrorCallback(int, const char*);
 
             template<class T>
             void RegisterHelper();

@@ -2,6 +2,7 @@
 #define GAME_CORE_SERVICE_INPUT_HPP
 
 #include <vector>
+#include <string>
 #include "core/service/service.hpp"
 #include "tools/opengl.hpp"
 

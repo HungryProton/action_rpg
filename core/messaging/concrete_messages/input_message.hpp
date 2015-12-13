@@ -7,7 +7,8 @@ namespace game{
 
     enum KeyStatus{
         KEY_PRESSED,
-        KEY_RELEASED
+        KEY_RELEASED,
+				INACTIVE,
     };
 
     enum Command{
