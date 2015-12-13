@@ -47,14 +47,14 @@ namespace game{
 			void AttachSystem(System* c);
 
 
-						void Update();
+			void Update();
 
 
 			/** \brief Notify every systems attached to the gameobject
 			 *	that a new component has been attached and their current
-						 *	target list might no longer be valid
+			 *	target list might no longer be valid
 			 */
-						void NotifyAttachedSystems();
+			void NotifyAttachedSystems();
 
 
 			/**
@@ -76,9 +76,10 @@ namespace game{
 			std::vector<T*> GetAllMatchingComponents();
 
 
-						std::vector<Component*> GetAllComponents();
+			std::vector<Component*> GetAllComponents();
 
-						GameObject* Clone();
+			GameObject* Clone();
+
 		private:
 
 			/** \brief Stores pointers to the components attached
