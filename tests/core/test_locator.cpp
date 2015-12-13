@@ -10,22 +10,29 @@ namespace game{
 
     const lest::test locator[] = {
 
-        CASE("Should return the correct service after calling provide"){
-            // Create a service
-            Render* render = new Render();
+			SCENARIO("Service locator should provide access to registered services"){
 
-            //Register the service to the locator
-            Locator::Provide(render);
+				GIVEN("a service locator and a service provided to the locator"){
+					Render* render = new Render();
+					Locator::Provide(render);
 
-            // Try to get the service from the locator
+					WHEN("a registered service is requested from the locator"){
             Render* render_from_locator = Locator::Get<Render>();
 
-            // Both should be identical
-            EXPECT( render_from_locator == render );
+						THEN("it should return a pointer to the proper service"){
+							EXPECT( render_from_locator == render );
+						}
+					}
+					WHEN("a unregistered service is requested from the locator"){
+						ImageHelper* image_helper_service = Locator::Get<ImageHelper>();
 
-            // Clear memory
-            delete render;
-        },
+						THEN("it should return a null pointer"){
+							EXPECT(image_helper_service == nullptr);
+						}
+					}
+					delete render;
+				}
+			}
     };
 
     extern lest::tests & specifications();

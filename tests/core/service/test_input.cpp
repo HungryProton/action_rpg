@@ -12,13 +12,31 @@ namespace game{
 	};
 
 	const lest::test input[] = {
+		SCENARIO("Input service should generate InputMessages on player input"){
 
-		CASE( "Should send messages" ){
-			Input inputService;
-			DummyMessageHandler object;
+			GIVEN("a running input service and an InputMessage handler"){
 
-			//inputService.RegisterListener( &object );
-		},
+				WHEN("a player presses a key"){
+
+					THEN("it should emit a KeyPressed InputMessage"){
+
+					}
+					THEN("the handler should receive a KeyPressed InputMessage"){
+
+					}
+				}
+
+				WHEN("a player releases a key"){
+
+					THEN("it should emit a KeyReleased InputMessage"){
+
+					}
+					THEN("the handler should receive a KeyReleased message"){
+
+					}
+				}
+			}
+		}
 	};
 
 	extern lest::tests & specifications();
