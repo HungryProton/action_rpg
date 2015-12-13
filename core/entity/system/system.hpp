@@ -16,9 +16,8 @@ namespace game{
             System(GameObject*);
             virtual ~System();
 
-            virtual void HandleMessage(Message m);
-            virtual void UpdateTargetComponents();
-						virtual void Update();
+            virtual void RefreshTargetComponentsList() = 0;
+						virtual void Update() = 0;
             bool IsAttached();
             void Attach();
 

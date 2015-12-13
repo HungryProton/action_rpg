@@ -53,7 +53,7 @@ INSTALL_DATA = $(INSTALL) -m 644
 export V := false
 export CMD_PREFIX := @
 ifeq ($(V),true)
-	CMD_PREFIX := 
+	CMD_PREFIX :=
 endif
 
 # Combine compiler and linker flags

@@ -20,18 +20,6 @@ namespace game{
 
     }
 
-    void System::HandleMessage(Message message){
-
-    }
-
-    void System::UpdateTargetComponents(){
-
-    }
-
-		void System::Update(){
-
-		}
-
     bool System::IsAttached(){
         return this->attached;
     }

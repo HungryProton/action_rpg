@@ -3,28 +3,24 @@
 
 #include <vector>
 #include "core/service/service.hpp"
-#include "core/messaging/input_message.hpp"
 #include "tools/opengl.hpp"
 
 namespace game{
-    
-    class Input : public CoreService{
-        public:
-            Input();
-            ~Input();
 
-            void Initialize(GLFWwindow*);
-            void ClearMemory();
-            void Update();
-            void RegisterListener(IMessageHandler*);
+	class Input : public CoreService{
+		public:
+			Input();
+			~Input();
 
-        private:
-            void LoadKeymapFromFile(std::string);
-            void SendMessageToListeners(InputMessage);
+			void Initialize(GLFWwindow*);
+			void ClearMemory();
+			void Update();
 
-            std::vector<IMessageHandler*> listeners_;
-            GLFWwindow* window_;
-    };
+		private:
+			void LoadKeymapFromFile(std::string);
+
+			GLFWwindow* window_;
+	};
 }
 
 #endif //GAME_CORE_SERVICE_INPUT_HPP

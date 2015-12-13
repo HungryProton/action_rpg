@@ -50,11 +50,11 @@ namespace game{
 						void Update();
 
 
-            /** \brief Relay the message to all of the other systems
-             *
-             * \param Message : The message that will be relayed.
+            /** \brief Notify every systems attached to the gameobject
+             *	that a new component has been attached and their current
+						 *	target list might no longer be valid
              */
-            void RelayMessage(Message);
+						void NotifyAttachedSystems();
 
 
             /**

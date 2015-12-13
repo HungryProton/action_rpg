@@ -2,9 +2,10 @@
 #include "input.hpp"
 #include "core/locator/locator.hpp"
 #include "core/service/render/render.hpp"
+#include "core/messaging/concrete_messages/input_message.hpp"
 
 namespace game{
-    
+
     Input::Input(){}
 
     Input::~Input(){
@@ -16,14 +17,13 @@ namespace game{
     }
 
     void Input::ClearMemory(){
-        this->listeners_.clear();
+
     }
 
     void Input::Update(){
         glfwPollEvents();
 
         InputMessage msg;
-        msg.subject = EMPTY;
 
         if (glfwGetKey( this->window_, GLFW_KEY_ESCAPE) == GLFW_PRESS){
             Game::Stop();
@@ -46,17 +46,5 @@ namespace game{
             msg.command = MOVE_RIGHT;
         }
 
-        SendMessageToListeners(msg);
     }
-
-    void Input::RegisterListener(IMessageHandler* listener){
-        this->listeners_.push_back(listener);
-    }
-
-    void Input::SendMessageToListeners(InputMessage message){
-        for( auto listener : this->listeners_ ){
-            message.Dispatch( listener );
-        }
-    }
-
 }

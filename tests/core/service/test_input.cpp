@@ -1,30 +1,26 @@
 #include <iostream>
 #include <fstream>
 #include "deps/lest.hpp"
+#include "deps/lest-module.hpp"
 #include "core/service/input/input.hpp"
-#include "core/messaging/input_message.hpp"
 
 namespace game{
 
-    class DummyMessageHandler : public IMessageHandler{
-        public:
-            void On(InputMessage){
-                received = true;
-            }
+	class DummyMessageHandler{
+		public:
+			bool received;
+	};
 
-            bool received = false;
-    };
+	const lest::test input[] = {
 
-    const lest::test input[] = {
+		CASE( "Should send messages" ){
+			Input inputService;
+			DummyMessageHandler object;
 
-        CASE( "Should send messages" ){
-            Input inputService;
-            DummyMessageHandler object;
+			//inputService.RegisterListener( &object );
+		},
+	};
 
-            inputService.RegisterListener( &object );
-        },
-    };
-
-    extern lest::tests& specification();
-    MODULE( specification(), input);
+	extern lest::tests & specifications();
+	lest_ADD_MODULE(specifications(), input);
 }

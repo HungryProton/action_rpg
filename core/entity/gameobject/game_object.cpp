@@ -42,11 +42,9 @@ namespace game{
 		if(!c->is_attached){
 			this->components_.insert(std::pair<std::type_index, Component*>(typeid(*c), c));
 			c->is_attached = true;
-			Message update;
-			update.subject = UPDATE;
-			this->RelayMessage(update);
+			this->NotifyAttachedSystems();
 		}else{
-			std::cout << "Error, component " << typeid(*c).name() << " is already attached" << std::endl;
+			LOG(ERROR) << "Error, component " << typeid(*c).name() << " is already attached" << std::endl;
 		}
 	}
 
@@ -78,18 +76,9 @@ namespace game{
 		}
 	}
 
-	void GameObject::RelayMessage(Message message){
-
-		for(auto it = this->systems_.begin();
-				it != this->systems_.end();
-				it++ ){
-			(*it)->HandleMessage(message);
-		}
-
-		if(message.children_recursive){
-			for(unsigned int i=0; i < this->children_.size(); i++){
-				this->children_[i]->RelayMessage(message);
-			}
+	void GameObject::NotifyAttachedSystems(){
+		for(System* s : this->systems_){
+			s->RefreshTargetComponentsList();
 		}
 	}
 

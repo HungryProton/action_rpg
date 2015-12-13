@@ -1,6 +1,6 @@
-#include "deps/lest.hpp"
+#define lest_FEATURE_COLOURISE 1
 
-using namespace std;
+#include "deps/lest.hpp"
 
 namespace game{
 
