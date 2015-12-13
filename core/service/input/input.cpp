@@ -2,6 +2,7 @@
 #include "input.hpp"
 #include "core/locator/locator.hpp"
 #include "core/service/render/render.hpp"
+#include "core/messaging/message_bus.hpp"
 #include "core/messaging/concrete_messages/input_message.hpp"
 
 namespace game{
@@ -24,6 +25,7 @@ namespace game{
         glfwPollEvents();
 
         InputMessage msg;
+				msg.status = INACTIVE;
 
         if (glfwGetKey( this->window_, GLFW_KEY_ESCAPE) == GLFW_PRESS){
             Game::Stop();
@@ -45,6 +47,8 @@ namespace game{
             msg.status = KEY_PRESSED;
             msg.command = MOVE_RIGHT;
         }
-
+				if(msg.status != INACTIVE){
+						MessageBus::Push(&msg);
+				}
     }
 }
