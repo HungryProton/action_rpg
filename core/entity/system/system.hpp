@@ -6,25 +6,24 @@
 
 namespace game{
 
-    class GameObject;
-    struct Component;
+	class GameObject;
+	struct Component;
 
-    class System{
+	class System{
+		public:
+			System();
+			System(GameObject*);
+			virtual ~System();
 
-        public:
-            System();
-            System(GameObject*);
-            virtual ~System();
+			virtual void RefreshTargetComponentsList() = 0;
+			virtual void Update() = 0;
+			bool IsAttached();
+			void Attach();
 
-            virtual void RefreshTargetComponentsList() = 0;
-						virtual void Update() = 0;
-            bool IsAttached();
-            void Attach();
-
-        protected:
-            GameObject* parent;
-            bool attached;
-    };
+		protected:
+			GameObject* parent;
+			bool attached;
+	};
 }
 
 #endif // GAME_CORE_SYSTEM_HPP
