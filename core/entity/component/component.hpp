@@ -1,5 +1,5 @@
-#ifndef GAME_CORE_COMPONENT_HPP
-#define GAME_CORE_COMPONENT_HPP
+#ifndef GAME_CORE_ENTITY_CORE_COMPONENT_HPP
+#define GAME_CORE_ENTITY_CORE_COMPONENT_HPP
 
 #include "core/entity/gameobject/game_object.hpp"
 
@@ -17,5 +17,5 @@ namespace game{
     };
 }
 
-#endif // GAME_CORE_COMPONENT_HPP
+#endif // GAME_CORE_ENTITY_CORE_COMPONENT_HPP
 

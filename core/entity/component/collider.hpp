@@ -24,8 +24,10 @@ namespace game{
 		// Helper methods
 		Collider();
 		Collider(GameObject*);
+		Collider(Collider*);
 
 		void SetMass(float mass);
+		virtual Collider* Clone();
 	};
 }
 

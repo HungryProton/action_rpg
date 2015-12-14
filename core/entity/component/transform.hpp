@@ -26,6 +26,8 @@ namespace game{
 
 		Transform();
 		Transform(GameObject*);
+		Transform(Transform*);
+		virtual Transform* Clone();
 		void dbg_display();
 	};
 }

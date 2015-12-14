@@ -32,6 +32,7 @@ namespace game{
 		this->width = texture->width;
 		this->height = texture->height;
 		this->transparent = texture->transparent;
+		this->is_attached = false;
 	}
 
 	Texture::Texture(std::string file_path, GameObject* parent) : Texture(parent){

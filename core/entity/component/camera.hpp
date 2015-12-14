@@ -8,12 +8,14 @@
 namespace game{
 	struct Camera : public Component {
 
-		glm::mat4 Projection;
-		glm::mat4 View;
+		glm::mat4 projection;
+		glm::mat4 view;
 
 		// ----- Helper methods -----
 		Camera();
 		Camera(GameObject*);
+		Camera(Camera*);
+		virtual Camera* Clone();
 	};
 }
 #endif //GAME_CORE_ENTITY_COMPONENT_CAMERA_HPP
