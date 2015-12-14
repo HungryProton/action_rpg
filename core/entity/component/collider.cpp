@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iostream>
+#include <typeinfo>
 #include "collider.hpp"
 
 namespace game{
@@ -15,7 +16,7 @@ namespace game{
 		p->AttachComponent(this);
 	}
 
-	Collider::Collider(Collider* collider){
+	Collider::Collider(Collider* collider) : shape_type(collider->shape_type){
 		this->gravity = collider->gravity;
 		this->sleeping = collider->sleeping;
 		this->restitution_factor = collider->restitution_factor;
