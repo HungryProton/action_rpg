@@ -20,7 +20,6 @@ namespace game{
 		// Upon destruction, we iterate over each component and systems stored in the
 		// GameObject
 
-
 			/* We have to save the uid of the component that will be remove
 			 * and increment the iterator BEFORE actually removing the component
 			 * or else, the iterator is no longer valid and cause much
@@ -36,6 +35,10 @@ namespace game{
 		}
 
 		this->components_.clear();
+
+		for(System* s : this->systems_){
+			delete s;
+		}
 	}
 
 	void GameObject::AttachComponent(Component* c){

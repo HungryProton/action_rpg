@@ -3,6 +3,7 @@
 #include <string>
 #include "tools/logger.hpp"
 #include "core/service/render/render.hpp"
+#include "core/service/helper/image_helper.hpp"
 #include "core/locator/locator.hpp"
 #include "texture.hpp"
 #include "core/game/game.hpp"

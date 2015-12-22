@@ -2,7 +2,6 @@
 #define GAME_CORE_SYSTEM_HPP
 
 #include <map>
-#include "core/messaging/message.hpp"
 
 namespace game{
 

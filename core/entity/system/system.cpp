@@ -7,24 +7,24 @@
 
 namespace game{
 
-    System::System(){
-        this->attached = false;
-    }
+	System::System(){
+		this->attached = false;
+	}
 
-    System::System(GameObject* p) : System(){
-        this->parent = p;
-        p->AttachSystem(this);
-    }
+	System::System(GameObject* p) : System(){
+		this->parent = p;
+		p->AttachSystem(this);
+	}
 
-    System::~System(){
+	System::~System(){
 
-    }
+	}
 
-    bool System::IsAttached(){
-        return this->attached;
-    }
+	bool System::IsAttached(){
+		return this->attached;
+	}
 
-    void System::Attach(){
-        this->attached = true;
-    }
+	void System::Attach(){
+		this->attached = true;
+	}
 }
