@@ -43,8 +43,11 @@ namespace game{
 			 */
 			void AttachComponent(Component* c);
 
+			void DetachComponent(Component* c);
 
 			void AttachSystem(System* c);
+
+			void DetachSystem(System* c);
 
 
 			void Update();
