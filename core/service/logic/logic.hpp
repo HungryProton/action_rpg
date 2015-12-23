@@ -2,6 +2,7 @@
 #define CORE_SERVICE_LOGIC_HPP
 
 #include <vector>
+#include <glm/glm.hpp>
 #include "core/service/service.hpp"
 #include "core/entity/gameobject/game_object.hpp"
 
@@ -21,6 +22,8 @@ namespace game{
 		private:
 			std::vector<GameObject*> game_objects_;
 
+			GameObject* SpawnSprite(std::string);
+			GameObject* SpawnCamera(glm::vec3);
 	};
 }
 
