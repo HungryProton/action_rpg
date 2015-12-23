@@ -14,8 +14,7 @@ namespace game{
 
 	struct RenderingIntent : public Message{
 		Action action;
-		Drawable* drawable;
-		GameObject* camera;
+		GameObject* gameobject;
 	};
 }
 #endif //GAME_CORE_MESSAGING_RENDERING_INTENT_HPP

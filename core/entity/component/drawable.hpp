@@ -15,6 +15,8 @@ namespace game{
 
 		Drawable();
 		Drawable(GameObject*);
+		Drawable(Drawable*);
+		Drawable* Clone();
 	};
 }
 

@@ -13,13 +13,21 @@ namespace game{
 		public:
 			Motion();
 			Motion(GameObject*);
+			Motion(Motion*);
 			~Motion();
 
 			virtual void RefreshTargetComponentsList();
 			virtual void Update();
+			virtual Motion* Clone();
 
 			void SetMotionType(MotionType);
 			MotionType GetMotionType();
+
+			MotionType GetType();
+			glm::vec3 GetDirection();
+			glm::vec3 GetRotation();
+			glm::vec3 GetScale();
+			glm::vec3 GetMaxForce();
 
 		private:
 			MotionType type_;

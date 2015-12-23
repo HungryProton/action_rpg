@@ -3,7 +3,7 @@
 
 namespace game{
 
-	Motion::Motion() : Motion(nullptr){
+	Motion::Motion() : Motion((GameObject*)nullptr){
 
 	}
 
@@ -15,8 +15,20 @@ namespace game{
 		this->max_force_ = glm::vec3(0,0,0);
 	}
 
+	Motion::Motion(Motion* motion){
+		this->type_ = motion->GetType();
+		this->direction_ = motion->GetDirection();
+		this->rotation_ = motion->GetRotation();
+		this->scale_ = motion->GetScale();
+		this->max_force_ = motion->GetMaxForce();
+	}
+
 	Motion::~Motion(){
 
+	}
+
+	Motion* Motion::Clone(){
+		return new Motion(this);
 	}
 
 	void Motion::RefreshTargetComponentsList(){
@@ -49,8 +61,10 @@ namespace game{
 		this->type_ = type;
 	}
 
-	MotionType Motion::GetMotionType(){
-		return this->type_;
-	}
-
+	MotionType Motion::GetMotionType(){ return this->type_; }
+	MotionType Motion::GetType(){ return this->type_; }
+	glm::vec3 Motion::GetDirection(){ return this->direction_; }
+	glm::vec3 Motion::GetRotation(){ return this->rotation_; }
+	glm::vec3 Motion::GetScale(){ return this->scale_; }
+	glm::vec3 Motion::GetMaxForce(){ return this->max_force_; }
 }

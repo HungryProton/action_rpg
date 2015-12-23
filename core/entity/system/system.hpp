@@ -16,6 +16,7 @@ namespace game{
 
 			virtual void RefreshTargetComponentsList() = 0;
 			virtual void Update() = 0;
+			virtual System* Clone() = 0;
 			bool IsAttached();
 			void Attach();
 
