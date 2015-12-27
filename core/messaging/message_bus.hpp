@@ -19,7 +19,7 @@ namespace game{
 		public:
 
 			template<class T>
-			static void Push(T*);
+			static void Push(T);
 
 			template<class T>
 			static void RegisterHandler(MessageHandler<T>*);

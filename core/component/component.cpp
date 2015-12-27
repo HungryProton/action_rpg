@@ -20,4 +20,12 @@ namespace game{
 			this->parent = parent;
 		}
 	}
+
+	void Component::Update(){
+
+	}
+
+	void Component::NotifyNewComponentAdded(){
+
+	}
 }

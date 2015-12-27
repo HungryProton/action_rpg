@@ -3,7 +3,7 @@
 #include "deps/lest.hpp"
 #include "tools/logger.hpp"
 #include "core/game/game.hpp"
-#include "core/entity/gameobject/game_object.hpp"
+#include "core/entity/game_object.hpp"
 
 namespace game{
 

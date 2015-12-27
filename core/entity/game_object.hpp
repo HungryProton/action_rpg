@@ -45,19 +45,13 @@ namespace game{
 
 			void DetachComponent(Component* c);
 
-			void AttachSystem(System* c);
-
-			void DetachSystem(System* c);
-
-
 			void Update();
 
 
-			/** \brief Notify every systems attached to the gameobject
-			 *	that a new component has been attached and their current
-			 *	target list might no longer be valid
+			/** \brief Notify every components attached to the gameobject
+			 *	that a new component has been attached
 			 */
-			void NotifyAttachedSystems();
+			void NotifyAttachedComponents();
 
 
 			/**
@@ -81,6 +75,7 @@ namespace game{
 
 			std::vector<Component*> GetAllComponents();
 
+
 			GameObject* Clone();
 
 		private:
@@ -89,8 +84,6 @@ namespace game{
 			 *	to the current GameObject
 			 */
 			std::multimap<std::type_index, Component*> components_;
-
-			std::vector<System*> systems_;
 
 
 			/** \brief Pointers to the GameObject's

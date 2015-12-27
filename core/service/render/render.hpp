@@ -5,7 +5,7 @@
 #include <typeindex>
 #include "tools/opengl.hpp"
 #include "core/service/service.hpp"
-#include "core/entity/gameobject/game_object.hpp"
+#include "core/entity/game_object.hpp"
 #include "core/messaging/message_handler.hpp"
 #include "core/messaging/concrete_messages/rendering_intent.hpp"
 

@@ -4,7 +4,7 @@
 #include "deps/lest-module.hpp"
 #include "tools/logger.hpp"
 #include "core/service/render/render.hpp"
-#include "core/service/helper/image_helper.hpp"
+#include "core/service/logic/logic.hpp"
 #include "core/locator/locator.hpp"
 
 namespace game{
@@ -25,10 +25,10 @@ namespace game{
 					}
 				}
 				WHEN("a unregistered service is requested from the locator"){
-					ImageHelper* image_helper_service = Locator::Get<ImageHelper>();
+					Logic* logic_service = Locator::Get<Logic>();
 
 					THEN("it should return a null pointer"){
-						EXPECT(image_helper_service == nullptr);
+						EXPECT(logic_service == nullptr);
 					}
 				}
 				delete render;

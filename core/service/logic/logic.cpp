@@ -4,8 +4,7 @@
 #include "core/service/builder/game_object_builder.hpp"
 #include "core/game/game.hpp"
 
-#include "core/entity/component/component_list.hpp"
-#include "core/entity/system/system_list.hpp"
+#include "core/component/component_list.hpp"
 
 namespace game{
 

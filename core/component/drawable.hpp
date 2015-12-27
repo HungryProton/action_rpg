@@ -17,6 +17,7 @@ namespace game{
 		Drawable(GameObject*);
 		Drawable(Drawable*);
 		Drawable* Clone();
+		virtual void Update();
 	};
 }
 

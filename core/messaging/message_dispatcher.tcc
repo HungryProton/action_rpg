@@ -4,10 +4,10 @@
 namespace game{
 
 	template<class T>
-	void MessageDispatcher<T>::Push(T* message){
+	void MessageDispatcher<T>::Push(T message){
 
 		for(auto message_handler : message_handlers){
-			message_handler->Notify(*message);
+			message_handler->Notify(message);
 		}
 	}
 

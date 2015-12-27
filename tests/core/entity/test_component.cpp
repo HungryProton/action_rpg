@@ -3,8 +3,8 @@
 #include "deps/lest.hpp"
 #include "deps/lest-module.hpp"
 #include "tools/logger.hpp"
-#include "core/entity/component/texture.hpp"
-#include "core/entity/gameobject/game_object.hpp"
+#include "core/component/texture.hpp"
+#include "core/entity/game_object.hpp"
 #include "core/game/game.hpp"
 #include "tests/common/common.hpp"
 

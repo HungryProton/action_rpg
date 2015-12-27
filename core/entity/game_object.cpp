@@ -5,8 +5,7 @@
 #include <algorithm>
 
 #include "game_object.hpp"
-#include "core/entity/component/component.hpp"
-#include "core/entity/system/system.hpp"
+#include "core/component/component.hpp"
 #include "tools/logger.hpp"
 
 namespace game{
@@ -33,30 +32,16 @@ namespace game{
 			it++;
 			delete c;
 		}
-
 		this->components_.clear();
-
-		for(System* s : this->systems_){
-			delete s;
-		}
 	}
 
 	void GameObject::AttachComponent(Component* c){
 		if(!c->is_attached){
 			this->components_.insert(std::pair<std::type_index, Component*>(typeid(*c), c));
 			c->is_attached = true;
-			this->NotifyAttachedSystems();
+			this->NotifyAttachedComponents();
 		}else{
 			LOG(ERROR) << "Error, component " << typeid(*c).name() << " is already attached" << std::endl;
-		}
-	}
-
-	void GameObject::AttachSystem(System* s){
-		if(!s->IsAttached()){
-			this->systems_.push_back(s);
-			s->Attach();
-		} else {
-			LOG(WARNING) << "System is already attached to a GameObject" << std::endl;
 		}
 	}
 
@@ -72,16 +57,14 @@ namespace game{
 	}
 
 	void GameObject::Update(){
-		for(auto it = this->systems_.begin();
-				it != this->systems_.end();
-				it++){
-			(*it)->Update();
+		for(auto c : this->components_){
+			c.second->Update();
 		}
 	}
 
-	void GameObject::NotifyAttachedSystems(){
-		for(System* s : this->systems_){
-			s->RefreshTargetComponentsList();
+	void GameObject::NotifyAttachedComponents(){
+		for(auto c : this->components_){
+			c.second->NotifyNewComponentAdded();
 		}
 	}
 

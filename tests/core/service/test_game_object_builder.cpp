@@ -3,7 +3,7 @@
 #include "deps/lest-module.hpp"
 #include "tools/logger.hpp"
 #include "core/service/builder/game_object_builder.hpp"
-#include "core/entity/component/texture.hpp"
+#include "core/component/texture.hpp"
 
 namespace game{
 

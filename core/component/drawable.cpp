@@ -1,4 +1,6 @@
 #include "drawable.hpp"
+#include "core/messaging/message_bus.hpp"
+#include "core/messaging/concrete_messages/rendering_intent.hpp"
 
 namespace game{
 
@@ -22,6 +24,13 @@ namespace game{
 		this->offset = drawable->offset;
 		this->parent = nullptr;
 		this->is_attached = false;
+	}
+
+	void Drawable::Update(){
+		RenderingIntent intent;
+		intent.action = RI_RENDER_DRAWABLE;
+		intent.gameobject = this->parent;
+		MessageBus::Push(intent);
 	}
 
 	Drawable* Drawable::Clone(){

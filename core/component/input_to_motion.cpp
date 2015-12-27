@@ -6,7 +6,7 @@ namespace game{
 
 	}
 
-	InputToMotion::InputToMotion(GameObject* parent) : System(parent){
+	InputToMotion::InputToMotion(GameObject* parent) : Component(parent){
 
 	}
 
@@ -22,7 +22,7 @@ namespace game{
 
 	}
 
-	void InputToMotion::RefreshTargetComponentsList(){
+	void InputToMotion::NotifyNewComponentAdded(){
 
 	}
 }
