@@ -14,7 +14,7 @@ namespace game{
 
 	struct RenderingIntent : public Message{
 		Action action;
-		GameObject* gameobject;
+		GameObject* game_object;
 	};
 }
 #endif //GAME_CORE_MESSAGING_RENDERING_INTENT_HPP

@@ -65,10 +65,10 @@ namespace game{
 		for(RenderingIntent intent : this->MessageHandler<RenderingIntent>::messages){
 			switch(intent.action){
 				case(RI_ACTIVE_CAMERA):
-					this->SetActiveCamera(intent.gameobject);
+					this->SetActiveCamera(intent.game_object);
 					break;
 				case(RI_RENDER_DRAWABLE):
-					this->AddGameObjectToDraw(intent.gameobject);
+					this->AddGameObjectToDraw(intent.game_object);
 					break;
 				case(RI_NONE):
 					break;

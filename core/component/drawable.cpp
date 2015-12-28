@@ -29,7 +29,7 @@ namespace game{
 	void Drawable::Update(){
 		RenderingIntent intent;
 		intent.action = RI_RENDER_DRAWABLE;
-		intent.gameobject = this->parent;
+		intent.game_object = this->parent;
 		MessageBus::Push(intent);
 	}
 
