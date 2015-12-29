@@ -2,7 +2,8 @@
 #include "render.hpp"
 #include "tools/logger.hpp"
 #include "core/game/game.hpp"
-#include "core/service/helper/buffer_helper.hpp"
+#include "core/service/helper/geometry_helper.hpp"
+#include "core/component/component_list.hpp"
 
 namespace game{
 
@@ -11,7 +12,7 @@ namespace game{
 		this->camera_ = nullptr;
 		this->InitializeGLFW();
 		this->InitializeOpenGL();
-		Game::RequestForService<BufferHelper>();
+		Game::RequestForService<GeometryHelper>();
 	}
 
 	Render::~Render(){
@@ -90,7 +91,21 @@ namespace game{
 	}
 
 	Drawable* Render::MakeGameObjectDrawable(GameObject* game_object){
-		Drawable* drawable = new Drawable(game_object);
+		Drawable* drawable = game_object->GetComponent<Drawable>();
+		if(drawable == nullptr){
+			drawable = new Drawable(game_object);
+		}
+
+		GeometryHelper* geometry_helper = Locator::Get<GeometryHelper>();
+		Mesh* mesh = game_object->GetComponent<Mesh>();
+		Texture* texture = game_object->GetComponent<Texture>();
+		if(mesh){
+			geometry_helper->GetMesh(mesh, drawable);
+		} else if (texture){
+			geometry_helper->GetBox(drawable);
+		}
+
+		return drawable;
 	}
 
 	void Render::SetActiveCamera(GameObject* camera){
