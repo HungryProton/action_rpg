@@ -4,7 +4,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "core/service/service.hpp"
-#include "core/entity/gameobject/game_object.hpp"
+#include "core/entity/game_object.hpp"
 
 namespace game{
 

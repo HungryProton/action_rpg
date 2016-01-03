@@ -3,7 +3,7 @@
 
 #include <string>
 #include "tools/opengl.hpp"
-#include "core/entity/component/component.hpp"
+#include "core/component/component.hpp"
 
 namespace game{
 

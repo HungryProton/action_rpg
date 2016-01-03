@@ -1,16 +1,23 @@
 #ifndef GAME_CORE_ENTITY_SYSTEM_MOTION_HPP
 #define GAME_CORE_ENTITY_SYSTEM_MOTION_HPP
 
-#include "core/entity/system/system.hpp"
-#include "core/entity/component/transform.hpp"
+#include "component.hpp"
+#include "transform.hpp"
 #include <glm/glm.hpp>
 
 namespace game{
 
 	enum MotionType{SIMPLE, SERVO_CONTROL};
 
-	class Motion : public System{
+	struct Motion : public Component{
 		public:
+			MotionType type_;
+			glm::vec3 direction_;
+			glm::vec3 rotation_;
+			glm::vec3 scale_;
+			glm::vec3 max_force_;
+
+			// Helpers
 			Motion();
 			Motion(GameObject*);
 			Motion(Motion*);
@@ -20,22 +27,7 @@ namespace game{
 			virtual void Update();
 			virtual Motion* Clone();
 
-			void SetMotionType(MotionType);
-			MotionType GetMotionType();
-
-			MotionType GetType();
-			glm::vec3 GetDirection();
-			glm::vec3 GetRotation();
-			glm::vec3 GetScale();
-			glm::vec3 GetMaxForce();
-
 		private:
-			MotionType type_;
-			glm::vec3 direction_;
-			glm::vec3 rotation_;
-			glm::vec3 scale_;
-			glm::vec3 max_force_;
-
 			// Target component
 			Transform* transform_;
 

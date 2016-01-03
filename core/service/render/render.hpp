@@ -5,33 +5,37 @@
 #include <typeindex>
 #include "tools/opengl.hpp"
 #include "core/service/service.hpp"
-
-// -- Helpers inclusions
-#include "core/service/helper/image_helper.hpp"
+#include "core/entity/game_object.hpp"
+#include "core/messaging/message_handler.hpp"
+#include "core/messaging/concrete_messages/rendering_intent.hpp"
 
 namespace game{
 
-    class Render : public CoreService{
+	class Render : public CoreService,
+								 public MessageHandler<RenderingIntent>{
+		public:
+			Render();
+			~Render();
 
-        public:
-            Render();
-            ~Render();
+			void ClearMemory();
+			void Update();
 
-            void ClearMemory();
-            void Update();
+			GLFWwindow* GetWindow();
 
-            GLFWwindow* GetWindow();
+		private:
+			void InitializeOpenGL();
+			void InitializeGLFW();
+			void ProcessReceivedMessages();
+			void AddGameObjectToDraw(GameObject*);
+			Drawable* MakeGameObjectDrawable(GameObject*);
+			void SetActiveCamera(GameObject*);
+			glm::mat4 GetModelViewProjectionMatrixFor(GameObject*);
+			static void GLFWErrorCallback(int, const char*);
 
-        private:
-            void InitializeOpenGL();
-            void InitializeGLFW();
-						static void GLFWErrorCallback(int, const char*);
-
-            template<class T>
-            void RegisterHelper();
-
-            GLFWwindow* window_;
-    };
+			std::vector<GameObject*> objects_to_render_;
+			GameObject* camera_;
+			GLFWwindow* window_;
+	};
 }
 
 #endif // GAME_CORE_SERVICES_RENDER_HPP

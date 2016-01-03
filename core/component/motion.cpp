@@ -7,7 +7,7 @@ namespace game{
 
 	}
 
-	Motion::Motion(GameObject* parent) : System(parent){
+	Motion::Motion(GameObject* parent) : Component(parent){
 		this->type_ = SIMPLE;
 		this->direction_ = glm::vec3(0,0,0);
 		this->rotation_ = glm::vec3(0,0,0);
@@ -16,11 +16,11 @@ namespace game{
 	}
 
 	Motion::Motion(Motion* motion){
-		this->type_ = motion->GetType();
-		this->direction_ = motion->GetDirection();
-		this->rotation_ = motion->GetRotation();
-		this->scale_ = motion->GetScale();
-		this->max_force_ = motion->GetMaxForce();
+		this->type_ = motion->type_;
+		this->direction_ = motion->direction_;
+		this->rotation_ = motion->rotation_;
+		this->scale_ = motion->scale_;
+		this->max_force_ = motion->max_force_;
 	}
 
 	Motion::~Motion(){
@@ -56,15 +56,4 @@ namespace game{
 	void Motion::ServoResolve(){
 
 	}
-
-	void Motion::SetMotionType(MotionType type){
-		this->type_ = type;
-	}
-
-	MotionType Motion::GetMotionType(){ return this->type_; }
-	MotionType Motion::GetType(){ return this->type_; }
-	glm::vec3 Motion::GetDirection(){ return this->direction_; }
-	glm::vec3 Motion::GetRotation(){ return this->rotation_; }
-	glm::vec3 Motion::GetScale(){ return this->scale_; }
-	glm::vec3 Motion::GetMaxForce(){ return this->max_force_; }
 }

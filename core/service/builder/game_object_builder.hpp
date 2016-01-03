@@ -3,7 +3,7 @@
 
 #include <map>
 #include <string>
-#include "core/entity/gameobject/game_object.hpp"
+#include "core/entity/game_object.hpp"
 #include "core/service/service.hpp"
 
 namespace game{

@@ -11,7 +11,7 @@ namespace game{
 	template<class T>
 	class MessageDispatcher{
 		public:
-			void static Push(T*);
+			void static Push(T);
 			void static RegisterHandler(MessageHandler<T>*);
 			void static DeregisterHandler(MessageHandler<T>*);
 

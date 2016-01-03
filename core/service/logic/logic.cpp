@@ -4,8 +4,7 @@
 #include "core/service/builder/game_object_builder.hpp"
 #include "core/game/game.hpp"
 
-#include "core/entity/component/component_list.hpp"
-#include "core/entity/system/system_list.hpp"
+#include "core/component/component_list.hpp"
 
 namespace game{
 
@@ -54,7 +53,6 @@ namespace game{
 		GameObject* camera = new GameObject();
 		Transform* t = new Transform(camera);
 		t->position = position;
-		t->rotation = glm::vec3(45, 0, 45);
 		new Camera(camera);
 		new Motion(camera);
 		new InputToMotion(camera);

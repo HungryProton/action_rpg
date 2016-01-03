@@ -12,11 +12,13 @@ namespace game{
 		GLuint shader;
 		int vertex_amount;
 		int offset;
+		int amount;
 
 		Drawable();
 		Drawable(GameObject*);
 		Drawable(Drawable*);
 		Drawable* Clone();
+		virtual void Update();
 	};
 }
 

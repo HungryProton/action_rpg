@@ -5,7 +5,7 @@
 namespace game{
 
 	template<class T>
-	void MessageBus::Push(T* message){
+	void MessageBus::Push(T message){
 		MessageDispatcher<T>::Push(message);
 		health_report_.received_messages_count++;
 	}
