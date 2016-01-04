@@ -8,6 +8,8 @@
 #include "core/entity/game_object.hpp"
 #include "core/messaging/message_handler.hpp"
 #include "core/messaging/concrete_messages/rendering_intent.hpp"
+#include "core/component/transform.hpp"
+#include "core/component/camera.hpp"
 
 namespace game{
 
@@ -29,11 +31,12 @@ namespace game{
 			void AddGameObjectToDraw(GameObject*);
 			Drawable* MakeGameObjectDrawable(GameObject*);
 			void SetActiveCamera(GameObject*);
-			glm::mat4 GetModelViewProjectionMatrixFor(GameObject*);
+			glm::mat4 GetModelViewProjectionMatrixFor(Transform*);
 			static void GLFWErrorCallback(int, const char*);
 
 			std::vector<GameObject*> objects_to_render_;
-			GameObject* camera_;
+			Camera* camera_;
+			GLuint shader_;
 			GLFWwindow* window_;
 	};
 }

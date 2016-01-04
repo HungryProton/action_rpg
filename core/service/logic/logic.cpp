@@ -46,6 +46,7 @@ namespace game{
 		new Transform(sprite);
 		new Texture(file_path, sprite);
 		new Drawable(sprite);
+		this->game_objects_.push_back(sprite);
 		return sprite;
 	}
 
@@ -56,6 +57,7 @@ namespace game{
 		new Camera(camera);
 		new Motion(camera);
 		new InputToMotion(camera);
+		this->game_objects_.push_back(camera);
 		return camera;
 	}
 }

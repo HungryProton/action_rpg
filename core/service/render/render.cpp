@@ -1,18 +1,23 @@
 #include <iostream>
 #include "render.hpp"
 #include "tools/logger.hpp"
+#include "tools/opengl.hpp"
 #include "core/game/game.hpp"
 #include "core/service/helper/geometry_helper.hpp"
+#include "core/service/helper/shader_helper.hpp"
 #include "core/component/component_list.hpp"
 
 namespace game{
 
 	Render::Render(){
+		Game::RequestForService<GeometryHelper>();
+		Game::RequestForService<ShaderHelper>();
 		this->window_ = nullptr;
 		this->camera_ = nullptr;
 		this->InitializeGLFW();
 		this->InitializeOpenGL();
-		Game::RequestForService<GeometryHelper>();
+		this->shader_ = Locator::Get<ShaderHelper>()->GetShader("shader/vertex.c",
+																									"shader/fragment.c");
 	}
 
 	Render::~Render(){
@@ -60,6 +65,26 @@ namespace game{
 		glfwSwapBuffers(this->window_);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		for(GameObject* game_object : this->objects_to_render_){
+			Drawable* drawable = game_object->GetComponent<Drawable>();
+			Transform* transform = game_object->GetComponent<Transform>();
+
+			glm::mat4 model_view_projection = GetModelViewProjectionMatrixFor(transform);
+
+			glBindVertexArray(drawable->vao);
+
+				glUseProgram(this->shader_);
+
+					GLuint matrix_id = glGetUniformLocation(this->shader_, "MVP");
+					glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &model_view_projection[0][0]);
+
+					// Do the texture binding here
+
+					glEnable(GL_BLEND);
+
+						glDrawElements(drawable->draw_type, drawable->vertex_amount,
+								GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
+		}
 	}
 
 	void Render::ProcessReceivedMessages(){
@@ -108,9 +133,29 @@ namespace game{
 		return drawable;
 	}
 
+	glm::mat4 Render::GetModelViewProjectionMatrixFor(Transform* transform){
+		glm::mat4 translation = glm::translate(glm::mat4(1.0f),
+																					 glm::vec3(transform->position));
+
+		glm::mat4 rotation_x = glm::rotate(translation, transform->rotation.x,
+																			 glm::vec3(1.0f, 0.0f, 0.0f));
+
+		glm::mat4 rotation_xy = glm::rotate(rotation_x, transform->rotation.y,
+																				glm::vec3(0.0f, 1.0f, 0.0f));
+
+		glm::mat4 rotation_xyz = glm::rotate(rotation_xy, transform->rotation.z,
+																				glm::vec3(0.0f, 0.0f, 1.0f));
+
+		glm::mat4 scale = glm::scale(transform->scale);
+
+		glm::mat4 model = rotation_xyz * scale;
+
+		return this->camera_->view_projection * model;
+	}
+
 	void Render::SetActiveCamera(GameObject* camera){
 		// Should notify the old camera that it's not active anymore maybe?
-		this->camera_ = camera;
+		this->camera_ = camera->GetComponent<Camera>();
 	}
 
 	GLFWwindow* Render::GetWindow(){
