@@ -25,7 +25,7 @@ namespace game{
         }
     }
 
-    enum Level{SILENT, INFO, WARNING, ERROR};
+    enum Level{SILENT, INFO, DEBUG, WARNING, ERROR, CRITICAL};
 
     class Logger{
         public:
@@ -55,13 +55,21 @@ namespace game{
                         identifier = "info : ";
                         break;
                     case WARNING:
-                        id_color_code = text_color_code = color::FG_YELLOW;
+                        id_color_code = color::FG_YELLOW;
+												text_color_code = color::FG_DEFAULT;
                         identifier = "warning : ";
                         break;
+										case DEBUG:
+												id_color_code = color::FG_BLUE;
+												text_color_code = color::FG_DEFAULT;
+												identifier = "debug : ";
                     case ERROR:
                         id_color_code = text_color_code = color::FG_RED;
                         identifier = "error : ";
                         break;
+										case CRITICAL:
+												id_color_code = text_color_code = color::FG_RED;
+												identifier = "critical : ";
                     case SILENT:
                         id_color_code = color::FG_DEFAULT;
                         text_color_code = color::FG_DEFAULT;
