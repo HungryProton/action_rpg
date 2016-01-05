@@ -5,7 +5,11 @@
 #include "core/game/game.hpp"
 #include "core/service/helper/geometry_helper.hpp"
 #include "core/service/helper/shader_helper.hpp"
-#include "core/component/component_list.hpp"
+
+#include "core/component/transform.hpp"
+#include "core/component/camera.hpp"
+#include "core/component/drawable.hpp"
+#include "core/component/texture.hpp"
 
 namespace game{
 
@@ -62,6 +66,8 @@ namespace game{
 	}
 
 	void Render::Update(){
+		ProcessReceivedMessages();
+
 		glfwSwapBuffers(this->window_);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -71,19 +77,25 @@ namespace game{
 
 			glm::mat4 model_view_projection = GetModelViewProjectionMatrixFor(transform);
 
+			check_gl_error();
 			glBindVertexArray(drawable->vao);
 
+			check_gl_error();
 				glUseProgram(this->shader_);
 
+			check_gl_error();
 					GLuint matrix_id = glGetUniformLocation(this->shader_, "MVP");
 					glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &model_view_projection[0][0]);
 
 					// Do the texture binding here
 
+			check_gl_error();
 					glEnable(GL_BLEND);
 
+			check_gl_error();
 						glDrawElements(drawable->draw_type, drawable->vertex_amount,
 								GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
+			check_gl_error();
 		}
 	}
 
@@ -107,9 +119,11 @@ namespace game{
 		// to the pool;
 		Drawable* drawable = game_object->GetComponent<Drawable>();
 		if(!drawable || drawable->vao == 0){
+			LOG(DEBUG) << "Making the object drawable" << std::endl;
 			drawable = this->MakeGameObjectDrawable(game_object);
 		}
 		if( drawable->vao == 0 ){
+			LOG(DEBUG) << "Object does not have a valid buffer " << std::endl;
 			return;
 		}
 		LOG(INFO) << "Registering object to the new draw pool" << std::endl;

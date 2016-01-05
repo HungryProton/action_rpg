@@ -22,7 +22,9 @@ namespace game{
 		// Input service needs a window (or a context) to capture user input
 		Input* input = Locator::Get<Input>();
 		Render* render = Locator::Get<Render>();
+		Logic* logic = Locator::Get<Logic>();
 		input->Initialize( render->GetWindow() );
+		logic->Initialize();
 	}
 
 	void Game::Stop(){

@@ -1,5 +1,6 @@
 #include "motion.hpp"
 #include "tools/time.hpp"
+#include "tools/logger.hpp"
 
 namespace game{
 
@@ -9,10 +10,11 @@ namespace game{
 
 	Motion::Motion(GameObject* parent) : Component(parent){
 		this->type_ = SIMPLE;
-		this->direction_ = glm::vec3(0,0,0);
-		this->rotation_ = glm::vec3(0,0,0);
-		this->scale_ = glm::vec3(0,0,0);
-		this->max_force_ = glm::vec3(0,0,0);
+		this->direction_ = glm::vec3(0.f,0.f,0.f);
+		this->rotation_ = glm::vec3(0.f,0.f,0.f);
+		this->scale_ = glm::vec3(0.f,0.f,0.f);
+		this->max_force_ = glm::vec3(0.f,0.f,0.f);
+		this->transform_ = nullptr;
 	}
 
 	Motion::Motion(Motion* motion){
@@ -21,6 +23,7 @@ namespace game{
 		this->rotation_ = motion->rotation_;
 		this->scale_ = motion->scale_;
 		this->max_force_ = motion->max_force_;
+		this->transform_ = nullptr;
 	}
 
 	Motion::~Motion(){
@@ -31,7 +34,7 @@ namespace game{
 		return new Motion(this);
 	}
 
-	void Motion::RefreshTargetComponentsList(){
+	void Motion::NotifyNewComponentAdded(){
 		this->transform_ = this->parent->GetComponent<Transform>();
 	}
 

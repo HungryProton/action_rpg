@@ -4,7 +4,12 @@
 #include "core/service/builder/game_object_builder.hpp"
 #include "core/game/game.hpp"
 
-#include "core/component/component_list.hpp"
+#include "core/component/transform.hpp"
+#include "core/component/camera.hpp"
+#include "core/component/drawable.hpp"
+#include "core/component/texture.hpp"
+#include "core/component/input_to_motion.hpp"
+#include "core/component/motion.hpp"
 
 namespace game{
 
@@ -22,7 +27,6 @@ namespace game{
 
 		SpawnSprite("../data/characters/female/female_1.png");
 		SpawnCamera(glm::vec3(-2, -2, 2));
-
 	}
 
 	void Logic::ClearMemory(){
@@ -34,10 +38,8 @@ namespace game{
 	}
 
 	void Logic::Update(){
-		for(auto it = this->game_objects_.begin();
-				it != this->game_objects_.end();
-				it++){
-			(*it)->Update();
+		for(GameObject* game_object : this->game_objects_){
+			game_object->Update();
 		}
 	}
 
