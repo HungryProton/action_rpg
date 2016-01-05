@@ -9,11 +9,11 @@ namespace game{
 	class MessageHandler{
 		public:
 			MessageHandler();
-			~MessageHandler();
-			void Notify(T);
+			virtual ~MessageHandler();
+			virtual void NotifyNewMessage(T) final;
 
 		protected:
-			std::vector<T> messages;
+			std::vector<T> messages_;
 	};
 }
 

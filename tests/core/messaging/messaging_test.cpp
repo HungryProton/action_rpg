@@ -5,7 +5,7 @@
 
 namespace game{
 
-	//util
+	//Util
 	unsigned long GetMessagesCount(){
 		return MessageBus::GetHealthReport().received_messages_count;
 	}
@@ -25,25 +25,29 @@ namespace game{
 					message_bus_report = MessageBus::GetHealthReport();
 					EXPECT(message_bus_report.registered_handler_count == 2);
 				}
-				THEN("handler should be able to broadcast messages through the message bus"){
-          m1->SendDummyMessage();
-          m2->Process();
-
-					EXPECT(GetMessagesCount() == 1);
-				}
-				THEN("handler should be able to receive messages"){
+				WHEN("a message is broadcasted to the message bus"){
 					m1->SendDummyMessage();
 					m2->Process();
 
-					EXPECT(m2->GetReceivedMessagesCount() == 1);
+					THEN("the message bus should have received a message"){
+						EXPECT(GetMessagesCount() >= 1);
+					}
+					THEN("the message should have been dispatched to the handler"){
+						EXPECT(m2->GetReceivedMessagesCount() >= 1);
+					}
 				}
-				THEN("handler should deregister from the message bus upon destruction"){
-          delete m1;
-          delete m2;
+				WHEN("a handler is registered, then deleted"){
+					int count = MessageBus::GetHealthReport().registered_handler_count;
+					DummyHandler* m3 = new DummyHandler();
+					delete m3;
 
-					message_bus_report = MessageBus::GetHealthReport();
-					EXPECT(message_bus_report.registered_handler_count == 0);
+					THEN("it should have deregistered itself from the message bus"){
+						message_bus_report = MessageBus::GetHealthReport();
+						EXPECT(message_bus_report.registered_handler_count == count);
+					}
 				}
+				delete m1;
+				delete m2;
 			}
 		}
 	};

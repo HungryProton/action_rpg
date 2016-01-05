@@ -1,3 +1,4 @@
+#include <typeindex>
 #include "message_dispatcher.hpp"
 #include "message_handler.hpp"
 
@@ -5,14 +6,17 @@ namespace game{
 
 	template<class T>
 	void MessageDispatcher<T>::Push(T message){
-
 		for(auto message_handler : message_handlers){
-			message_handler->Notify(message);
+			message_handler->NotifyNewMessage(message);
 		}
 	}
 
 	template<class T>
 	void MessageDispatcher<T>::RegisterHandler(MessageHandler<T>* handler){
+		// Do not register the handler again if it is already registered
+		for(auto registered_handler : message_handlers){
+			if(registered_handler == handler){ return; }
+		}
 		message_handlers.push_back(handler);
 	}
 

@@ -88,7 +88,7 @@ namespace game{
 	}
 
 	void Render::ProcessReceivedMessages(){
-		for(RenderingIntent intent : this->MessageHandler<RenderingIntent>::messages){
+		for(RenderingIntent intent : this->MessageHandler<RenderingIntent>::messages_){
 			switch(intent.action){
 				case(RI_ACTIVE_CAMERA):
 					this->SetActiveCamera(intent.game_object);
@@ -112,6 +112,7 @@ namespace game{
 		if( drawable->vao == 0 ){
 			return;
 		}
+		LOG(INFO) << "Registering object to the new draw pool" << std::endl;
 		this->objects_to_render_.push_back(game_object);
 	}
 
@@ -155,6 +156,7 @@ namespace game{
 
 	void Render::SetActiveCamera(GameObject* camera){
 		// Should notify the old camera that it's not active anymore maybe?
+		LOG(INFO) << "Setting the new camera" << std::endl;
 		this->camera_ = camera->GetComponent<Camera>();
 	}
 

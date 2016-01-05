@@ -12,6 +12,7 @@ namespace game{
 	// /!\ CAUTION /!\ Instanciation order is important, main loop
 	// will go through and ask services to update in this particular order
 	void Game::Initialize(){
+
 		// Create all services
 		InstantiateCoreService<Input>();
 		InstantiateCoreService<Logic>();
@@ -50,6 +51,6 @@ namespace game{
 	}
 
 	std::vector<CoreService*> Game::core_services_;
-	std::vector<Service*> Game::secondary_services_;;
+	std::vector<Service*> Game::secondary_services_;
 	State Game::state_ = UNINITIALIZED;
 }
