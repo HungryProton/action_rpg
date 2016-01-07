@@ -11,17 +11,27 @@ namespace game{
 
     const lest::test game_objects[] = {
 
-			SCENARIO("GameObjects should allow duplication"){
+			SCENARIO("GameObjects should allow basic operations on them"){
 
-				GIVEN("a GameObject with components attached on"){
-
+				GIVEN("an empty GameObject with nothing attached on it"){
 					GameObject* game_object = new GameObject();
-					new Texture(game_object);
 
-					WHEN("a duplicate is requested"){
+					WHEN("a component is created with the game object as parameter"){
+						Texture* initial_texture = new Texture("../data/characters/female/female_1.png", game_object);
 
-						THEN("it should return a copy of the object and its components"){
+						THEN("the component should be attached to the game object"){
+							EXPECT(initial_texture->is_attached == true);
 						}
+						THEN("game object's component count should have increased"){
+							int count = game_object->GetAllComponents().size();
+							EXPECT(count == 1);
+						}
+						THEN("we should be able to retrieve the attached component"){
+							Texture* attached_texture = game_object->GetComponent<Texture>();
+							EXPECT(attached_texture == initial_texture);
+						}
+
+						game_object->DetachAndDestroyComponent(initial_texture);
 					}
 
           delete game_object;

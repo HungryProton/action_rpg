@@ -41,9 +41,11 @@ namespace game{
 			 *	GameObject and update the components entries in the
 			 *	game ComponentManager.
 			 */
-			void AttachComponent(Component* c);
+			void AttachComponent(Component*);
 
-			void DetachComponent(Component* c);
+			Component* DetachComponent(Component*);
+
+			void DetachAndDestroyComponent(Component*);
 
 			void Update();
 

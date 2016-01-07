@@ -112,19 +112,22 @@ namespace game{
 					break;
 			}
 		}
+
+		this->MessageHandler<RenderingIntent>::messages_.clear();
 	}
 
 	void Render::AddGameObjectToDraw(GameObject* game_object){
 		// Perform validation and correction if needed before adding the objet
 		// to the pool;
 		Drawable* drawable = game_object->GetComponent<Drawable>();
-		if(!drawable || drawable->vao == 0){
-			LOG(DEBUG) << "Making the object drawable" << std::endl;
-			drawable = this->MakeGameObjectDrawable(game_object);
+		if(!drawable){
+			LOG(DEBUG) << "No drawable in gameObject" << std::endl;
+			return;
 		}
 		if( drawable->vao == 0 ){
 			LOG(DEBUG) << "Object does not have a valid buffer " << std::endl;
-			return;
+			drawable = this->MakeGameObjectDrawable(game_object);
+			if(!drawable || drawable->vao == 0){ return; }
 		}
 		LOG(INFO) << "Registering object to the new draw pool" << std::endl;
 		this->objects_to_render_.push_back(game_object);
@@ -133,16 +136,23 @@ namespace game{
 	Drawable* Render::MakeGameObjectDrawable(GameObject* game_object){
 		Drawable* drawable = game_object->GetComponent<Drawable>();
 		if(drawable == nullptr){
-			drawable = new Drawable(game_object);
+			return nullptr;
 		}
 
 		GeometryHelper* geometry_helper = Locator::Get<GeometryHelper>();
 		Mesh* mesh = game_object->GetComponent<Mesh>();
 		Texture* texture = game_object->GetComponent<Texture>();
+		if(!texture){
+			LOG(DEBUG) << "No texture found" << std::endl;
+		} else {
+			LOG(DEBUG) << "texture : " << texture->IsValid() << " " << texture->width << std::endl;
+		}
 		if(mesh){
 			geometry_helper->GetMesh(mesh, drawable);
 		} else if (texture){
 			geometry_helper->GetBox(drawable);
+		} else {
+			LOG(DEBUG) << "No graphic component is attached to the gameobject" << std::endl;
 		}
 
 		return drawable;

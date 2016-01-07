@@ -45,6 +45,28 @@ namespace game{
 		}
 	}
 
+	Component* GameObject::DetachComponent(Component* c){
+		if(!c->is_attached){ return nullptr; }
+
+		for(auto it = this->components_.begin();
+				it != this->components_.end();
+				it++){
+			if(c != it->second){ continue; }
+
+			Component* component = it->second;
+			this->components_.erase(it);
+			return component;
+		}
+		return nullptr;
+	}
+
+	void GameObject::DetachAndDestroyComponent(Component* c){
+		Component* component = this->DetachComponent(c);
+		if(component){
+			delete component;
+		}
+	}
+
 	std::vector<Component*> GameObject::GetAllComponents(){
 		std::vector<Component*> components;
 
@@ -69,10 +91,7 @@ namespace game{
 	}
 
 	GameObject* GameObject::Clone(){
-
 		GameObject* new_game_object = new GameObject();
-
-		std::vector<Component*> components_to_clone;
 
 		for(auto it = this->components_.begin();
 				it != this->components_.end();
@@ -80,7 +99,6 @@ namespace game{
 			Component* cloned_component = it->second->Clone();
 			new_game_object->AttachComponent(cloned_component);
 		}
-
 		return new_game_object;
 	}
 }
