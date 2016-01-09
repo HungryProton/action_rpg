@@ -21,6 +21,7 @@ namespace game{
 
 	void Common::DestroyOpenGLContext(){
 		glfwDestroyWindow(window_);
+		glfwTerminate();
 	}
 
 	GLFWwindow* Common::window_;

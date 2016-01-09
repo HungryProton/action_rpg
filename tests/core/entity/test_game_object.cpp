@@ -16,8 +16,9 @@ namespace game{
 				GIVEN("an empty GameObject with nothing attached on it"){
 					GameObject* game_object = new GameObject();
 
-					WHEN("a component is created with the game object as parameter"){
-						Texture* initial_texture = new Texture("../data/characters/female/female_1.png", game_object);
+					WHEN("a component is created and manually attached to a gameobject"){
+						Texture* initial_texture = new Texture("../data/characters/female/female_1.png");
+						game_object->AttachComponent(initial_texture);
 
 						THEN("the component should be attached to the game object"){
 							EXPECT(initial_texture->is_attached == true);
@@ -30,7 +31,27 @@ namespace game{
 							Texture* attached_texture = game_object->GetComponent<Texture>();
 							EXPECT(attached_texture == initial_texture);
 						}
+						// We detach it every time because the framework testing rerun the
+						// code in the WHERE scope for each THEN
+						game_object->DetachAndDestroyComponent(initial_texture);
+					}
+					WHEN("a component is created with the game object as parameter"){
+						Texture* initial_texture = new Texture("../data/characters/female/female_1.png", game_object);
+						GameObject* second_game_object = game_object->Clone();
 
+						THEN("the component should be attached to the game object"){
+							EXPECT(initial_texture->is_attached == true);
+						}
+						THEN("game object's component count should have increased"){
+							int count = game_object->GetAllComponents().size();
+							EXPECT(count == 1);
+						}
+						THEN("we should be able to retrieve the attached component"){
+							Texture* test = second_game_object->GetComponent<Texture>();
+							EXPECT(test != nullptr);
+							Texture* attached_texture = game_object->GetComponent<Texture>();
+							EXPECT(attached_texture == initial_texture);
+						}
 						game_object->DetachAndDestroyComponent(initial_texture);
 					}
 

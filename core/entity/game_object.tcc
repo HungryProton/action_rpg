@@ -8,15 +8,11 @@ namespace game{
 	// Get the first component that match the given type
 	template<class T>
 	T* GameObject::GetComponent(){
-		LOG(DEBUG) << "component count " << this->components_.size() << std::endl;
-		LOG(DEBUG) << "Seeked : " << typeid(T).name() << std::endl;
-
 		std::multimap<std::type_index, Component*>::iterator it;
 		for( it = this->components_.begin();
 			 it != this->components_.end();
 			 it ++ ){
 
-			LOG(DEBUG) << "Current : " << it->first.name() << std::endl;
 			if( it->first == typeid(T) ){
 				T* component = static_cast<T*>(it->second);
 				return component;

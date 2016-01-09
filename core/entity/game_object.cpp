@@ -39,6 +39,7 @@ namespace game{
 		if(!c->is_attached){
 			this->components_.insert(std::pair<std::type_index, Component*>(typeid(*c), c));
 			c->is_attached = true;
+			c->parent = this;
 			this->NotifyAttachedComponents();
 		}else{
 			LOG(ERROR) << "Error, component " << typeid(*c).name() << " is already attached" << std::endl;
