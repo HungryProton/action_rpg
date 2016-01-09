@@ -3,12 +3,18 @@
 
 namespace game{
 
-	Material::Material(GameObject* p) : Component(p){
+	Material::Material() : Component(){
 		this->friction = 1;
 		this->inflamable_factor = 0;
 		this->absorbion_factor = 0;
 		this->restitution = 0;
 		this->density = 1;
+	}
+
+	Material::Material(GameObject* parent) : Component(){
+		if(parent){
+			parent->AttachComponent(this);
+		}
 	}
 
 	Material::Material(MaterialPreset preset, GameObject* p) : Material(p){

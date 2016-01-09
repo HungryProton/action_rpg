@@ -19,7 +19,6 @@ namespace game{
 		Texture(GameObject*);
 		Texture(std::string, GameObject* p=nullptr);
 		Texture(Texture*);
-		void Init();
 		bool IsValid();
 		void Bind(GLenum);
 		virtual Texture* Clone();

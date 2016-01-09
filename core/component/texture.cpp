@@ -10,22 +10,20 @@
 
 namespace game{
 
-	void Texture::Init(){
-		// Inform the game that this component needs the ImageHelper service
-		Game::RequestForService<ImageHelper>();
-
+	Texture::Texture() : Component(){
 		this->texture = 0;
 		this->width = 0;
 		this->height = 0;
 		this->transparent = false;
+
+		// Inform the game that this component needs the ImageHelper service
+		Game::RequestForService<ImageHelper>();
 	}
 
-	Texture::Texture() : Component(){
-		this->Init();
-	}
-
-	Texture::Texture(GameObject* parent) : Component(parent){
-		this->Init();
+	Texture::Texture(GameObject* parent) : Texture(){
+		if(parent){
+			parent->AttachComponent(this);
+		}
 	}
 
 	Texture::Texture(Texture* texture) : Texture(){

@@ -22,6 +22,7 @@ namespace game{
 		Camera(GameObject*);
 		Camera(Camera*);
 		virtual Camera* Clone();
+		void SetActive();
 	};
 }
 #endif //GAME_CORE_ENTITY_COMPONENT_CAMERA_HPP

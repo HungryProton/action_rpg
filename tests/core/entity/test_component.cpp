@@ -11,11 +11,11 @@
 namespace game{
 
 	struct DummyComponent : public Component{
-		DummyComponent(){}
-		DummyComponent(GameObject* parent) : Component(parent){}
-		DummyComponent* Clone(){
-			return new DummyComponent();
+		DummyComponent() : Component(){}
+		DummyComponent(GameObject* parent) : DummyComponent(){
+			if(parent){ parent->AttachComponent(this); }
 		}
+		DummyComponent* Clone(){ return new DummyComponent(); }
 	};
 
 	const lest::test components[] = {

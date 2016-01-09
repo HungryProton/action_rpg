@@ -25,9 +25,10 @@ namespace game{
 		Collider();
 		Collider(GameObject*);
 		Collider(Collider*);
-
-		void SetMass(float mass);
 		virtual Collider* Clone();
+
+		// Caution, use this method instead of changing the mass directly
+		void SetMass(float mass);
 	};
 }
 

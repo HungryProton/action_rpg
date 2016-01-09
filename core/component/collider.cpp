@@ -12,8 +12,10 @@ namespace game{
 		this->restitution_factor = 0.8f;
 	}
 
-	Collider::Collider(GameObject* p) : Collider(){
-		p->AttachComponent(this);
+	Collider::Collider(GameObject* parent) : Collider(){
+		if(parent){
+			parent->AttachComponent(this);
+		}
 	}
 
 	Collider::Collider(Collider* collider) : shape_type(collider->shape_type){

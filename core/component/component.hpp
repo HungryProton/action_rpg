@@ -12,7 +12,6 @@ namespace game{
 
 		// ----- Helpers -----
 		Component();
-		Component(GameObject* p);
 		virtual ~Component();
 		virtual Component* Clone() = 0;
 		virtual void Update();

@@ -4,18 +4,16 @@
 
 namespace game{
 
-	Camera::Camera() : Camera((GameObject*)nullptr){
-
-	}
-
-	Camera::Camera(GameObject* p) : Component(p){
-		this->active = true;
+	Camera::Camera() : Component(){
+		this->active = false;
 		this->up = glm::vec3(0,0,1);
 		this->target = glm::vec3(0,0,0);
-		RenderingIntent intent;
-		intent.action = RI_ACTIVE_CAMERA;
-		intent.game_object = p;
-		MessageBus::Push(intent);
+	}
+
+	Camera::Camera(GameObject* parent) : Camera(){
+		if(parent){
+			parent->AttachComponent(this);
+		}
 	}
 
 	Camera::Camera(Camera* camera){
@@ -30,5 +28,13 @@ namespace game{
 
 	Camera* Camera::Clone(){
 		return new Camera(this);
+	}
+
+	void Camera::SetActive(){
+		RenderingIntent intent;
+		intent.action = RI_ACTIVE_CAMERA;
+		intent.game_object = this->parent;
+		MessageBus::Push(intent);
+		active = true;
 	}
 }

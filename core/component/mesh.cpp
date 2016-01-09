@@ -4,16 +4,15 @@
 
 namespace game{
 
-	Mesh::Mesh(){
+	Mesh::Mesh() : Component(){ }
 
-	}
-
-	Mesh::Mesh(GameObject* p) : Mesh() {
-		this->parent = p;
+	Mesh::Mesh(GameObject* parent) : Mesh() {
+		if(parent){
+			parent->AttachComponent(this);
+		}
 	}
 
 	Mesh::Mesh(std::string path, GameObject* p ) : Mesh(p){
-		p->AttachComponent(this);
 		this->LoadFromFile(path);
 	}
 

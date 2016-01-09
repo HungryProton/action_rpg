@@ -4,17 +4,19 @@
 
 namespace game{
 
-	Motion::Motion() : Motion((GameObject*)nullptr){
-
-	}
-
-	Motion::Motion(GameObject* parent) : Component(parent){
+	Motion::Motion() : Component(){
 		this->type_ = SIMPLE;
 		this->direction_ = glm::vec3(0.f,0.f,0.f);
 		this->rotation_ = glm::vec3(0.f,0.f,0.f);
 		this->scale_ = glm::vec3(0.f,0.f,0.f);
 		this->max_force_ = glm::vec3(0.f,0.f,0.f);
 		this->transform_ = nullptr;
+	}
+
+	Motion::Motion(GameObject* parent) : Motion(){
+		if(parent){
+			parent->AttachComponent(this);
+		}
 	}
 
 	Motion::Motion(Motion* motion){
@@ -26,9 +28,7 @@ namespace game{
 		this->transform_ = nullptr;
 	}
 
-	Motion::~Motion(){
-
-	}
+	Motion::~Motion(){ }
 
 	Motion* Motion::Clone(){
 		return new Motion(this);

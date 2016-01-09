@@ -34,7 +34,7 @@ namespace game{
 
 		Mesh();
 		Mesh(GameObject*);
-		Mesh(std::string, GameObject*);
+		Mesh(std::string, GameObject* p=nullptr);
 		Mesh(Mesh*);
 		void LoadFromFile(std::string);
 		void LoadTextureFromMaterial();

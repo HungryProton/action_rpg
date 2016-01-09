@@ -10,8 +10,10 @@ namespace game{
 		this->velocity = glm::vec3(0.f, 0.f, 0.f);
 	}
 
-	Transform::Transform(GameObject* p) : Transform(){
-		p->AttachComponent(this);
+	Transform::Transform(GameObject* parent) : Transform(){
+		if(parent){
+			parent->AttachComponent(this);
+		}
 	}
 
 	Transform::Transform(Transform* transform){

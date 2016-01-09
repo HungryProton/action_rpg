@@ -4,17 +4,19 @@
 
 namespace game{
 
-	Drawable::Drawable() : Drawable((GameObject*)nullptr){
-
-	}
-
-	Drawable::Drawable(GameObject* p) : Component(p){
+	Drawable::Drawable() : Component(){
 		this->vao = 0;
 		this->shader = 0;
 		this->draw_type = 0;
 		this->vertex_amount = 0;
 		this->offset = 0;
 		this->amount = 0;
+	}
+
+	Drawable::Drawable(GameObject* parent) : Drawable(){
+		if(parent){
+			parent->AttachComponent(this);
+		}
 	}
 
 	Drawable::Drawable(Drawable* drawable){

@@ -19,8 +19,9 @@ namespace game{
 
 		//----- Helper Methods-----
 
+		Material();
 		Material(GameObject*);
-		Material(MaterialPreset, GameObject*);
+		Material(MaterialPreset, GameObject* p = nullptr);
 		Material(Material*);
 		Material* Clone();
 		void UsePreset(MaterialPreset);

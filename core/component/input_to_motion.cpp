@@ -2,12 +2,14 @@
 
 namespace game{
 
-	InputToMotion::InputToMotion(){
+	InputToMotion::InputToMotion() : Component(){
 
 	}
 
-	InputToMotion::InputToMotion(GameObject* parent) : Component(parent){
-
+	InputToMotion::InputToMotion(GameObject* parent) : InputToMotion(){
+		if(parent){
+			parent->AttachComponent(this);
+		}
 	}
 
 	InputToMotion::InputToMotion(InputToMotion* input_to_motion){
