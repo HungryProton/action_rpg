@@ -23,45 +23,47 @@ namespace game{
 			glDeleteBuffers(1, &vertex_buffers[i]);
 		}
 		vertex_buffers.clear();
+		this->vbo_last_binded = -1;
+		this->vbo_last_position = 0;
 
 		len = index_buffers.size();
 		for(int i = 0; i<len; i++){
 			glDeleteBuffers(1, &index_buffers[i]);
 		}
 		index_buffers.clear();
+		this->ibo_last_binded = -1;
+		this->ibo_last_position = 0;
 	}
 
 
 	GLuint BufferHelper::RegisterData(std::multimap<int, std::vector<float> > data, std::vector<unsigned int> indices, int* offset){
-
 		GLuint vertexArray = CreateAndBindVertexArray();
+		int data_total_size = CountDataToRegister(data)*sizeof(float);
 
-			int data_total_size = CountDataToRegister(data)*sizeof(float);
+		// Bind a buffer large enough to hold the data
+		BindBuffer(GL_ARRAY_BUFFER, data_total_size);
 
-			// Bind a buffer large enough to holds the data
-			BindBuffer(GL_ARRAY_BUFFER, data_total_size);
+		for(auto it = data.begin(); it != data.end(); it++){
+			int type = it->first;
+			std::vector<float> d = it->second;
+			int d_size = d.size()*sizeof(float);
 
-			for(auto it = data.begin(); it != data.end(); it++){
-				int type = it->first;
-				std::vector<float> d = it->second;
-				int d_size = d.size()*sizeof(float);
+			// Fills the buffer
+			glBufferSubData(GL_ARRAY_BUFFER, vbo_last_position % MAX_BUFFER_SIZE,
+							d_size, &d[0]);
 
-				// Fills the buffer
-				glBufferSubData(GL_ARRAY_BUFFER, vbo_last_position % MAX_BUFFER_SIZE,
-								d_size, &d[0]);
+			glEnableVertexAttribArray(type);
+			glVertexAttribPointer(type,
+									GetElementSize(type),
+									GL_FLOAT,
+									GL_FALSE,
+									0,
+									BUFFER_OFFSET(vbo_last_position));
 
-				glEnableVertexAttribArray(type);
-				glVertexAttribPointer(type,
-									  GetElementSize(type),
-									  GL_FLOAT,
-									  GL_FALSE,
-									  0,
-									  BUFFER_OFFSET(vbo_last_position));
+			vbo_last_position += d_size;
+		}
 
-				vbo_last_position += d_size;
-			}
-
-			FillIndexBuffer(indices, offset);
+		FillIndexBuffer(indices, offset);
 
 		glBindVertexArray(0);
 
@@ -133,6 +135,8 @@ namespace game{
 				return 3;
 			case TEXTURE_COORDS:
 				return 2;
+			case INDEX_ARRAY:
+				return 3;
 		}
 		return 0;
 	}

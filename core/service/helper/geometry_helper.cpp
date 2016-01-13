@@ -2,10 +2,12 @@
 #include "geometry_helper.hpp"
 #include "buffer_helper.hpp"
 #include "tools/opengl.hpp"
+#include "core/game/game.hpp"
 
 namespace game{
 
 	GeometryHelper::GeometryHelper(){
+		Game::RequestForService<BufferHelper>();
 		this->box = 0;
 	}
 
@@ -61,8 +63,8 @@ namespace game{
 		}
 
 		drawable->vao = this->box;
-		drawable->draw_type = GL_TRIANGLES; //_STRIP;
-		drawable->amount = 6;
+		drawable->draw_type = GL_TRIANGLES;
+		drawable->vertex_amount = 6;
 	}
 
 	/*
@@ -149,7 +151,7 @@ namespace game{
 		std::vector<unsigned int> indices = mesh->shapes[0].mesh.indices;
 
 		drawable->vao = Locator::Get<BufferHelper>()->RegisterData(data, indices, &(drawable->offset));
-		drawable->amount = mesh->shapes[0].mesh.indices.size();
+		drawable->vertex_amount = mesh->shapes[0].mesh.indices.size();
 		drawable->draw_type = GL_TRIANGLES;
 	}
 }

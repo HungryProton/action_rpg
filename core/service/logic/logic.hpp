@@ -22,7 +22,8 @@ namespace game{
 		private:
 			std::vector<GameObject*> game_objects_;
 
-			GameObject* SpawnSprite(std::string);
+			GameObject* SpawnSprite(std::string, glm::vec3);
+			void SpawnMultipleSprite(std::string, int);
 			GameObject* SpawnCamera(glm::vec3);
 	};
 }

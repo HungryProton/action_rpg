@@ -3,6 +3,7 @@
 #include "core/service/builder/world_builder.hpp"
 #include "core/service/builder/game_object_builder.hpp"
 #include "core/game/game.hpp"
+#include "tools/random.hpp"
 
 #include "core/component/transform.hpp"
 #include "core/component/camera.hpp"
@@ -25,8 +26,8 @@ namespace game{
 	void Logic::Initialize(){
 		WorldBuilder* world_builder = Locator::Get<WorldBuilder>();
 
-		SpawnSprite("../data/characters/female/female_1.png");
-		SpawnCamera(glm::vec3(-2, -2, 2));
+		SpawnMultipleSprite("../data/characters/female/female_1.png", 10);
+		SpawnCamera(glm::vec3(-12, -12, 5));
 	}
 
 	void Logic::ClearMemory(){
@@ -43,20 +44,32 @@ namespace game{
 		}
 	}
 
-	GameObject* Logic::SpawnSprite(std::string file_path){
+	GameObject* Logic::SpawnSprite(std::string file_path, glm::vec3 position){
 		GameObject* sprite = new GameObject();
-		new Transform(sprite);
+		Transform* t = new Transform(sprite);
+		t->position = position;
 		new Texture(file_path, sprite);
 		new Drawable(sprite);
 		this->game_objects_.push_back(sprite);
 		return sprite;
 	}
 
+	void Logic::SpawnMultipleSprite(std::string file_path, int count){
+		for(int i = 0; i < count; i++){
+			glm::vec3 position;
+			position.x = Random::NextInt()%10;
+			position.y = Random::NextInt()%10;
+			position.z = Random::NextInt()%5;
+			SpawnSprite(file_path, position);
+		}
+	}
+
 	GameObject* Logic::SpawnCamera(glm::vec3 position){
 		GameObject* camera = new GameObject();
 		Transform* t = new Transform(camera);
 		t->position = position;
-		new Camera(camera);
+		Camera* cam = new Camera(camera);
+		cam->SetActive();
 		new Motion(camera);
 		new InputToMotion(camera);
 		this->game_objects_.push_back(camera);
