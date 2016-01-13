@@ -28,7 +28,10 @@ namespace game{
 			void InitializeOpenGL();
 			void InitializeGLFW();
 			void ProcessReceivedMessages();
+			void UpdateCamera();
+			void RenderDrawingPool();
 			void AddGameObjectToDraw(GameObject*);
+			void ClearDrawingPool();
 			Drawable* MakeGameObjectDrawable(GameObject*);
 			void SetActiveCamera(GameObject*);
 			glm::mat4 GetModelViewProjectionMatrixFor(Transform*);

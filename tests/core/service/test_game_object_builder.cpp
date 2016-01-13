@@ -50,7 +50,6 @@ namespace game{
 						EXPECT(game_object->GetComponent<Texture>() != nullptr);
 					}
 				}
-
 				WHEN("an unknown preset is requested"){
 					game_object = builder.CreateFromPreset("UltimateBoss");
 
@@ -58,6 +57,9 @@ namespace game{
 						EXPECT(game_object == nullptr);
 					}
 				}
+
+				delete sprite;
+				delete other_sprite;
 			}
 		}
 	};

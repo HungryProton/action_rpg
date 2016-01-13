@@ -49,6 +49,7 @@ namespace game{
 		this->window_ = glfwCreateWindow( 1440, 900, "Game", NULL, NULL);
 		glfwMakeContextCurrent(this->window_);
 		glfwSwapInterval(1);
+		LOG(INFO) << "GLFW initialized" << std::endl;
 	}
 
 	void Render::InitializeOpenGL(){
@@ -67,36 +68,9 @@ namespace game{
 
 	void Render::Update(){
 		ProcessReceivedMessages();
+		UpdateCamera();
+		RenderDrawingPool();
 
-		glfwSwapBuffers(this->window_);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		for(GameObject* game_object : this->objects_to_render_){
-			Drawable* drawable = game_object->GetComponent<Drawable>();
-			Transform* transform = game_object->GetComponent<Transform>();
-
-			glm::mat4 model_view_projection = GetModelViewProjectionMatrixFor(transform);
-
-			check_gl_error();
-			glBindVertexArray(drawable->vao);
-
-			check_gl_error();
-				glUseProgram(this->shader_);
-
-			check_gl_error();
-					GLuint matrix_id = glGetUniformLocation(this->shader_, "MVP");
-					glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &model_view_projection[0][0]);
-
-					// Do the texture binding here
-
-			check_gl_error();
-					glEnable(GL_BLEND);
-
-			check_gl_error();
-						glDrawElements(drawable->draw_type, drawable->vertex_amount,
-								GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
-			check_gl_error();
-		}
 	}
 
 	void Render::ProcessReceivedMessages(){
@@ -116,6 +90,51 @@ namespace game{
 		this->MessageHandler<RenderingIntent>::messages_.clear();
 	}
 
+	void Render::UpdateCamera(){
+		Transform* transform = this->camera_->parent->GetComponent<Transform>();
+		glm::mat4 view = glm::lookAt(transform->position,
+																 this->camera_->target,
+																 this->camera_->up);
+		this->camera_->view_projection = this->camera_->projection * view;
+	}
+
+	void Render::RenderDrawingPool(){
+		glfwSwapBuffers(this->window_);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		for(GameObject* game_object : this->objects_to_render_){
+			Drawable* drawable = game_object->GetComponent<Drawable>();
+			Transform* transform = game_object->GetComponent<Transform>();
+			Texture* texture = game_object->GetComponent<Texture>();
+
+			glm::mat4 model_view_projection = GetModelViewProjectionMatrixFor(transform);
+
+			check_gl_error();
+			glBindVertexArray(drawable->vao);
+
+			check_gl_error();
+				glUseProgram(this->shader_);
+
+			check_gl_error();
+					GLuint matrix_id = glGetUniformLocation(this->shader_, "MVP");
+					glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &model_view_projection[0][0]);
+
+					if(texture){
+						texture->Bind(GL_TEXTURE0);
+					}
+
+			check_gl_error();
+					glEnable(GL_BLEND);
+
+			check_gl_error();
+						glDrawElements(drawable->draw_type, drawable->vertex_amount,
+								GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
+			check_gl_error();
+		}
+
+		this->ClearDrawingPool();
+	}
+
 	void Render::AddGameObjectToDraw(GameObject* game_object){
 		// Perform validation and correction if needed before adding the objet
 		// to the pool;
@@ -129,8 +148,11 @@ namespace game{
 			drawable = this->MakeGameObjectDrawable(game_object);
 			if(!drawable || drawable->vao == 0){ return; }
 		}
-		LOG(INFO) << "Registering object to the new draw pool" << std::endl;
 		this->objects_to_render_.push_back(game_object);
+	}
+
+	void Render::ClearDrawingPool(){
+		this->objects_to_render_.clear();
 	}
 
 	Drawable* Render::MakeGameObjectDrawable(GameObject* game_object){
@@ -142,11 +164,6 @@ namespace game{
 		GeometryHelper* geometry_helper = Locator::Get<GeometryHelper>();
 		Mesh* mesh = game_object->GetComponent<Mesh>();
 		Texture* texture = game_object->GetComponent<Texture>();
-		if(!texture){
-			LOG(DEBUG) << "No texture found" << std::endl;
-		} else {
-			LOG(DEBUG) << "texture : " << texture->IsValid() << " " << texture->width << std::endl;
-		}
 		if(mesh){
 			geometry_helper->GetMesh(mesh, drawable);
 		} else if (texture){

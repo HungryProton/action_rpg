@@ -8,6 +8,11 @@ namespace game{
 		this->active = false;
 		this->up = glm::vec3(0,0,1);
 		this->target = glm::vec3(0,0,0);
+		this->znear = 1;
+		this->zfar = 1000;
+		this->ratio = 1440.f/900.f;
+		this->fovy = 90;
+		this->projection = glm::perspective(fovy, ratio, znear, zfar);
 	}
 
 	Camera::Camera(GameObject* parent) : Camera(){
@@ -17,6 +22,7 @@ namespace game{
 	}
 
 	Camera::Camera(Camera* camera){
+		this->projection = camera->projection;
 		this->view_projection = camera->view_projection;
 		this->znear = camera->znear;
 		this->zfar = camera->zfar;
