@@ -57,9 +57,6 @@ namespace game{
 						EXPECT(game_object == nullptr);
 					}
 				}
-
-				delete sprite;
-				delete other_sprite;
 			}
 		}
 	};
