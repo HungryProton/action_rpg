@@ -1,5 +1,6 @@
 #include "common.hpp"
 #include "tools/logger.hpp"
+#include "core/messaging/message_bus.hpp"
 
 namespace game{
 
@@ -22,6 +23,13 @@ namespace game{
 	void Common::DestroyOpenGLContext(){
 		glfwDestroyWindow(window_);
 		glfwTerminate();
+	}
+
+	void Common::SendInputMessage(Command command){
+		InputMessage message;
+		message.status = KEY_PRESSED;
+		message.command = Command::MOVE_UP;
+		MessageBus::Push(message);
 	}
 
 	GLFWwindow* Common::window_;

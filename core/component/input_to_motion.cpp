@@ -1,4 +1,5 @@
 #include "input_to_motion.hpp"
+#include "motion.hpp"
 
 namespace game{
 
@@ -21,10 +22,39 @@ namespace game{
 	}
 
 	void InputToMotion::Update(){
-
+		ProcessReceivedMessages();
 	}
 
 	void InputToMotion::NotifyNewComponentAdded(){
+		if(!this->parent){ return; }
+		this->motion_ = this->parent->GetComponent<Motion>();
+	}
 
+	void InputToMotion::ProcessReceivedMessages(){
+		for(auto message : this->MessageHandler<InputMessage>::messages_){
+			this->HandleKeyEvent(message);
+		}
+	}
+
+	void InputToMotion::HandleKeyEvent(InputMessage message){
+		int modifier;
+		message.status == KEY_PRESSED ? modifier = 1 : modifier = 0;
+
+		switch(message.command){
+			case(Command::MOVE_UP):
+				motion_->direction_.y = modifier;
+				break;
+			case(Command::MOVE_DOWN):
+				motion_->direction_.y = -modifier;
+				break;
+			case(Command::MOVE_LEFT):
+				motion_->direction_.x = -modifier;
+				break;
+			case(Command::MOVE_RIGHT):
+				motion_->direction_.x = modifier;
+				break;
+			default:
+				return;
+		}
 	}
 }

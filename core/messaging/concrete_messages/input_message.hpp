@@ -8,10 +8,10 @@ namespace game{
     enum KeyStatus{
         KEY_PRESSED,
         KEY_RELEASED,
-				INACTIVE,
+				KEY_JUST_RELEASED
     };
 
-    enum Command{
+    enum class Command{
         MOVE_UP,
         MOVE_DOWN,
         MOVE_LEFT,
