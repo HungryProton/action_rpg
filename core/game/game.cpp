@@ -40,7 +40,7 @@ namespace game{
 		state_ = RUNNING;
 
 		while(state_ == RUNNING){
-			Time::SetFrameStartTime(glfwGetTime());
+			Time::NotifyFrameStart();
 			for(auto service : core_services_){
 				service->Update();
 			}

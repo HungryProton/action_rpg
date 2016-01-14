@@ -35,6 +35,7 @@ namespace game{
 	}
 
 	void Motion::NotifyNewComponentAdded(){
+		if(!this->parent){ return; }
 		this->transform_ = this->parent->GetComponent<Transform>();
 	}
 
@@ -50,6 +51,7 @@ namespace game{
 	}
 
 	void Motion::SimpleResolve(){
+		if(!this->transform_){ return; }
 		float time = Time::GetDeltaTime();
 		this->transform_->position += this->direction_* time;
 		this->transform_->rotation += this->rotation_ * time;
