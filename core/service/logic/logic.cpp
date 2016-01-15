@@ -26,8 +26,8 @@ namespace game{
 	void Logic::Initialize(){
 		WorldBuilder* world_builder = Locator::Get<WorldBuilder>();
 
-		SpawnMultipleSprite("../data/characters/female/female_1.png", 10);
-		SpawnCamera(glm::vec3(-12, -12, 5));
+		SpawnMultipleSprite("../data/characters/female/female_1.png", 100);
+		SpawnCamera(glm::vec3(-8, -8, 3));
 	}
 
 	void Logic::ClearMemory(){
@@ -57,9 +57,9 @@ namespace game{
 	void Logic::SpawnMultipleSprite(std::string file_path, int count){
 		for(int i = 0; i < count; i++){
 			glm::vec3 position;
-			position.x = Random::NextInt()%10;
-			position.y = Random::NextInt()%10;
-			position.z = Random::NextInt()%5;
+			position.x = Random::Range(-5, 5);
+			position.y = Random::Range(-5, 5);
+			position.z = 0;
 			SpawnSprite(file_path, position);
 		}
 	}

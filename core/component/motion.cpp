@@ -5,11 +5,11 @@
 namespace game{
 
 	Motion::Motion() : Component(){
-		this->type_ = SIMPLE;
-		this->direction_ = glm::vec3(0.f,0.f,0.f);
-		this->rotation_ = glm::vec3(0.f,0.f,0.f);
-		this->scale_ = glm::vec3(0.f,0.f,0.f);
-		this->max_force_ = glm::vec3(0.f,0.f,0.f);
+		this->type = SIMPLE;
+		this->direction = glm::vec3(0.f,0.f,0.f);
+		this->rotation = glm::vec3(0.f,0.f,0.f);
+		this->scale = glm::vec3(0.f,0.f,0.f);
+		this->max_force = glm::vec3(0.f,0.f,0.f);
 		this->transform_ = nullptr;
 	}
 
@@ -20,11 +20,11 @@ namespace game{
 	}
 
 	Motion::Motion(Motion* motion){
-		this->type_ = motion->type_;
-		this->direction_ = motion->direction_;
-		this->rotation_ = motion->rotation_;
-		this->scale_ = motion->scale_;
-		this->max_force_ = motion->max_force_;
+		this->type = motion->type;
+		this->direction = motion->direction;
+		this->rotation = motion->rotation;
+		this->scale = motion->scale;
+		this->max_force = motion->max_force;
 		this->transform_ = nullptr;
 	}
 
@@ -40,7 +40,7 @@ namespace game{
 	}
 
 	void Motion::Update(){
-		switch(this->type_){
+		switch(this->type){
 			case SIMPLE:
 				this->SimpleResolve();
 				break;
@@ -53,9 +53,9 @@ namespace game{
 	void Motion::SimpleResolve(){
 		if(!this->transform_){ return; }
 		float time = Time::GetDeltaTime();
-		this->transform_->position += this->direction_* time;
-		this->transform_->rotation += this->rotation_ * time;
-		this->transform_->scale += this->scale_ * time;
+		this->transform_->position += this->direction* time;
+		this->transform_->rotation += this->rotation * time;
+		this->transform_->scale += this->scale * time;
 	}
 
 	void Motion::ServoResolve(){

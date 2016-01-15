@@ -19,14 +19,25 @@ namespace game{
 				new InputToMotion(game_object);
 
 				WHEN("a MOVE_UP message is broadcasted"){
-					float direction_y = motion->direction_.y;
+					float direction_y = motion->direction.y;
 					Common::SendInputMessage(Command::MOVE_UP);
 					game_object->Update();
 
 					THEN("The Motion component should have changed"){
-						EXPECT(direction_y != motion->direction_.y);
+						EXPECT(direction_y != motion->direction.y);
 					}
 				}
+				WHEN("a MOVE_RIGHT message is broadcasted"){
+					float direction_x = motion->direction.x;
+					Common::SendInputMessage(Command::MOVE_RIGHT);
+					game_object->Update();
+
+					THEN("The Motion component should have changed"){
+						EXPECT(direction_x != motion->direction.x);
+					}
+				}
+
+				delete game_object;
 			}
 		}
 	};

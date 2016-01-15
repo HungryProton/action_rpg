@@ -11,11 +11,11 @@ namespace game{
 
 	struct Motion : public Component{
 		public:
-			MotionType type_;
-			glm::vec3 direction_;
-			glm::vec3 rotation_;
-			glm::vec3 scale_;
-			glm::vec3 max_force_;
+			MotionType type;
+			glm::vec3 direction;
+			glm::vec3 rotation;
+			glm::vec3 scale;
+			glm::vec3 max_force;
 
 			// Helpers
 			Motion();

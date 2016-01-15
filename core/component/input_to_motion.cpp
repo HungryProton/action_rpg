@@ -34,24 +34,25 @@ namespace game{
 		for(auto message : this->MessageHandler<InputMessage>::messages_){
 			this->HandleKeyEvent(message);
 		}
+		this->MessageHandler<InputMessage>::messages_.clear();
 	}
 
 	void InputToMotion::HandleKeyEvent(InputMessage message){
 		int modifier;
-		message.status == KEY_PRESSED ? modifier = 1 : modifier = 0;
+		message.status == KEY_PRESSED ? modifier = 10 : modifier = 0;
 
 		switch(message.command){
 			case(Command::MOVE_UP):
-				motion_->direction_.y = modifier;
+				motion_->direction.y = modifier;
 				break;
 			case(Command::MOVE_DOWN):
-				motion_->direction_.y = -modifier;
+				motion_->direction.y = -modifier;
 				break;
 			case(Command::MOVE_LEFT):
-				motion_->direction_.x = -modifier;
+				motion_->direction.x = -modifier;
 				break;
 			case(Command::MOVE_RIGHT):
-				motion_->direction_.x = modifier;
+				motion_->direction.x = modifier;
 				break;
 			default:
 				return;

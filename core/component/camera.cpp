@@ -11,7 +11,7 @@ namespace game{
 		this->znear = 1;
 		this->zfar = 1000;
 		this->ratio = 1440.f/900.f;
-		this->fovy = 90;
+		this->fovy = 70;
 		this->projection = glm::perspective(fovy, ratio, znear, zfar);
 	}
 

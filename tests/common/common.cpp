@@ -28,7 +28,7 @@ namespace game{
 	void Common::SendInputMessage(Command command){
 		InputMessage message;
 		message.status = KEY_PRESSED;
-		message.command = Command::MOVE_UP;
+		message.command = command;
 		MessageBus::Push(message);
 	}
 
