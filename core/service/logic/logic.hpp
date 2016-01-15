@@ -25,6 +25,7 @@ namespace game{
 			GameObject* SpawnSprite(std::string, glm::vec3);
 			void SpawnMultipleSprite(std::string, int);
 			GameObject* SpawnCamera(glm::vec3);
+			GameObject* SpawnMesh(std::string);
 	};
 }
 

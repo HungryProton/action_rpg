@@ -2,19 +2,15 @@
 
 namespace game{
 
-	int Random::NextInt(){
-		return (int)NextFloat();
+	int Random::NextInt(int count){
+		return int_distribution_(generator_)%count;
 	}
 
-	float Random::NextFloat(){
-		return distribution_(generator_);
-	}
-
-	float Random::Range(int begin, int end){
-		std::uniform_real_distribution<float> distribution(begin, end);
-		return distribution(generator_);
+	float Random::NextFloat(float count){
+		return real_distribution_(generator_)*count;
 	}
 
 	std::default_random_engine Random::generator_;
-	std::uniform_real_distribution<float> Random::distribution_(1.f,100.f);
+	std::uniform_real_distribution<float> Random::real_distribution_(0.f,1.f);
+	std::uniform_int_distribution<int> Random::int_distribution_(0,100);
 }

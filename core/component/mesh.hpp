@@ -28,13 +28,12 @@ namespace game{
 		std::string file_path;
 		std::string base_path;
 
-		GameObject* parent;
-
 		// ---- Helper methods ----
 
 		Mesh();
 		Mesh(GameObject*);
-		Mesh(std::string, GameObject* p=nullptr);
+		Mesh(std::string, GameObject*);
+		Mesh(std::string);
 		Mesh(Mesh*);
 		void LoadFromFile(std::string);
 		void LoadTextureFromMaterial();

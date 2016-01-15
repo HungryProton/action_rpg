@@ -11,6 +11,7 @@
 #include "core/component/texture.hpp"
 #include "core/component/input_to_motion.hpp"
 #include "core/component/motion.hpp"
+#include "core/component/mesh.hpp"
 
 namespace game{
 
@@ -28,6 +29,7 @@ namespace game{
 
 		SpawnMultipleSprite("../data/characters/female/female_1.png", 100);
 		SpawnCamera(glm::vec3(-8, -8, 3));
+		SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
 	}
 
 	void Logic::ClearMemory(){
@@ -57,11 +59,20 @@ namespace game{
 	void Logic::SpawnMultipleSprite(std::string file_path, int count){
 		for(int i = 0; i < count; i++){
 			glm::vec3 position;
-			position.x = Random::Range(-5, 5);
-			position.y = Random::Range(-5, 5);
+			position.x = 5 - Random::NextFloat(10);
+			position.y = 5 - Random::NextFloat(10);
 			position.z = 0;
 			SpawnSprite(file_path, position);
 		}
+	}
+
+	GameObject* Logic::SpawnMesh(std::string file_path){
+		GameObject* mesh = new GameObject();
+		new Transform(mesh);
+		new Mesh(file_path, mesh);
+		new Drawable(mesh);
+		this->game_objects_.push_back(mesh);
+		return mesh;
 	}
 
 	GameObject* Logic::SpawnCamera(glm::vec3 position){

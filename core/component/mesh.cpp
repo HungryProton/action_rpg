@@ -12,9 +12,11 @@ namespace game{
 		}
 	}
 
-	Mesh::Mesh(std::string path, GameObject* p ) : Mesh(p){
+	Mesh::Mesh(std::string path, GameObject* p) : Mesh(p){
 		this->LoadFromFile(path);
 	}
+
+	Mesh::Mesh(std::string path) : Mesh(path, nullptr){ }
 
 	Mesh::Mesh(Mesh* mesh){
 		this->shapes = mesh->shapes;
@@ -44,7 +46,16 @@ namespace game{
 
 	void Mesh::LoadTextureFromMaterial(){
 		std::string texture_path = this->base_path + this->materials[0].diffuse_texname.c_str();
+		LOG(DEBUG) << texture_path << std::endl;
 		new Texture(texture_path, this->parent);
+
+		if(!this->parent){
+			LOG(ERROR) << "Component is Batman" << std::endl;
+		}
+
+		if(this->parent->GetComponent<Texture>()){
+			LOG(DEBUG) << "New texture was created and attached" << std::endl;
+		}
 	}
 
 	Mesh* Mesh::Clone(){
