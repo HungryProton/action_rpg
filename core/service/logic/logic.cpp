@@ -12,6 +12,7 @@
 #include "core/component/input_to_motion.hpp"
 #include "core/component/motion.hpp"
 #include "core/component/mesh.hpp"
+#include "core/component/constraint.hpp"
 
 namespace game{
 
@@ -28,8 +29,15 @@ namespace game{
 		WorldBuilder* world_builder = Locator::Get<WorldBuilder>();
 
 		SpawnMultipleSprite("../data/characters/female/female_1.png", 100);
-		SpawnCamera(glm::vec3(-8, -8, 3));
+		GameObject* camera = SpawnCamera(glm::vec3(0, -5, 4));
 		SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
+		GameObject* player = SpawnPlayer("../data/characters/female/female_1.png");
+
+		Constraint* c = new Constraint(camera);
+		c->type = ConstraintType::COPY;
+		c->soft_resolve = false;
+		c->value = &(camera->GetComponent<Camera>()->target);
+		c->target_value = &(player->GetComponent<Transform>()->position);
 	}
 
 	void Logic::ClearMemory(){
@@ -64,6 +72,15 @@ namespace game{
 			position.z = 0;
 			SpawnSprite(file_path, position);
 		}
+	}
+
+	GameObject* Logic::SpawnPlayer(std::string resource_path){
+		GameObject* player = SpawnSprite(resource_path, glm::vec3(0,0,0));
+
+		new Motion(player);
+		new InputToMotion(player);
+
+		return player;
 	}
 
 	GameObject* Logic::SpawnMesh(std::string file_path){
