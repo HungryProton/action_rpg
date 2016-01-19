@@ -62,7 +62,7 @@ namespace game{
 
 		glDepthFunc(GL_LESS);
 		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
+		//glEnable(GL_CULL_FACE);
 		glClearColor(0.3, 0.3, 0.3, 1);
 	}
 
@@ -121,6 +121,8 @@ namespace game{
 
 					if(texture){
 						texture->Bind(GL_TEXTURE0);
+					}else{
+						glBindTexture( GL_TEXTURE_2D, 0);
 					}
 
 			check_gl_error();
@@ -130,6 +132,7 @@ namespace game{
 						glDrawElements(drawable->draw_type, drawable->vertex_amount,
 								GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
 			check_gl_error();
+
 		}
 
 		this->ClearDrawingPool();
@@ -140,11 +143,9 @@ namespace game{
 		// to the pool;
 		Drawable* drawable = game_object->GetComponent<Drawable>();
 		if(!drawable){
-			LOG(DEBUG) << "No drawable in gameObject" << std::endl;
 			return;
 		}
 		if( drawable->vao == 0 ){
-			LOG(DEBUG) << "Object does not have a valid buffer " << std::endl;
 			drawable = this->MakeGameObjectDrawable(game_object);
 			if(!drawable || drawable->vao == 0){ return; }
 		}

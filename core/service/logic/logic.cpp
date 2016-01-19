@@ -17,7 +17,6 @@
 namespace game{
 
 	Logic::Logic(){
-		Game::RequestForService<WorldBuilder>();
 		Game::RequestForService<GameObjectBuilder>();
 	}
 
@@ -26,12 +25,17 @@ namespace game{
 	}
 
 	void Logic::Initialize(){
-		WorldBuilder* world_builder = Locator::Get<WorldBuilder>();
 
-		SpawnMultipleSprite("../data/characters/female/female_1.png", 100);
-		GameObject* camera = SpawnCamera(glm::vec3(0, -5, 4));
-		SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
+		SpawnMultipleSprite("../data/characters/female/female_1.png", 10);
+		SpawnMultipleSprite("../data/characters/female/female_2.png", 10);
+		SpawnMultipleSprite("../data/characters/female/female_3.png", 10);
+		GameObject* camera = SpawnCamera(glm::vec3(0, -8, 4));
+		//SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
 		GameObject* player = SpawnPlayer("../data/characters/female/female_1.png");
+
+		TerrainBuilder terrain_builder;
+		GameObject* terrain = terrain_builder.GenerateTerrain();
+		this->game_objects_.push_back(terrain);
 
 		Constraint* c = new Constraint(camera);
 		c->type = ConstraintType::COPY;
@@ -85,7 +89,9 @@ namespace game{
 
 	GameObject* Logic::SpawnMesh(std::string file_path){
 		GameObject* mesh = new GameObject();
-		new Transform(mesh);
+		Transform* transform = new Transform(mesh);
+		transform->position.y = 5;
+		transform->scale /= 2;
 		new Mesh(file_path, mesh);
 		new Drawable(mesh);
 		this->game_objects_.push_back(mesh);
