@@ -39,7 +39,7 @@ namespace game{
 
 	void InputToMotion::HandleKeyEvent(InputMessage message){
 		int modifier;
-		message.status == KEY_PRESSED ? modifier = 10 : modifier = 0;
+		message.status == KEY_PRESSED ? modifier = 5 : modifier = 0;
 
 		switch(message.command){
 			case(Command::MOVE_UP):

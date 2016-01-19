@@ -37,6 +37,8 @@ namespace game{
 			 * proper dimensions on the render system
 			 */
 			GLuint box;
+			int box_offset;
+
 	};
 }
 

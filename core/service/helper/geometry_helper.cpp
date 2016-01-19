@@ -9,6 +9,7 @@ namespace game{
 	GeometryHelper::GeometryHelper(){
 		Game::RequestForService<BufferHelper>();
 		this->box = 0;
+		this->box_offset = 0;
 	}
 
 	GeometryHelper::~GeometryHelper(){
@@ -60,11 +61,13 @@ namespace game{
 									indexArray, indexArray + 6); // 2 triangles * 3
 
 			this->box = Locator::Get<BufferHelper>()->RegisterData(data, indices, &(drawable->offset));
+			this->box_offset = drawable->offset;
 		}
 
 		drawable->vao = this->box;
 		drawable->draw_type = GL_TRIANGLES;
 		drawable->vertex_amount = 6;
+		drawable->offset = this->box_offset;
 	}
 
 	/*
