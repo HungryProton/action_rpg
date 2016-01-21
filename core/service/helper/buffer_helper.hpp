@@ -6,11 +6,6 @@
 #include "tools/opengl.hpp"
 #include "core/service/service.hpp"
 
-#define VERTEX_ARRAY 0
-#define COLOR_ARRAY 1
-#define TEXTURE_COORDS 2
-#define INDEX_ARRAY 3
-
 #define MAX_BUFFER_SIZE 1048576 // 1024 x 1024
 
 #ifndef BUFFER_OFFSET

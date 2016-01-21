@@ -26,7 +26,7 @@ namespace game{
 			int resolution_;
 
 			// Generate the top surface
-			void GeneratePolygon(std::vector<float>*, std::vector<unsigned int>*);
+			void GeneratePolygon(std::multimap<int, std::vector<float>>*, std::vector<unsigned int>*);
 
 			// Generate the border of the polygon
 			std::vector<float> GenerateOutline();
