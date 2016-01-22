@@ -53,6 +53,7 @@ namespace game{
 
 	void TerrainBuilder::GeneratePolygon(std::multimap<int, std::vector<float>>* data, std::vector<unsigned int>* index_array){
 		PolygonHelper polygon_helper;
+		polygon_helper.SetTextureCoordModifier(4);
 		Polygon surface;
 		std::vector<float> vertex_array;
 		do{

@@ -59,6 +59,8 @@ namespace game{
 			Vertex* v = &((*vertex_array)[i]);
 			v->texture_coordinates.x = (v->position.x + (width/2.f))/width;
 			v->texture_coordinates.y = (v->position.y + (height/2.f))/height;
+			v->texture_coordinates.x *= this->texture_modifier_;
+			v->texture_coordinates.y *= this->texture_modifier_;
 		}
 	}
 
@@ -85,8 +87,6 @@ namespace game{
 			int index_a;
 			int index_b;
 			int index_c;
-
-			LOG(DEBUG) << "map size " << vertex_map.size() << std::endl;
 
 			for(auto it = vertex_map.begin(); it != vertex_map.end(); it++){
 
@@ -214,7 +214,7 @@ namespace game{
 			Vertex A = vertex_array[i];
 			Vertex B = vertex_array[(i+1)%vertex_array.size()];
 
-			for(unsigned int j = (i+1)%vertex_array.size(); j < vertex_array.size() - 1; j++){
+			for(unsigned int j = (i+2)%vertex_array.size(); j < vertex_array.size() - 2; j++){
 				Vertex C = vertex_array[j];
 				Vertex D = vertex_array[(j+1)%vertex_array.size()];
 
@@ -229,6 +229,10 @@ namespace game{
 
 	void PolygonHelper::ClearMemory(){
 
+	}
+
+	void PolygonHelper::SetTextureCoordModifier(float modifier){
+		this->texture_modifier_ = modifier;
 	}
 }
 

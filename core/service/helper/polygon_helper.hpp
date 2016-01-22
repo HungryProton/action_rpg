@@ -34,6 +34,7 @@ namespace game{
 
 			// Utility methods
 			std::vector<Polygon> ExtrudePolygon(Polygon);
+			void SetTextureCoordModifier(float);
 
 		private:
 			void UpdateTextureCoordinates(std::vector<Vertex>*);
@@ -44,6 +45,8 @@ namespace game{
 			std::vector<float> PositionToFloatArray(std::vector<Vertex>);
 			std::vector<float> TextureToFloatArray(std::vector<Vertex>);
 			bool IsCollectionValid(std::vector<Vertex>);
+
+			float texture_modifier_;
 	};
 }
 

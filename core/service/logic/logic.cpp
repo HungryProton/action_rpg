@@ -29,11 +29,12 @@ namespace game{
 		SpawnMultipleSprite("../data/characters/female/female_1.png", 10);
 		SpawnMultipleSprite("../data/characters/female/female_2.png", 10);
 		SpawnMultipleSprite("../data/characters/female/female_3.png", 10);
-		GameObject* camera = SpawnCamera(glm::vec3(0, -8, 4));
-		//SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
+		GameObject* camera = SpawnCamera(glm::vec3(0, -10, 4));
+		SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
 		GameObject* player = SpawnPlayer("../data/characters/female/female_1.png");
 
 		TerrainBuilder terrain_builder;
+		terrain_builder.SetMapSize(20, 20);
 		GameObject* terrain = terrain_builder.GenerateTerrain();
 		this->game_objects_.push_back(terrain);
 
@@ -42,6 +43,7 @@ namespace game{
 		c->soft_resolve = false;
 		c->value = &(camera->GetComponent<Camera>()->target);
 		c->target_value = &(player->GetComponent<Transform>()->position);
+		
 	}
 
 	void Logic::ClearMemory(){
