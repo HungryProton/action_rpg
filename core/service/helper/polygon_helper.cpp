@@ -25,9 +25,6 @@ namespace game{
 			result.push_back(v);
 		}
 		this->UpdateTextureCoordinates(&result);
-		for(unsigned int i = 0; i < result.size(); i++){
-			LOG(DEBUG) << result[i].texture_coordinates.x << " " << result[i].texture_coordinates.y << std::endl;
-		}
 		return result;
 	}
 
@@ -67,8 +64,10 @@ namespace game{
 
 	Polygon PolygonHelper::VertexArrayToPolygon(std::vector<Vertex> vertex_array){
 		Polygon polygon;
-		polygon.vertices = vertex_array;
-		polygon.indices = this->Triangulate(vertex_array);
+		if(IsCollectionValid(vertex_array)){
+			polygon.vertices = vertex_array;
+			polygon.indices = this->Triangulate(vertex_array);
+		}
 		return polygon;
 	}
 
@@ -110,16 +109,16 @@ namespace game{
 					index_previous = it2->first;
 				}
 
+				it++;
 				if(it != vertex_map.end()){
-					it++;
 					next = it->second;
 					index_next = it->first;
-					it--;
 				} else {
 					auto it2 = vertex_map.begin();
 					next = it2->second;
 					index_next = it2->first;
 				}
+				it--;
 
 				if(!IsTriangleConvex(previous, current, next)){
 					continue;
@@ -207,6 +206,25 @@ namespace game{
 			result.push_back(v.texture_coordinates.y);
 		}
 		return result;
+	}
+
+	bool PolygonHelper::IsCollectionValid(std::vector<Vertex> vertex_array){
+
+		for(unsigned int i = 0; i < vertex_array.size(); i++){
+			Vertex A = vertex_array[i];
+			Vertex B = vertex_array[(i+1)%vertex_array.size()];
+
+			for(unsigned int j = (i+1)%vertex_array.size(); j < vertex_array.size() - 1; j++){
+				Vertex C = vertex_array[j];
+				Vertex D = vertex_array[(j+1)%vertex_array.size()];
+
+				if((IsCounterClockwise(A,C,D) != IsCounterClockwise(B, C, D))
+						&& (IsCounterClockwise(A,B,C) != IsCounterClockwise(A, B, D))){
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	void PolygonHelper::ClearMemory(){

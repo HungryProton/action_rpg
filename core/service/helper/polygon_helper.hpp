@@ -43,7 +43,7 @@ namespace game{
 			bool IsPointWithinTriangle(Vertex, Vertex, Vertex, Vertex);
 			std::vector<float> PositionToFloatArray(std::vector<Vertex>);
 			std::vector<float> TextureToFloatArray(std::vector<Vertex>);
-			bool IsCollectionValid(std::vector<float>);
+			bool IsCollectionValid(std::vector<Vertex>);
 	};
 }
 

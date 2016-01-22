@@ -52,9 +52,14 @@ namespace game{
 	}
 
 	void TerrainBuilder::GeneratePolygon(std::multimap<int, std::vector<float>>* data, std::vector<unsigned int>* index_array){
-		std::vector<float> vertex_array = this->GenerateOutline();
 		PolygonHelper polygon_helper;
-		Polygon surface = polygon_helper.FloatArrayToSinglePolygon(vertex_array);
+		Polygon surface;
+		std::vector<float> vertex_array;
+		do{
+			LOG(DEBUG) << "Regenerating outline" << std::endl;
+			vertex_array = this->GenerateOutline();
+			surface = polygon_helper.FloatArrayToSinglePolygon(vertex_array);
+		}while(surface.vertices.size() == 0);
 		polygon_helper.SinglePolygonToGLData(surface, data, index_array);
 	}
 
@@ -72,7 +77,7 @@ namespace game{
 
 		// Refine surface area
 		float attenuation = 0.6f;
-		this->resolution_ = 6;
+		this->resolution_ = 4;
 		for(int i = 0; i < this->resolution_; i++){
 			vertex_array = MidpointDisplacement(vertex_array, attenuation);
 			attenuation /= 2.f;
