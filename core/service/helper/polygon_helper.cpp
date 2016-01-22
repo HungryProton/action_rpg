@@ -134,9 +134,9 @@ namespace game{
 				}
 			}
 
-			indices.push_back(index_a);
-		 	indices.push_back(index_b);
 			indices.push_back(index_c);
+		 	indices.push_back(index_b);
+			indices.push_back(index_a);
 
 			auto element_to_remove = vertex_map.find(index_b);
 			if(element_to_remove == vertex_map.end()){

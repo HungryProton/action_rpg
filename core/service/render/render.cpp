@@ -62,8 +62,9 @@ namespace game{
 
 		glDepthFunc(GL_LESS);
 		glEnable(GL_DEPTH_TEST);
-		//glEnable(GL_CULL_FACE);
-		glClearColor(0.3, 0.3, 0.3, 1);
+		glEnable(GL_CULL_FACE);
+		glClearColor(0.67, 0.84, 0.90, 1);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 
 	void Render::Update(){

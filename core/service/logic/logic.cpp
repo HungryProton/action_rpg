@@ -94,6 +94,7 @@ namespace game{
 		Transform* transform = new Transform(mesh);
 		transform->position.y = 5;
 		transform->scale /= 2;
+		transform->rotation.z = 3*(-3.1415/4);
 		new Mesh(file_path, mesh);
 		new Drawable(mesh);
 		this->game_objects_.push_back(mesh);
