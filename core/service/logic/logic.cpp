@@ -9,6 +9,7 @@
 #include "core/component/camera.hpp"
 #include "core/component/drawable.hpp"
 #include "core/component/texture.hpp"
+#include "core/component/animated_texture.hpp"
 #include "core/component/input_to_motion.hpp"
 #include "core/component/motion.hpp"
 #include "core/component/mesh.hpp"
@@ -31,10 +32,10 @@ namespace game{
 		SpawnMultipleSprite("../data/characters/female/female_3.png", 10);
 		GameObject* camera = SpawnCamera(glm::vec3(0, -10, 4));
 		SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
-		GameObject* player = SpawnPlayer("../data/characters/female/female_1.png");
+		GameObject* player = SpawnPlayer("../data/characters/female/animated/female_1.txt");
 
 		TerrainBuilder terrain_builder;
-		terrain_builder.SetMapSize(30, 30);
+		terrain_builder.SetMapSize(40, 40);
 		GameObject* terrain = terrain_builder.GenerateTerrain();
 		this->game_objects_.push_back(terrain);
 
@@ -89,10 +90,11 @@ namespace game{
 	}
 
 	GameObject* Logic::SpawnPlayer(std::string resource_path){
-		GameObject* player = SpawnSprite(resource_path, glm::vec3(0,0,0));
-
+		GameObject* player = new GameObject;
+		new Transform(player);
 		new Motion(player);
 		new InputToMotion(player);
+		new AnimatedTexture(resource_path);
 
 		return player;
 	}
