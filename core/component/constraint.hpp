@@ -11,6 +11,7 @@ namespace game{
 		COPY,
 		LOWER_THAN,
 		GREATER_THAN,
+		KEEP_OFFSET
 	};
 
 	struct Constraint : public Component{
@@ -21,6 +22,7 @@ namespace game{
 
 		glm::vec3* target_value;
 		glm::vec3* value;
+		glm::vec3 offset;
 
 		// Helper
 		Constraint();
@@ -28,9 +30,11 @@ namespace game{
 		Constraint(Constraint*);
 		virtual Constraint* Clone();
 		virtual void Update();
+		void SetOffset(glm::vec3*, glm::vec3*);
 		void SolveCopy();
 		void SolveLowerThan();
 		void SolveGreaterThan();
+		void SolveKeepOffset();
 	};
 }
 #endif //GAME_CORE_COMPONENT_CONSTRAINT_HPP

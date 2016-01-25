@@ -42,10 +42,19 @@ namespace game{
 			case(ConstraintType::GREATER_THAN):
 				SolveGreaterThan();
 				break;
+			case(ConstraintType::KEEP_OFFSET):
+				SolveKeepOffset();
+				break;
 			case(ConstraintType::NONE):
 			default:
 				return;
 		}
+	}
+
+	void Constraint::SetOffset(glm::vec3* value, glm::vec3* target){
+		this->offset = *value - *target;
+		this->target_value = target;
+		this->value = value;
 	}
 
 	void Constraint::SolveCopy(){
@@ -69,5 +78,9 @@ namespace game{
 
 	void Constraint::SolveGreaterThan(){
 
+	}
+
+	void Constraint::SolveKeepOffset(){
+		*value = *target_value + this->offset;
 	}
 }

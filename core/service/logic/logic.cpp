@@ -34,7 +34,7 @@ namespace game{
 		GameObject* player = SpawnPlayer("../data/characters/female/female_1.png");
 
 		TerrainBuilder terrain_builder;
-		terrain_builder.SetMapSize(20, 20);
+		terrain_builder.SetMapSize(30, 30);
 		GameObject* terrain = terrain_builder.GenerateTerrain();
 		this->game_objects_.push_back(terrain);
 
@@ -43,7 +43,15 @@ namespace game{
 		c->soft_resolve = false;
 		c->value = &(camera->GetComponent<Camera>()->target);
 		c->target_value = &(player->GetComponent<Transform>()->position);
-		
+
+		Constraint* c2 = new Constraint(camera);
+		c2->type = ConstraintType::KEEP_OFFSET;
+		if(camera->GetComponent<Transform>() == nullptr){
+			LOG(ERROR) << "Camera has no transform" << std::endl;
+		}
+		c2->SetOffset( &(camera->GetComponent<Transform>()->position),
+									&(player->GetComponent<Transform>()->position) );
+
 	}
 
 	void Logic::ClearMemory(){
@@ -108,7 +116,6 @@ namespace game{
 		Camera* cam = new Camera(camera);
 		cam->SetActive();
 		new Motion(camera);
-		new InputToMotion(camera);
 		this->game_objects_.push_back(camera);
 		return camera;
 	}
