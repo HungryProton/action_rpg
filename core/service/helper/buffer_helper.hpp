@@ -14,44 +14,44 @@
 
 namespace game{
 
-    class BufferHelper : public Service{
-        public:
-            BufferHelper();
-            ~BufferHelper();
-            /**
-             * @brief Register the given vertices to a VBO
-             *
-             *  Internally, multiple 1Mb VBOs are created to store geometry.
-             *  When a VBO is full, another 1MB VBO is created.
-             *
-             * @param std::multimap<int, std::vector> the data to store.
-             * the int represent the type (VERTEX or TEXTURE_COORD), the vector
-             * contains the actual data.
-             *
-             * @return The vertex array object containing all the data.
-             */
-            GLuint RegisterData(std::multimap<int, std::vector<float>>, std::vector<unsigned int>, int*);
+	class BufferHelper : public Service{
+		public:
+			BufferHelper();
+			~BufferHelper();
+			/**
+			 * @brief Register the given vertices to a VBO
+			 *
+			 *	Internally, multiple 1Mb VBOs are created to store geometry.
+			 *	When a VBO is full, another 1MB VBO is created.
+			 *
+			 * @param std::multimap<int, std::vector> the data to store.
+			 * the int represent the type (VERTEX or TEXTURE_COORD), the vector
+			 * contains the actual data.
+			 *
+			 * @return The vertex array object containing all the data.
+			 */
+			GLuint RegisterData(std::multimap<int, std::vector<float>>, std::vector<unsigned int>, int*);
 
-            void ClearMemory();
+			void ClearMemory();
 
-        private:
-            void BindBuffer(GLuint, int);
-            int CountDataToRegister(std::multimap<int, std::vector<float>>);
-            int GetElementSize(int type);
-            GLuint CreateAndBindVertexArray();
-            void FillIndexBuffer(std::vector<unsigned int>, int*);
-            std::vector<unsigned int> VectorFloatToUnsignedInt(std::vector<float>);
+		private:
+			void BindBuffer(GLuint, int);
+			int CountDataToRegister(std::multimap<int, std::vector<float>>);
+			int GetElementSize(int type);
+			GLuint CreateAndBindVertexArray();
+			void FillIndexBuffer(std::vector<unsigned int>, int*);
+			std::vector<unsigned int> VectorFloatToUnsignedInt(std::vector<float>);
 
-            // VBOs related attributes
-            std::vector<GLuint> vertex_buffers;
-            unsigned int vbo_last_binded;
-            unsigned int vbo_last_position;
+			// VBOs related attributes
+			std::vector<GLuint> vertex_buffers;
+			unsigned int vbo_last_binded;
+			unsigned int vbo_last_position;
 
-            // IBO related attributes
-            std::vector<GLuint> index_buffers;
-            unsigned int ibo_last_binded;
-            unsigned int ibo_last_position;
-    };
+			// IBO related attributes
+			std::vector<GLuint> index_buffers;
+			unsigned int ibo_last_binded;
+			unsigned int ibo_last_position;
+	};
 }
 
 #endif //GAME_CORE_SERVICE_BUFFER_HELPER_HPP

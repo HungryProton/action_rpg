@@ -78,7 +78,7 @@ namespace game{
 
 		// Refine surface area
 		float attenuation = 0.6f;
-		this->resolution_ = 4;
+		this->resolution_ = 6;
 		for(int i = 0; i < this->resolution_; i++){
 			vertex_array = MidpointDisplacement(vertex_array, attenuation);
 			attenuation /= 2.f;
