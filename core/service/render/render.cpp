@@ -10,6 +10,7 @@
 #include "core/component/camera.hpp"
 #include "core/component/drawable.hpp"
 #include "core/component/texture.hpp"
+#include "core/component/animated_texture.hpp"
 
 namespace game{
 
@@ -107,6 +108,7 @@ namespace game{
 			Drawable* drawable = game_object->GetComponent<Drawable>();
 			Transform* transform = game_object->GetComponent<Transform>();
 			Texture* texture = game_object->GetComponent<Texture>();
+			AnimatedTexture* animated_texture = game_object->GetComponent<AnimatedTexture>();
 
 			glm::mat4 model_view_projection = GetModelViewProjectionMatrixFor(transform);
 
@@ -120,9 +122,17 @@ namespace game{
 					GLuint matrix_id = glGetUniformLocation(this->shader_, "MVP");
 					glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &model_view_projection[0][0]);
 
+					GLuint tex_ratio = glGetUniformLocation(this->shader_, "TexRatio");
+					GLuint tex_shift = glGetUniformLocation(this->shader_, "TexShift");
+					glUniform2f(tex_ratio, -1, -1);
+
 					if(texture){
 						texture->Bind(GL_TEXTURE0);
-					}else{
+					}else if(animated_texture){
+						animated_texture->Bind(GL_TEXTURE0);
+						glUniform2f(tex_ratio, animated_texture->current_ratio.x, animated_texture->current_ratio.y);
+						glUniform2f(tex_shift, animated_texture->shift.x, animated_texture->shift.y);
+					} else {
 						glBindTexture( GL_TEXTURE_2D, 0);
 					}
 
@@ -166,14 +176,14 @@ namespace game{
 		GeometryHelper* geometry_helper = Locator::Get<GeometryHelper>();
 		Mesh* mesh = game_object->GetComponent<Mesh>();
 		Texture* texture = game_object->GetComponent<Texture>();
+		AnimatedTexture* animated_texture = game_object->GetComponent<AnimatedTexture>();
 		if(mesh){
 			geometry_helper->GetMesh(mesh, drawable);
-		} else if (texture){
+		} else if (texture || animated_texture){
 			geometry_helper->GetBox(drawable);
 		} else {
 			LOG(DEBUG) << "No graphic component is attached to the gameobject" << std::endl;
 		}
-
 		return drawable;
 	}
 

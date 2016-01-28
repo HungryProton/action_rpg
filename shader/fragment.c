@@ -7,10 +7,8 @@ out vec4 color;
 uniform sampler2D myTexture;
 
 void main(){
-	vec2 inverted_UV = vec2(UV.x, 1-UV.y);
-
-	vec4 tex = texture( myTexture, inverted_UV).rgba;
-	if( tex.a < 0.1){
+	vec4 tex = texture(myTexture, UV).rgba;
+	if(tex.a == 0){
 		discard;
 	}
 	color = vec4(colors, 1) * tex;

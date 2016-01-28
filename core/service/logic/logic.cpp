@@ -94,7 +94,11 @@ namespace game{
 		new Transform(player);
 		new Motion(player);
 		new InputToMotion(player);
-		new AnimatedTexture(resource_path);
+		auto t = new AnimatedTexture(resource_path, player);
+		t->Play("walk");
+		new Drawable(player);
+
+		this->game_objects_.push_back(player);
 
 		return player;
 	}

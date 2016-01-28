@@ -23,10 +23,14 @@ namespace game{
 		std::map<std::string, Texture*> atlas;
 		std::map<std::string, Animation> animations;
 
-		Direction direction;
 		bool loop;
 		bool play;
-
+		float start_time;
+		std::string current_animation;
+		Direction current_direction;
+		glm::vec2 current_ratio; // Updated when animation change
+		int previous_frame;
+		glm::vec2 shift;
 
 		AnimatedTexture();
 		~AnimatedTexture();
@@ -35,9 +39,12 @@ namespace game{
 		AnimatedTexture(GameObject*);
 		AnimatedTexture(AnimatedTexture*);
 		virtual AnimatedTexture* Clone();
+		virtual void Update();
+		void Play(std::string);
+		void Bind(GLenum);
+
 		void LoadSpriteSheet(std::string, std::string);
 		Direction GetDirectionFromAngle(int);
-
 	};
 }
 
