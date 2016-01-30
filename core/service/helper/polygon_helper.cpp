@@ -51,7 +51,6 @@ namespace game{
 				min_y = current_y;
 			}
 		}
-
 		float width = max_x - min_x;
 		float height = max_y - min_y;
 

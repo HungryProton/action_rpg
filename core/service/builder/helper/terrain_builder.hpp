@@ -37,8 +37,6 @@ namespace game{
 			// return the index array needed to fill the outline with solid triangles
 			std::vector<unsigned int> FillOutline(std::vector<float>);
 
-			std::vector<float> GetTextureCoordinates(std::vector<float>);
-
 			// Adds thickness to a polygon
 			std::vector<float> ExtrudePolygon(std::vector<float>, float);
 	};

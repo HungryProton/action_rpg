@@ -53,7 +53,7 @@ namespace game{
 
 	void TerrainBuilder::GeneratePolygon(std::multimap<int, std::vector<float>>* data, std::vector<unsigned int>* index_array){
 		PolygonHelper polygon_helper;
-		polygon_helper.SetTextureCoordModifier(4);
+		polygon_helper.SetTextureCoordModifier(this->size_.x/5.f);
 		Polygon surface;
 		std::vector<float> vertex_array;
 		do{
@@ -113,40 +113,6 @@ namespace game{
 			vertex_array.insert(vertex_array.begin()+i+5, midpoint.z);
 		}
 		return vertex_array;
-	}
-
-	std::vector<float> TerrainBuilder::GetTextureCoordinates(std::vector<float> vertex_array){
-		std::vector<float> texture_coords;
-
-		float max_x = vertex_array[0];
-		float max_y = vertex_array[1];
-		float min_x = vertex_array[0];
-		float min_y = vertex_array[1];
-
-		for(unsigned int i = 3; i < vertex_array.size(); i+=3){
-			if(max_x < vertex_array[i]){
-				max_x = vertex_array[i];
-			}
-			if(min_x > vertex_array[i]){
-				min_x = vertex_array[i];
-			}
-			if(max_y < vertex_array[i+1]){
-				max_y = vertex_array[i+1];
-			}
-			if(min_y > vertex_array[i+1]){
-				min_y = vertex_array[i+1];
-			}
-		}
-
-		float width = max_x - min_x;
-		float height = max_y - min_y;
-
-		for(unsigned int i = 0; i < vertex_array.size(); i+=3){
-			texture_coords.push_back( (vertex_array[i] + (width/2.f))/width );
-			texture_coords.push_back( (vertex_array[i+1] + (height/2.f))/height );
-		}
-
-		return texture_coords;
 	}
 
 	void TerrainBuilder::SetResolution(int resolution){
