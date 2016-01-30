@@ -23,6 +23,7 @@ namespace game{
 	AnimatedTexture::AnimatedTexture(GameObject* parent) : AnimatedTexture(){
 		if(parent){
 			parent->AttachComponent(this);
+			parent->RegisterToLocalBus((MessageHandler<AnimationCommand>*)this);
 		}
 	}
 
@@ -35,8 +36,6 @@ namespace game{
 		std::string animation_path;
 
 		if(file.is_open()){
-			LOG(DEBUG) << "Parsing " << file_path << std::endl;
-
 			std::string folder_path = file_path.substr(0, file_path.find_last_of('/') + 1);
 			while(file >> animation_name >> animation_path){
 				this->LoadSpriteSheet(animation_name, folder_path + animation_path);
@@ -66,9 +65,12 @@ namespace game{
 	AnimatedTexture::AnimatedTexture(std::string file_path) : AnimatedTexture(file_path, nullptr){ }
 
 	void AnimatedTexture::Update(){
+		ProcessReceivedMessages();
 		if(!play){ return; }
 
 		auto it = this->animations.find(current_animation);
+		if(it == this->animations.end()){ return; }
+
 		int frame_count = it->second.frame_count;
 		float elapsed_time = glfwGetTime() - this->start_time;
 		int current_frame = ((int)(elapsed_time*24.f))%frame_count;
@@ -78,21 +80,55 @@ namespace game{
 		}
 		this->previous_frame = current_frame;
 		auto it2 = it->second.position.find(current_direction);
+
 		this->shift = it2->second[current_frame];
 	}
 
-	void AnimatedTexture::Play(std::string animation_name){
-		if(this->current_animation == animation_name){
-			return;
+	void AnimatedTexture::Play(std::string animation_name, Direction d){
+		// don't play the animation if it is already playing
+		if( this->play && (this->current_animation == animation_name) ){
+			if(d == Direction::LAST){ return; }
+			if(d == current_direction){ return; }
 		}
 
+		auto it = this->animations.find(animation_name);
+		if(it == this->animations.end()){ return; } // Animation not found
+
+		if(d != Direction::LAST){
+			this->current_direction = d;
+		}
 		this->current_animation = animation_name;
 		this->start_time = glfwGetTime();
-		glm::vec2 size = this->animations.find(animation_name)->second.size;
+		glm::vec2 size = it->second.size;
 		Texture* texture = this->atlas.find(animation_name)->second;
 		this->current_ratio = glm::vec2(size.x/texture->width, size.y/texture->height);
 		this->previous_frame = -1;
 		this->play = true;
+	}
+
+	void AnimatedTexture::Pause(){
+		this->play = false;
+	}
+
+	void AnimatedTexture::Stop(){
+		this->Pause();
+	}
+
+	void AnimatedTexture::ProcessReceivedMessages(){
+		for(AnimationCommand message : this->MessageHandler<AnimationCommand>::messages_){
+			switch(message.action){
+				case AnimationAction::PLAY:
+				 	this->Play(message.name, message.direction);
+					break;
+				case AnimationAction::PAUSE:
+					this->Pause();
+					break;
+				case AnimationAction::STOP:
+					this->Stop();
+					break;
+			}
+		}
+		this->MessageHandler<AnimationCommand>::messages_.clear();
 	}
 
 	void AnimatedTexture::LoadSpriteSheet(std::string name, std::string path){
@@ -147,11 +183,13 @@ namespace game{
 			}
 			reading_block = true;
 		}
+
 		animation.frame_count = current_positions->size();
 		this->animations.insert(std::make_pair(name, animation));
 	}
 
 	void AnimatedTexture::Bind(GLenum active_texture = GL_TEXTURE0){
+		//LOG(DEBUG) << current_animation << " " << this->atlas.find(current_animation)->second->texture << std::endl;
 		glActiveTexture(active_texture);
 		glBindTexture( GL_TEXTURE_2D, this->atlas.find(current_animation)->second->texture);
 	}

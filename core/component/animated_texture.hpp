@@ -3,13 +3,13 @@
 
 #include <map>
 #include "component.hpp"
+#include "common.hpp"
 #include "texture.hpp"
 #include "tools/opengl.hpp"
-
+#include "core/messaging/concrete_messages/animation_command.hpp"
+#include "core/messaging/message_handler.hpp"
 
 namespace game{
-
-	enum class Direction{N,S,E,W,NE,NW,SE,SW};
 
 	struct Animation{
 		int frame_count;
@@ -17,7 +17,7 @@ namespace game{
 		std::multimap<Direction, std::vector<glm::vec2>> position;
 	};
 
-	struct AnimatedTexture : public Component{
+	struct AnimatedTexture : public Component, public MessageHandler<AnimationCommand>{
 
 		std::string base_name;
 		std::map<std::string, Texture*> atlas;
@@ -40,11 +40,14 @@ namespace game{
 		AnimatedTexture(AnimatedTexture*);
 		virtual AnimatedTexture* Clone();
 		virtual void Update();
-		void Play(std::string);
+		void Play(std::string, Direction);
+		void Pause();
+		void Stop();
 		void Bind(GLenum);
 
 		void LoadSpriteSheet(std::string, std::string);
 		Direction GetDirectionFromAngle(int);
+		void ProcessReceivedMessages();
 	};
 }
 

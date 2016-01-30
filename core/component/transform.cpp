@@ -8,6 +8,8 @@ namespace game{
 		this->rotation = glm::vec3(0.f, 0.f, 0.f);
 		this->scale = glm::vec3(1.f, 1.f, 1.f);
 		this->velocity = glm::vec3(0.f, 0.f, 0.f);
+		this->target_velocity = glm::vec3(0.f, 0.f, 0.f);
+		this->previous_position = glm::vec3(0.f, 0.f, 0.f);
 	}
 
 	Transform::Transform(GameObject* parent) : Transform(){
@@ -25,6 +27,15 @@ namespace game{
 
 	Transform* Transform::Clone(){
 		return new Transform(this);
+	}
+
+	void Transform::Update(){
+		if(this->previous_position == this->position){
+			this->velocity = glm::vec3(0.f, 0.f, 0.f);
+			return;
+		}
+		this->velocity = this->position - this->previous_position;
+		this->previous_position = this->position;
 	}
 
 	void Transform::dbg_display(){

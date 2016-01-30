@@ -11,6 +11,7 @@
 #include "core/component/texture.hpp"
 #include "core/component/animated_texture.hpp"
 #include "core/component/input_to_motion.hpp"
+#include "core/component/motion_to_animation.hpp"
 #include "core/component/motion.hpp"
 #include "core/component/mesh.hpp"
 #include "core/component/constraint.hpp"
@@ -31,7 +32,7 @@ namespace game{
 		SpawnMultipleSprite("../data/characters/female/female_2.png", 10);
 		SpawnMultipleSprite("../data/characters/female/female_3.png", 10);
 		GameObject* camera = SpawnCamera(glm::vec3(0, -10, 4));
-		SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
+		//SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
 		GameObject* player = SpawnPlayer("../data/characters/female/animated/female_1.txt");
 
 		TerrainBuilder terrain_builder;
@@ -94,8 +95,8 @@ namespace game{
 		new Transform(player);
 		new Motion(player);
 		new InputToMotion(player);
-		auto t = new AnimatedTexture(resource_path, player);
-		t->Play("walk");
+		new MotionToAnimation(player);
+		new AnimatedTexture(resource_path, player);
 		new Drawable(player);
 
 		this->game_objects_.push_back(player);

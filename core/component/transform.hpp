@@ -21,6 +21,7 @@ namespace game{
 		glm::vec3 rotation;
 		glm::vec3 scale;
 		glm::vec3 velocity;
+		glm::vec3 target_velocity;
 
 		// ---- Helper Methods ----
 
@@ -28,7 +29,11 @@ namespace game{
 		Transform(GameObject*);
 		Transform(Transform*);
 		virtual Transform* Clone();
+		virtual void Update();
 		void dbg_display();
+
+		private:
+			glm::vec3 previous_position;
 	};
 }
 
