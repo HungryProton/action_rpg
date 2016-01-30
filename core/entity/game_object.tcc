@@ -37,4 +37,19 @@ namespace game{
 		return selected_components;
 	}
 
+	template<class T>
+	void GameObject::RegisterToLocalBus(MessageHandler<T>* handler){
+		if(this->channel_id_ == 0){
+			this->channel_id_ = MessageBus::RequestNewChannelID();
+		}
+		MessageBus::RegisterHandler(handler, this->channel_id_);
+	}
+
+	template<class T>
+	void GameObject::BroadcastLocally(T message){
+		if(this->channel_id_ == 0){
+			return;
+		}
+		MessageBus::Push(message, this->channel_id_);
+	}
 }

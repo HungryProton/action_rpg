@@ -12,6 +12,7 @@ namespace game{
 
 	GameObject::GameObject(){
 		this->components_.clear();
+		this->channel_id_ = 0;
 	}
 
 	GameObject::~GameObject(){

@@ -6,6 +6,8 @@
 #include <string>
 #include <typeindex>
 #include "core/messaging/message.hpp"
+#include "core/messaging/message_handler.hpp"
+
 namespace game{
 
 	class Game;
@@ -78,6 +80,12 @@ namespace game{
 			std::vector<Component*> GetAllComponents();
 
 
+			template<class T>
+			void BroadcastLocally(T);
+
+			template<class T>
+			void RegisterToLocalBus(MessageHandler<T>*);
+
 			GameObject* Clone();
 
 		private:
@@ -92,6 +100,8 @@ namespace game{
 			 *	direct children
 			 */
 			std::vector<GameObject*> children_;
+
+			unsigned int channel_id_;
 	};
 }
 

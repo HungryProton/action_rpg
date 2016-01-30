@@ -7,11 +7,6 @@
 
 namespace game{
 
-	struct MessageBusHealthReport{
-		int registered_handler_count;
-		unsigned long received_messages_count;
-	};
-
 	template<class T>
 	class MessageHandler;
 
@@ -22,16 +17,18 @@ namespace game{
 			static void Push(T);
 
 			template<class T>
-			static void RegisterHandler(MessageHandler<T>*);
+			static void Push(T, unsigned int);
 
 			template<class T>
-			static void DeregisterHandler(MessageHandler<T>*);
+			static void RegisterHandler(MessageHandler<T>*, unsigned int channel = 0);
 
-			// For testing purposes only
-			static void ResetHealthReport();
-			static MessageBusHealthReport GetHealthReport();
+			template<class T>
+			static void DeregisterHandler(MessageHandler<T>*, unsigned int channel = 0);
+
+			static unsigned int RequestNewChannelID();
+
 		private:
-			static MessageBusHealthReport health_report_;
+			static unsigned int channel_count_;
 	};
 }
 

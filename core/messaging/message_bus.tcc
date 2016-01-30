@@ -7,18 +7,20 @@ namespace game{
 	template<class T>
 	void MessageBus::Push(T message){
 		MessageDispatcher<T>::Push(message);
-		health_report_.received_messages_count++;
 	}
 
 	template<class T>
-	void MessageBus::RegisterHandler(MessageHandler<T>* handler){
-		MessageDispatcher<T>::RegisterHandler(handler);
-		health_report_.registered_handler_count++;
+	void MessageBus::Push(T message, unsigned int channel){
+		MessageDispatcher<T>::Push(message, channel);
 	}
 
 	template<class T>
-	void MessageBus::DeregisterHandler(MessageHandler<T>* handler){
-		MessageDispatcher<T>::DeregisterHandler(handler);
-		health_report_.registered_handler_count--;
+	void MessageBus::RegisterHandler(MessageHandler<T>* handler, unsigned int channel){
+		MessageDispatcher<T>::RegisterHandler(handler, channel);
+	}
+
+	template<class T>
+	void MessageBus::DeregisterHandler(MessageHandler<T>* handler, unsigned int channel){
+		MessageDispatcher<T>::DeregisterHandler(handler, channel);
 	}
 }
