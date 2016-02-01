@@ -34,7 +34,8 @@ namespace game{
 			void ClearDrawingPool();
 			Drawable* MakeGameObjectDrawable(GameObject*);
 			void SetActiveCamera(GameObject*);
-			glm::mat4 GetModelViewProjectionMatrixFor(Transform*);
+			glm::mat4 GetModelViewProjectionMatrixFor(Transform*,
+				 								glm::vec3 local = glm::vec3(1.f, 1.f, 1.f));
 			static void GLFWErrorCallback(int, const char*);
 
 			std::vector<GameObject*> objects_to_render_;

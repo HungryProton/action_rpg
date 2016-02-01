@@ -31,6 +31,7 @@ namespace game{
 		glm::vec2 current_ratio; // Updated when animation change
 		int previous_frame;
 		glm::vec2 shift;
+		glm::vec3 local_scale;
 
 		AnimatedTexture();
 		~AnimatedTexture();

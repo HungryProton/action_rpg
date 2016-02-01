@@ -42,9 +42,12 @@ namespace game{
 			}
 			file.close();
 		}
+		this->local_scale = glm::vec3(this->animations.begin()->second.size.x/32.f,
+						this->animations.begin()->second.size.y/32.f,
+						this->animations.begin()->second.size.y/32.f);
 	}
 
-	AnimatedTexture::AnimatedTexture(AnimatedTexture* texture){
+	AnimatedTexture::AnimatedTexture(AnimatedTexture* texture) : AnimatedTexture(){
 		this->base_name = texture->base_name;
 		this->animations = texture->animations;
 		this->loop = texture->loop;
@@ -52,6 +55,7 @@ namespace game{
 		this->previous_frame = texture->previous_frame;
 		this->current_direction = texture->current_direction;
 		this->current_ratio = texture->current_ratio;
+		this->local_scale = texture->local_scale;
 
 		for(auto pair : texture->atlas){
 			this->atlas.insert(std::make_pair(pair.first, pair.second->Clone()));

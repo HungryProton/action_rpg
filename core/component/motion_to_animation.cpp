@@ -15,7 +15,7 @@ namespace game{
 		}
 	}
 
-	MotionToAnimation::MotionToAnimation(MotionToAnimation* m){
+	MotionToAnimation::MotionToAnimation(MotionToAnimation* m) : MotionToAnimation(){
 
 	}
 
@@ -68,7 +68,7 @@ namespace game{
 		// Determine whether we should run or walk based on how fast the character
 		// moves
 		float speed = glm::length(*(this->velocity));
-		if(speed > 0.08){
+		if(speed > 0.10){
 			message.name = "run";
 		} else {
 			message.name = "walk";

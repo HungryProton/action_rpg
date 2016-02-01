@@ -15,6 +15,8 @@ namespace game{
 		Circle(GameObject*);
 		Circle(float, GameObject*);
 		Circle(float, int, GameObject*);
+		Circle(Circle*);
+		virtual Circle* Clone();
 	};
 }
 

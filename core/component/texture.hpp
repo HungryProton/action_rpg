@@ -13,6 +13,7 @@ namespace game{
 		int width;
 		int height;
 		bool transparent;
+		glm::vec3 local_scale;
 
 		// ---- Helper methods ---- //
 		Texture();

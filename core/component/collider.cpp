@@ -2,6 +2,8 @@
 #include <iostream>
 #include <typeinfo>
 #include "collider.hpp"
+#include "core/messaging/concrete_messages/physic_intent.hpp"
+#include "core/messaging/message_bus.hpp"
 
 namespace game{
 
@@ -18,11 +20,19 @@ namespace game{
 		}
 	}
 
-	Collider::Collider(Collider* collider) : shape_type(collider->shape_type){
+	Collider::Collider(Collider* collider) : Collider(){
 		this->gravity = collider->gravity;
 		this->sleeping = collider->sleeping;
 		this->restitution_factor = collider->restitution_factor;
 		this->SetMass(collider->mass);
+		this->shape_type = collider->shape_type;
+	}
+
+	void Collider::Update(){
+		PhysicIntent message;
+		message.action = PhysicAction::ADD_COLLIDER;
+		message.game_object = this->parent;
+		MessageBus::Push(message);
 	}
 
 	// TODO : Use the shape to determine object's volume and multiply by

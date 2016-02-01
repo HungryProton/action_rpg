@@ -17,6 +17,15 @@ namespace game{
 		this->SetDimensions(w,h);
 	}
 
+	Box::Box(Box* box) : Box(){
+		this->width = box->width;
+		this->height = box->height;
+	}
+
+	Box* Box::Clone(){
+		return new Box(this);
+	}
+
 	void Box::SetDimensions(glm::vec2 dim){
 		this->width = dim.x;
 		this->height = dim.y;

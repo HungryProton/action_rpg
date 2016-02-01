@@ -109,8 +109,15 @@ namespace game{
 			Transform* transform = game_object->GetComponent<Transform>();
 			Texture* texture = game_object->GetComponent<Texture>();
 			AnimatedTexture* animated_texture = game_object->GetComponent<AnimatedTexture>();
+			Mesh* mesh = game_object->GetComponent<Mesh>();
+			glm::vec3 local_scale = glm::vec3(1.f, 1.f, 1.f);
 
-			glm::mat4 model_view_projection = GetModelViewProjectionMatrixFor(transform);
+			if(!mesh){
+				if(texture){ local_scale = texture->local_scale; }
+				if(animated_texture){ local_scale = animated_texture->local_scale; }
+			}
+
+			glm::mat4 model_view_projection = GetModelViewProjectionMatrixFor(transform, local_scale);
 
 			check_gl_error();
 			glBindVertexArray(drawable->vao);
@@ -187,7 +194,8 @@ namespace game{
 		return drawable;
 	}
 
-	glm::mat4 Render::GetModelViewProjectionMatrixFor(Transform* transform){
+	glm::mat4 Render::GetModelViewProjectionMatrixFor(Transform* transform, glm::vec3 local_scale){
+
 		glm::mat4 translation = glm::translate(glm::mat4(1.0f),
 																					 glm::vec3(transform->position));
 
@@ -200,7 +208,7 @@ namespace game{
 		glm::mat4 rotation_xyz = glm::rotate(rotation_xy, transform->rotation.z,
 																				glm::vec3(0.0f, 0.0f, 1.0f));
 
-		glm::mat4 scale = glm::scale(transform->scale);
+		glm::mat4 scale = glm::scale(transform->scale * local_scale);
 
 		glm::mat4 model = rotation_xyz * scale;
 

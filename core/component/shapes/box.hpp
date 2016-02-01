@@ -19,6 +19,8 @@ namespace game{
 		Box();
 		Box(GameObject*);
 		Box(float, float, GameObject*);
+		Box(Box*);
+		virtual Box* Clone();
 		void SetDimensions(glm::vec2);
 		void SetDimensions(float, float);
 	};

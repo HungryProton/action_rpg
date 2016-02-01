@@ -15,6 +15,7 @@ namespace game{
 		this->width = 0;
 		this->height = 0;
 		this->transparent = false;
+		this->local_scale = glm::vec3(1.f, 1.f, 1.f);
 
 		// Inform the game that this component needs the ImageHelper service
 		Game::RequestForService<ImageHelper>();
@@ -31,6 +32,7 @@ namespace game{
 		this->width = texture->width;
 		this->height = texture->height;
 		this->transparent = texture->transparent;
+		this->local_scale = texture->local_scale;
 		this->is_attached = false;
 	}
 
@@ -52,6 +54,7 @@ namespace game{
 		this->width = img->width;
 		this->height = img->height;
 		this->transparent = false;
+		this->local_scale = glm::vec3(this->width/32.f, this->height/32.f, this->height/32.f);
 	}
 
 	void Texture::Bind(GLenum active_texture = GL_TEXTURE0){
