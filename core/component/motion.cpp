@@ -10,7 +10,8 @@ namespace game{
 		this->rotation = glm::vec3(0.f,0.f,0.f);
 		this->scale = glm::vec3(0.f,0.f,0.f);
 		this->max_force = glm::vec3(0.f,0.f,0.f);
-		this->transform_ = nullptr;
+		this->target_speed = 0;
+		this->transform = nullptr;
 	}
 
 	Motion::Motion(GameObject* parent) : Motion(){
@@ -25,7 +26,8 @@ namespace game{
 		this->rotation = motion->rotation;
 		this->scale = motion->scale;
 		this->max_force = motion->max_force;
-		this->transform_ = nullptr;
+		this->target_speed = motion->target_speed;
+		this->transform = nullptr;
 	}
 
 	Motion::~Motion(){ }
@@ -36,7 +38,7 @@ namespace game{
 
 	void Motion::NotifyNewComponentAdded(){
 		if(!this->parent){ return; }
-		this->transform_ = this->parent->GetComponent<Transform>();
+		this->transform = this->parent->GetComponent<Transform>();
 	}
 
 	void Motion::Update(){
@@ -51,11 +53,13 @@ namespace game{
 	}
 
 	void Motion::SimpleResolve(){
-		if(!this->transform_){ return; }
+		if(!this->transform){ return; }
 		float time = Time::GetDeltaTime();
-		this->transform_->position += this->direction * time;
-		this->transform_->rotation += this->rotation * time;
-		this->transform_->scale += this->scale * time;
+		if(glm::length(this->direction) != 0){
+			this->transform->position += glm::normalize(this->direction) * this->target_speed * time;
+		}
+		this->transform->rotation += this->rotation * time;
+		this->transform->scale += this->scale * time;
 	}
 
 	void Motion::ServoResolve(){

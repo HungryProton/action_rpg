@@ -16,6 +16,7 @@ namespace game{
 			glm::vec3 rotation;
 			glm::vec3 scale;
 			glm::vec3 max_force;
+			float target_speed;
 
 			// Helpers
 			Motion();
@@ -29,7 +30,7 @@ namespace game{
 
 		private:
 			// Target component
-			Transform* transform_;
+			Transform* transform;
 
 			void SimpleResolve();
 			void ServoResolve();

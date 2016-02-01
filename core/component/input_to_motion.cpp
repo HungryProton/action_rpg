@@ -42,8 +42,8 @@ namespace game{
 
 		int modifier;
 		message.status == KEY_PRESSED ? modifier = 1 : modifier = 0;
-		float target_speed = 8;
-		if(message.modifier_pressed){ target_speed /= 2; }
+		motion->target_speed = 8;
+		if(message.modifier_pressed){ motion->target_speed /= 2; }
 
 		switch(message.command){
 			case(Command::MOVE_UP):
@@ -61,6 +61,5 @@ namespace game{
 			default:
 				return;
 		}
-		motion->direction = glm::normalize(motion->direction) * target_speed;
 	}
 }
