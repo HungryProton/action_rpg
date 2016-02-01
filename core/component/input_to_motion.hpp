@@ -20,7 +20,7 @@ namespace game{
 		void ProcessReceivedMessages();
 		void HandleKeyEvent(InputMessage);
 
-		Motion* motion_;
+		Motion* motion;
 	};
 }
 

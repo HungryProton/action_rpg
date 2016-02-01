@@ -4,7 +4,7 @@
 namespace game{
 
 	InputToMotion::InputToMotion() : Component(){
-
+		this->motion = nullptr;
 	}
 
 	InputToMotion::InputToMotion(GameObject* parent) : InputToMotion(){
@@ -13,7 +13,7 @@ namespace game{
 		}
 	}
 
-	InputToMotion::InputToMotion(InputToMotion* input_to_motion){
+	InputToMotion::InputToMotion(InputToMotion* input_to_motion) : InputToMotion(){
 
 	}
 
@@ -27,7 +27,7 @@ namespace game{
 
 	void InputToMotion::NotifyNewComponentAdded(){
 		if(!this->parent){ return; }
-		this->motion_ = this->parent->GetComponent<Motion>();
+		this->motion = this->parent->GetComponent<Motion>();
 	}
 
 	void InputToMotion::ProcessReceivedMessages(){
@@ -38,24 +38,29 @@ namespace game{
 	}
 
 	void InputToMotion::HandleKeyEvent(InputMessage message){
+		if(!this->motion){ return; }
+
 		int modifier;
-		message.status == KEY_PRESSED ? modifier = 5 : modifier = 0;
+		message.status == KEY_PRESSED ? modifier = 1 : modifier = 0;
+		float target_speed = 8;
+		if(message.modifier_pressed){ target_speed /= 2; }
 
 		switch(message.command){
 			case(Command::MOVE_UP):
-				motion_->direction.y = modifier;
+				motion->direction.y = modifier;
 				break;
 			case(Command::MOVE_DOWN):
-				motion_->direction.y = -modifier;
+				motion->direction.y = -modifier;
 				break;
 			case(Command::MOVE_LEFT):
-				motion_->direction.x = -modifier;
+				motion->direction.x = -modifier;
 				break;
 			case(Command::MOVE_RIGHT):
-				motion_->direction.x = modifier;
+				motion->direction.x = modifier;
 				break;
 			default:
 				return;
 		}
+		motion->direction = glm::normalize(motion->direction) * target_speed;
 	}
 }

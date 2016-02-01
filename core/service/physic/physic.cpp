@@ -21,8 +21,31 @@ namespace game{
 	}
 
 	void Physic::Update(){
+		this->ProcessReceivedMessages();
 		this->UpdatePositions();
 		this->ResolveCollisions();
+	}
+
+	void Physic::ProcessReceivedMessages(){
+		for(PhysicIntent message : this->MessageHandler<PhysicIntent>::messages_){
+			switch(message.action){
+				case PhysicAction::APPLY_FORCE:
+					this->ApplyForce(message.force, message.game_object);
+					break;
+				case PhysicAction::ADD_COLLIDER:
+					this->AddGameObjectToColliderPool(message.game_object);
+					break;
+			}
+		}
+		this->MessageHandler<PhysicIntent>::messages_.clear();
+	}
+
+	void Physic::AddGameObjectToColliderPool(GameObject* object){
+		if(!object){ return; }
+		if(!(object->GetComponent<Collider>())){ return; }
+		if(!(object->GetComponent<Transform>())){ return; }
+
+		this->collider_pool_.push_back(object);
 	}
 
 	void Physic::ApplyForce(glm::vec3 force, GameObject* object){
@@ -34,7 +57,7 @@ namespace game{
 	void Physic::UpdatePositions(){
 		for(GameObject* object : this->collider_pool_){
 			Transform* transform = object->GetComponent<Transform>();
-			transform->position += transform->target_velocity*Time::GetDeltaTime();
+			//transform->position += transform->target_velocity*Time::GetDeltaTime();
 		}
 	}
 
@@ -63,6 +86,7 @@ namespace game{
 					}
 				} else if(collider_a->shape_type == std::type_index(typeid(Box))){
 
+
 					if( collider_b->shape_type == std::type_index(typeid(Box))){
 						this->BoxvsBox(*it_a, *it_b);
 					} else if ( collider_b->shape_type == std::type_index(typeid(Circle))){
@@ -71,6 +95,7 @@ namespace game{
 				}
 			}
 		}
+		this->collider_pool_.clear();
 	}
 
 	// Resolve collision between the two objects and mark them as resolved
@@ -167,7 +192,7 @@ namespace game{
 		m.normal = normal;
 
 		ApplyImpulse(m);
-		//ApplyFriction(m);
+		ApplyFriction(m);
 		PositionalCorrection(m);
 	}
 
@@ -185,7 +210,7 @@ namespace game{
 
 		if(collider_circle->shape_type == typeid(Circle)){
 			circle = a->GetComponent<Circle>();
-			box = a->GetComponent<Box>();
+			box = b->GetComponent<Box>();
 			collider_box = a->GetComponent<Collider>();
 			transform_box = b->GetComponent<Transform>();
 			transform_circle = a->GetComponent<Transform>();
@@ -206,7 +231,7 @@ namespace game{
 		float y_extent = box->height;
 
 		closest.x = Math::clamp(V_AB.x, -x_extent, x_extent);
-		closest.y = Math::clamp(V_AB.z, 0.f, y_extent);
+		closest.y = Math::clamp(V_AB.y, 0.f, y_extent);
 
 		bool inside = false;
 
@@ -216,7 +241,7 @@ namespace game{
 			if(std::abs(V_AB.x) > std::abs(V_AB.y)){
 				(closest.x > 0) ? closest.x = x_extent : closest.x = -x_extent;
 			}else{
-				(closest.y < (y_extent/2.f)) ? closest.z = 0 : closest.z = y_extent;
+				(closest.y < (y_extent/2.f)) ? closest.y = 0 : closest.y = y_extent;
 			}
 		}
 
@@ -242,7 +267,7 @@ namespace game{
 		m.transform_b = transform_circle;
 
 		ApplyImpulse(m);
-		//ApplyFriction(m);
+		ApplyFriction(m);
 		PositionalCorrection(m);
 	}
 

@@ -21,7 +21,7 @@ namespace game{
 		}
 	}
 
-	Camera::Camera(Camera* camera){
+	Camera::Camera(Camera* camera) : Camera(){
 		this->projection = camera->projection;
 		this->view_projection = camera->view_projection;
 		this->znear = camera->znear;

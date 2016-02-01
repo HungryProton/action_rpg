@@ -5,6 +5,7 @@
 #include "core/service/input/input.hpp"
 #include "core/service/render/render.hpp"
 #include "core/service/logic/logic.hpp"
+#include "core/service/physic/physic.hpp"
 
 namespace game{
 
@@ -16,6 +17,7 @@ namespace game{
 		// Create all services
 		InstantiateCoreService<Input>();
 		InstantiateCoreService<Logic>();
+		InstantiateCoreService<Physic>();
 		InstantiateCoreService<Render>();
 
 		// Initialize needed services
@@ -44,6 +46,7 @@ namespace game{
 			for(auto service : core_services_){
 				service->Update();
 			}
+			//LOG(INFO) << "FPS : " << 1.f/Time::GetDeltaTime() << std::endl;
 		}
 		ClearMemory();
 	}

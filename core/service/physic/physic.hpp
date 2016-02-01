@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include "../service.hpp"
 #include "core/messaging/message_handler.hpp"
+#include "core/messaging/concrete_messages/physic_intent.hpp"
 #include "core/component/collider.hpp"
 #include "core/component/transform.hpp"
 
@@ -12,9 +13,9 @@ namespace game{
 	class GameObject;
 	struct Manifold;
 
-	class Physic : public CoreService{
+	class Physic : public CoreService,
+								 public MessageHandler<PhysicIntent>{
 		public:
-			Physic();
 			~Physic();
 			virtual void ClearMemory();
 			virtual void Update();
@@ -23,7 +24,8 @@ namespace game{
 			bool GetProcessedState();
 
 		private:
-			void Process();
+			void AddGameObjectToColliderPool(GameObject*);
+			void ProcessReceivedMessages();
 			void ApplyForce(glm::vec3 force, GameObject*);
 
 			void UpdatePositions();

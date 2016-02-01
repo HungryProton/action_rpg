@@ -19,7 +19,7 @@ namespace game{
 		}
 	}
 
-	Motion::Motion(Motion* motion){
+	Motion::Motion(Motion* motion) : Motion(){
 		this->type = motion->type;
 		this->direction = motion->direction;
 		this->rotation = motion->rotation;
@@ -53,7 +53,7 @@ namespace game{
 	void Motion::SimpleResolve(){
 		if(!this->transform_){ return; }
 		float time = Time::GetDeltaTime();
-		this->transform_->position += this->direction* time;
+		this->transform_->position += this->direction * time;
 		this->transform_->rotation += this->rotation * time;
 		this->transform_->scale += this->scale * time;
 	}

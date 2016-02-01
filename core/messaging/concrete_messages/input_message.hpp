@@ -22,6 +22,7 @@ namespace game{
     struct InputMessage : public Message{
         KeyStatus status;
         Command command;
+				bool modifier_pressed;
     };
 }
 #endif //GAME_CORE_MESSAGING_INPUT_MESSAGE_HPP
