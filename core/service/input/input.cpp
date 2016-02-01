@@ -64,6 +64,7 @@ namespace game{
 		InputMessage msg;
 		msg.status = GetKeyStatus(key_code);
 		msg.command = command;
+		msg.modifier_pressed = (GetKeyStatus(this->modifier_code) == KEY_PRESSED);
 
 		if(msg.status != KEY_RELEASED){
 			MessageBus::Push(msg);
@@ -72,10 +73,11 @@ namespace game{
 
 	void Input::LoadDefaultKeymap(){
 		this->keymap_.clear();
-		AddEntryInKeymap(GLFW_KEY_UP, Command::MOVE_UP);
-		AddEntryInKeymap(GLFW_KEY_DOWN, Command::MOVE_DOWN);
-		AddEntryInKeymap(GLFW_KEY_LEFT, Command::MOVE_LEFT);
-		AddEntryInKeymap(GLFW_KEY_RIGHT, Command::MOVE_RIGHT);
+		AddEntryInKeymap(GLFW_KEY_W, Command::MOVE_UP);
+		AddEntryInKeymap(GLFW_KEY_S, Command::MOVE_DOWN);
+		AddEntryInKeymap(GLFW_KEY_A, Command::MOVE_LEFT);
+		AddEntryInKeymap(GLFW_KEY_D, Command::MOVE_RIGHT);
+		this->modifier_code = GLFW_KEY_LEFT_ALT;
 	}
 
 	void Input::AddEntryInKeymap(int key_code, Command command){

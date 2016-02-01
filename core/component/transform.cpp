@@ -18,7 +18,7 @@ namespace game{
 		}
 	}
 
-	Transform::Transform(Transform* transform){
+	Transform::Transform(Transform* transform) : Transform(){
 		this->position = transform->position;
 		this->rotation = transform->rotation;
 		this->scale = transform->scale;

@@ -15,6 +15,9 @@
 #include "core/component/motion.hpp"
 #include "core/component/mesh.hpp"
 #include "core/component/constraint.hpp"
+#include "core/component/collider.hpp"
+#include "core/component/shapes/box.hpp"
+#include "core/component/shapes/circle.hpp"
 
 namespace game{
 
@@ -28,15 +31,15 @@ namespace game{
 
 	void Logic::Initialize(){
 
-		SpawnMultipleSprite("../data/characters/female/female_1.png", 10);
-		SpawnMultipleSprite("../data/characters/female/female_2.png", 10);
-		SpawnMultipleSprite("../data/characters/female/female_3.png", 10);
-		GameObject* camera = SpawnCamera(glm::vec3(0, -10, 4));
-		//SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
+		SpawnMultipleSprite("../data/characters/female/animated/female_1.txt", 15);
+		SpawnMultipleSprite("../data/characters/female/animated/female_2.txt", 15);
+		SpawnMultipleSprite("../data/characters/female/animated/female_3.txt", 15);
+		GameObject* camera = SpawnCamera(glm::vec3(0, -12, 8));
+		SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
 		GameObject* player = SpawnPlayer("../data/characters/female/animated/female_1.txt");
 
 		TerrainBuilder terrain_builder;
-		terrain_builder.SetMapSize(40, 40);
+		terrain_builder.SetMapSize(60, 60);
 		GameObject* terrain = terrain_builder.GenerateTerrain();
 		this->game_objects_.push_back(terrain);
 
@@ -74,8 +77,12 @@ namespace game{
 		GameObject* sprite = new GameObject();
 		Transform* t = new Transform(sprite);
 		t->position = position;
-		new Texture(file_path, sprite);
+		new AnimatedTexture(file_path, sprite);
 		new Drawable(sprite);
+		new Circle(0.35f, sprite);
+		new MotionToAnimation(sprite);
+		Collider* collider = new Collider(sprite);
+		collider->shape_type = std::type_index(typeid(Circle));
 		this->game_objects_.push_back(sprite);
 		return sprite;
 	}
@@ -83,23 +90,17 @@ namespace game{
 	void Logic::SpawnMultipleSprite(std::string file_path, int count){
 		for(int i = 0; i < count; i++){
 			glm::vec3 position;
-			position.x = 5 - Random::NextFloat(10);
-			position.y = 5 - Random::NextFloat(10);
+			position.x = 10 - Random::NextFloat(10);
+			position.y = 10 - Random::NextFloat(10);
 			position.z = 0;
 			SpawnSprite(file_path, position);
 		}
 	}
 
 	GameObject* Logic::SpawnPlayer(std::string resource_path){
-		GameObject* player = new GameObject;
-		new Transform(player);
+		GameObject* player = SpawnSprite(resource_path, glm::vec3(0.f, 0.f, 0.f));
 		new Motion(player);
 		new InputToMotion(player);
-		new MotionToAnimation(player);
-		new AnimatedTexture(resource_path, player);
-		new Drawable(player);
-
-		this->game_objects_.push_back(player);
 
 		return player;
 	}
@@ -107,11 +108,15 @@ namespace game{
 	GameObject* Logic::SpawnMesh(std::string file_path){
 		GameObject* mesh = new GameObject();
 		Transform* transform = new Transform(mesh);
-		transform->position.y = 5;
-		transform->scale /= 2;
-		transform->rotation.z = 3*(-3.1415/4);
+		transform->position.x = -10;
+		transform->position.y = 20;
+		//transform->scale /= 2;
+		//transform->rotation.z = 3*(-3.1415/4);
 		new Mesh(file_path, mesh);
 		new Drawable(mesh);
+		new Box(6, 6, mesh);
+		Collider* collider = new Collider(mesh);
+		collider->shape_type = std::type_index(typeid(Box));
 		this->game_objects_.push_back(mesh);
 		return mesh;
 	}

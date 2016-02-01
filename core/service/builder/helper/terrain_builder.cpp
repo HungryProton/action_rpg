@@ -42,7 +42,8 @@ namespace game{
 		GameObject* terrain = new GameObject();
 		new Transform(terrain);
 		Drawable* drawable = new Drawable(terrain);
-		new Texture("../data/environment/terrain/grass.png", terrain);
+		Texture* tex = new Texture("../data/environment/terrain/grass.png", terrain);
+		tex->local_scale = glm::vec3(1.f, 1.f, 1.f);
 
 		drawable->vao = Locator::Get<BufferHelper>()->RegisterData(data, index_array, &(drawable->offset));
 		drawable->draw_type = GL_TRIANGLES;
@@ -77,11 +78,11 @@ namespace game{
 		vertex_array.insert(vertex_array.begin(), triangle, triangle + 9);
 
 		// Refine surface area
-		float attenuation = 0.6f;
+		float attenuation = 0.8f;
 		this->resolution_ = 6;
 		for(int i = 0; i < this->resolution_; i++){
 			vertex_array = MidpointDisplacement(vertex_array, attenuation);
-			attenuation /= 2.f;
+			attenuation /= 2.5f;
 		}
 		return vertex_array;
 	}

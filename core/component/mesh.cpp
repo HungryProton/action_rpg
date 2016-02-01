@@ -18,7 +18,7 @@ namespace game{
 
 	Mesh::Mesh(std::string path) : Mesh(path, nullptr){ }
 
-	Mesh::Mesh(Mesh* mesh){
+	Mesh::Mesh(Mesh* mesh) : Mesh(){
 		this->shapes = mesh->shapes;
 		this->materials = mesh->materials;
 		this->draw_type = mesh->draw_type;
