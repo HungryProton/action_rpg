@@ -2,17 +2,21 @@
 #include "tools/random.hpp"
 #include "dummy_handler.hpp"
 #include "core/messaging/message.hpp"
-#include "core/messaging/message_bus.hpp"
+#include "message_bus_testing.hpp"
 
 namespace game{
 
   DummyHandler::DummyHandler() : MessageHandler<Message>(){
+		MessageBusTesting::RegisterHandler(this);
     this->received_messages_count_ = 0;
   }
 
+	DummyHandler::~DummyHandler(){
+		MessageBusTesting::DeregisterHandler(this);
+	}
+
   void DummyHandler::Process(){
 		for(Message message : this->MessageHandler<Message>::messages_){
-			LOG(INFO) << "msg id : " << message.id << std::endl;
 			this->received_messages_count_++;
 		}
   }
@@ -20,7 +24,7 @@ namespace game{
   void DummyHandler::SendDummyMessage(){
     Message message;
 		message.id = Random::NextInt();
-		MessageBus::Push(message);
+		MessageBusTesting::Push(message);
   }
 
   int DummyHandler::GetReceivedMessagesCount(){

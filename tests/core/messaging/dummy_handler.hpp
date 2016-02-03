@@ -9,6 +9,7 @@ namespace game{
   class DummyHandler : public MessageHandler<Message>{
     public:
       DummyHandler();
+			~DummyHandler();
       void Process();
       void SendDummyMessage();
       int GetReceivedMessagesCount();

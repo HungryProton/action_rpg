@@ -86,7 +86,6 @@ namespace game{
 					}
 				} else if(collider_a->shape_type == std::type_index(typeid(Box))){
 
-
 					if( collider_b->shape_type == std::type_index(typeid(Box))){
 						this->BoxvsBox(*it_a, *it_b);
 					} else if ( collider_b->shape_type == std::type_index(typeid(Circle))){
@@ -141,7 +140,7 @@ namespace game{
 			(nx < 0) ? normal = glm::vec3(1, 0, 0) : normal = glm::vec3(-1, 0, 0);
 			penetration = overlap_x;
 		} else {
-			(ny > 0) ? normal = glm::vec3(0, 0, -1) : normal = glm::vec3(0, 0, 1);
+			(ny > 0) ? normal = glm::vec3(0, -1, 0) : normal = glm::vec3(0, 1, 0);
 			penetration = overlap_y;
 		}
 
@@ -198,7 +197,6 @@ namespace game{
 
 	void Physic::BoxvsCircle(GameObject* a, GameObject* b){
 
-
 		// First, determine wheter a or b is a circle or a box
 		Circle* circle;
 		Box* box;
@@ -251,17 +249,16 @@ namespace game{
 		float r = circle->radius;
 		r *= r;
 
-		if( distance > r ){ return; }
+		if( (distance > r) && !inside ){ return; }
 
 		// Collision occured
-		LOG(DEBUG) << "COLLISION WITH A BOX OCCURED" << std::endl;
 
 		if(inside){
-			normal *= -1;
+			normal = -normal;
 		}
 
 		Manifold m;
-		m.penetration = circle->radius - glm::length(normal);
+		m.penetration = std::abs(circle->radius - glm::length(normal));
 		m.normal = normal;
 		m.collider_a = collider_box;
 		m.collider_b = collider_circle;
@@ -280,9 +277,7 @@ namespace game{
 		float velocity_along_normal = glm::dot( relative_velocity, m.normal );
 
 		// If the objects are already moving appart, do not resolve collision
-		if (velocity_along_normal > 0){
-			return;
-		}
+		if (velocity_along_normal > 0){ return; }
 
 		float e = std::min(m.collider_a->restitution_factor,
 							 m.collider_b->restitution_factor);

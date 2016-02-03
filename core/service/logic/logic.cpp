@@ -115,10 +115,10 @@ namespace game{
 		transform->position.x = -10;
 		transform->position.y = 20;
 		//transform->scale /= 2;
-		transform->rotation.z = (-3.1415/2);
+		//transform->rotation.z = (-3.1415/2);
 		new Mesh(file_path, mesh);
 		new Drawable(mesh);
-		new Box(10, 10, mesh);
+		new Box(8, 8, mesh);
 		Collider* collider = new Collider(mesh);
 		collider->shape_type = std::type_index(typeid(Box));
 		this->game_objects_.push_back(mesh);

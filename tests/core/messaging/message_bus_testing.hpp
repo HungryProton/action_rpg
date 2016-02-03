@@ -30,5 +30,5 @@ namespace game{
 			static int registered_handler_count_;
 	};
 }
-
+#include "message_bus_testing.tcc"
 #endif //CORE_TEST_MESSAGE_BUS_HPP
