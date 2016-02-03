@@ -16,6 +16,7 @@ namespace game{
         MOVE_DOWN,
         MOVE_LEFT,
         MOVE_RIGHT,
+				ATTACK,
         ACTIVATE,
     };
 

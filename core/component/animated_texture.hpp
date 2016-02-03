@@ -15,6 +15,7 @@ namespace game{
 		int frame_count;
 		glm::vec2 size;
 		std::multimap<Direction, std::vector<glm::vec2>> position;
+		int priority;		// the lower, the higher the priority
 	};
 
 	struct AnimatedTexture : public Component, public MessageHandler<AnimationCommand>{
@@ -29,6 +30,7 @@ namespace game{
 		std::string current_animation;
 		Direction current_direction;
 		glm::vec2 current_ratio; // Updated when animation change
+		int current_priority;	// Updated when animation change
 		int previous_frame;
 		glm::vec2 shift;
 		glm::vec3 local_scale;
@@ -46,7 +48,7 @@ namespace game{
 		void Stop();
 		void Bind(GLenum);
 
-		void LoadSpriteSheet(std::string, std::string);
+		void LoadSpriteSheet(std::string, std::string, int);
 		Direction GetDirectionFromAngle(int);
 		void ProcessReceivedMessages();
 	};

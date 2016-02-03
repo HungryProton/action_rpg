@@ -12,6 +12,7 @@ namespace game{
 		this->loop = false;
 		this->previous_frame = -1;
 		this->current_animation = "";
+		this->current_priority = -1;
 	}
 
 	AnimatedTexture::~AnimatedTexture(){
@@ -34,11 +35,12 @@ namespace game{
 		std::ifstream file(file_path);
 		std::string animation_name;
 		std::string animation_path;
+		int priority;
 
 		if(file.is_open()){
 			std::string folder_path = file_path.substr(0, file_path.find_last_of('/') + 1);
-			while(file >> animation_name >> animation_path){
-				this->LoadSpriteSheet(animation_name, folder_path + animation_path);
+			while(file >> animation_name >> animation_path >> priority){
+				this->LoadSpriteSheet(animation_name, folder_path + animation_path, priority);
 			}
 			file.close();
 		}
@@ -89,6 +91,7 @@ namespace game{
 	}
 
 	void AnimatedTexture::Play(std::string animation_name, Direction d){
+
 		// don't play the animation if it is already playing
 		if( this->play && (this->current_animation == animation_name) ){
 			if(d == Direction::LAST){ return; }
@@ -98,10 +101,15 @@ namespace game{
 		auto it = this->animations.find(animation_name);
 		if(it == this->animations.end()){ return; } // Animation not found
 
+		// don't play the animation if it has a lower priority
+		//if(it->second.priority >= this->current_priority
+		//		&& this->current_priority != -1){ return; }
+
 		if(d != Direction::LAST){
 			this->current_direction = d;
 		}
 		this->current_animation = animation_name;
+		this->current_priority = it->second.priority;
 		this->start_time = glfwGetTime();
 		glm::vec2 size = it->second.size;
 		Texture* texture = this->atlas.find(animation_name)->second;
@@ -135,13 +143,14 @@ namespace game{
 		this->MessageHandler<AnimationCommand>::messages_.clear();
 	}
 
-	void AnimatedTexture::LoadSpriteSheet(std::string name, std::string path){
+	void AnimatedTexture::LoadSpriteSheet(std::string name, std::string path, int priority){
 		std::ifstream file(path + ".txt");
 		if(!file.is_open()){ return; }
 
 		Animation animation;
 		Texture* texture = new Texture(path + ".png");
 		this->atlas.insert(std::make_pair(name, texture));
+		animation.priority = priority;
 
 		std::string line;
 		int current_angle = -1;

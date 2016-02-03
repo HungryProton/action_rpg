@@ -41,6 +41,7 @@ namespace game{
 		AnimationCommand message;
 		message.action = AnimationAction::PLAY;
 		message.direction = Direction::LAST;
+		message.loop = true;
 
 		// If the motion stopped
 		if(this->velocity->x == 0 && this->velocity->y == 0){

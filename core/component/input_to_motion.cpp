@@ -43,7 +43,7 @@ namespace game{
 		int modifier;
 		message.status == KEY_PRESSED ? modifier = 1 : modifier = 0;
 		motion->target_speed = 8;
-		if(message.modifier_pressed){ motion->target_speed /= 2; }
+		if(message.modifier_pressed){ motion->target_speed /= 3; }
 
 		switch(message.command){
 			case(Command::MOVE_UP):

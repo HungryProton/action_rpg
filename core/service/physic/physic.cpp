@@ -198,6 +198,7 @@ namespace game{
 
 	void Physic::BoxvsCircle(GameObject* a, GameObject* b){
 
+
 		// First, determine wheter a or b is a circle or a box
 		Circle* circle;
 		Box* box;
@@ -211,7 +212,7 @@ namespace game{
 		if(collider_circle->shape_type == typeid(Circle)){
 			circle = a->GetComponent<Circle>();
 			box = b->GetComponent<Box>();
-			collider_box = a->GetComponent<Collider>();
+			collider_box = b->GetComponent<Collider>();
 			transform_box = b->GetComponent<Transform>();
 			transform_circle = a->GetComponent<Transform>();
 		} else {
@@ -228,10 +229,10 @@ namespace game{
 		glm::vec3 closest;
 
 		float x_extent = box->width/2;
-		float y_extent = box->height;
+		float y_extent = box->height/2;
 
 		closest.x = Math::clamp(V_AB.x, -x_extent, x_extent);
-		closest.y = Math::clamp(V_AB.y, 0.f, y_extent);
+		closest.y = Math::clamp(V_AB.y, -y_extent, y_extent);
 
 		bool inside = false;
 
@@ -241,7 +242,7 @@ namespace game{
 			if(std::abs(V_AB.x) > std::abs(V_AB.y)){
 				(closest.x > 0) ? closest.x = x_extent : closest.x = -x_extent;
 			}else{
-				(closest.y < (y_extent/2.f)) ? closest.y = 0 : closest.y = y_extent;
+				(closest.y > 0) ? closest.y = x_extent : closest.y = -y_extent;
 			}
 		}
 
@@ -253,6 +254,7 @@ namespace game{
 		if( distance > r ){ return; }
 
 		// Collision occured
+		LOG(DEBUG) << "COLLISION WITH A BOX OCCURED" << std::endl;
 
 		if(inside){
 			normal *= -1;

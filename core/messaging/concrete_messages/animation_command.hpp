@@ -13,6 +13,12 @@ namespace game{
 		AnimationAction action;
 		std::string name;
 		Direction direction;
+		bool loop;
+
+		AnimationCommand(){
+			direction = Direction::LAST;
+			loop = false;
+		}
 	};
 }
 

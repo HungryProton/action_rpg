@@ -18,6 +18,7 @@
 #include "core/component/collider.hpp"
 #include "core/component/shapes/box.hpp"
 #include "core/component/shapes/circle.hpp"
+#include "core/component/battle/melee_attack.hpp"
 
 namespace game{
 
@@ -101,6 +102,9 @@ namespace game{
 		GameObject* player = SpawnSprite(resource_path, glm::vec3(0.f, 0.f, 0.f));
 		new Motion(player);
 		new InputToMotion(player);
+		MeleeAttack* m = new MeleeAttack(player);
+		m->animation_name = "attack";
+		m->damage_modifier = 2;
 
 		return player;
 	}
@@ -111,10 +115,10 @@ namespace game{
 		transform->position.x = -10;
 		transform->position.y = 20;
 		//transform->scale /= 2;
-		//transform->rotation.z = 3*(-3.1415/4);
+		transform->rotation.z = (-3.1415/2);
 		new Mesh(file_path, mesh);
 		new Drawable(mesh);
-		new Box(6, 6, mesh);
+		new Box(10, 10, mesh);
 		Collider* collider = new Collider(mesh);
 		collider->shape_type = std::type_index(typeid(Box));
 		this->game_objects_.push_back(mesh);

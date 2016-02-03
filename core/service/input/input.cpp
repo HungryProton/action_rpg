@@ -77,6 +77,7 @@ namespace game{
 		AddEntryInKeymap(GLFW_KEY_S, Command::MOVE_DOWN);
 		AddEntryInKeymap(GLFW_KEY_A, Command::MOVE_LEFT);
 		AddEntryInKeymap(GLFW_KEY_D, Command::MOVE_RIGHT);
+		AddEntryInKeymap(GLFW_KEY_V, Command::ATTACK);
 		this->modifier_code = GLFW_KEY_LEFT_ALT;
 	}
 
