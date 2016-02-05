@@ -1,13 +1,13 @@
 #ifndef GAME_CORE_COMPONENT_BATTLE_MELEE_ATTACK_HPP
 #define GAME_CORE_COMPONENT_BATTLE_MELEE_ATTACK_HPP
 
-#include "../component.hpp"
+#include "../behavior.hpp"
 #include "core/messaging/message_handler.hpp"
 #include "core/messaging/concrete_messages/input_message.hpp"
 
 namespace game{
 
-	struct MeleeAttack : public Component,
+	struct MeleeAttack : public Behavior,
 											 public MessageHandler<InputMessage>{
 		std::string animation_name;
 		float damage_modifier;

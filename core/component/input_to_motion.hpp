@@ -1,7 +1,7 @@
 #ifndef GAME_CORE_COMPONENT_INPUT_TO_MOTION_HPP
 #define GAME_CORE_COMPONENT_INPUT_TO_MOTION_HPP
 
-#include "component.hpp"
+#include "behavior.hpp"
 #include "core/messaging/message_handler.hpp"
 #include "core/messaging/concrete_messages/input_message.hpp"
 
@@ -9,7 +9,7 @@ namespace game{
 
 	struct Motion;
 
-	struct InputToMotion : public Component, public MessageHandler<InputMessage>{
+	struct InputToMotion : public Behavior, public MessageHandler<InputMessage>{
 		InputToMotion();
 		InputToMotion(GameObject*);
 		InputToMotion(InputToMotion*);

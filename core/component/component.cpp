@@ -6,6 +6,7 @@ namespace game{
 		this->is_attached = false;
 		this->parent = nullptr;
 		this->enabled = true;
+		this->manual_update = false;
 	}
 
 	Component::~Component(){

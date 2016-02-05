@@ -3,7 +3,7 @@
 
 namespace game{
 
-	InputToMotion::InputToMotion() : Component(){
+	InputToMotion::InputToMotion() : Behavior(){
 		this->motion = nullptr;
 	}
 

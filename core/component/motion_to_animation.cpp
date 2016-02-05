@@ -4,7 +4,7 @@
 
 namespace game{
 
-	MotionToAnimation::MotionToAnimation() : Component(){
+	MotionToAnimation::MotionToAnimation() : Behavior(){
 		this->velocity = nullptr;
 		this->previous_velocity = glm::vec3(-1.f, -1.f, -1.f);
 	}

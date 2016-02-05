@@ -19,6 +19,7 @@
 #include "core/component/shapes/box.hpp"
 #include "core/component/shapes/circle.hpp"
 #include "core/component/battle/melee_attack.hpp"
+#include "core/component/behavior_controller.hpp"
 
 namespace game{
 
@@ -37,7 +38,7 @@ namespace game{
 		SpawnMultipleSprite("../data/characters/female/animated/female_3.txt", 15);
 		GameObject* camera = SpawnCamera(glm::vec3(0, -12, 8));
 		SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
-		GameObject* player = SpawnPlayer("../data/characters/female/animated/female_1.txt");
+		GameObject* player = SpawnPlayer("../data/characters/female/animated/female_2.txt");
 
 		TerrainBuilder terrain_builder;
 		terrain_builder.SetMapSize(60, 60);
@@ -99,12 +100,27 @@ namespace game{
 	}
 
 	GameObject* Logic::SpawnPlayer(std::string resource_path){
-		GameObject* player = SpawnSprite(resource_path, glm::vec3(0.f, 0.f, 0.f));
+		GameObject* player = new GameObject();
+
+		new Transform(player);
+		new AnimatedTexture(resource_path, player);
+		new Drawable(player);
+		new Circle(0.35f, player);
+		Collider* collider = new Collider(player);
+		collider->shape_type = std::type_index(typeid(Circle));
 		new Motion(player);
-		new InputToMotion(player);
+
+		BehaviorController* b = new BehaviorController(player);
+
 		MeleeAttack* m = new MeleeAttack(player);
 		m->animation_name = "attack";
 		m->damage_modifier = 2;
+
+		b->AddAction(m, 30);
+		b->AddAction(new InputToMotion(player), 40);
+		b->AddAction(new MotionToAnimation(player), 50);
+
+		this->game_objects_.push_back(player);
 
 		return player;
 	}

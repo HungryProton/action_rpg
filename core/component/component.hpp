@@ -8,6 +8,7 @@ namespace game{
 	struct Component{
 		bool is_attached;
 		bool enabled;
+		bool manual_update;
 		GameObject* parent;
 
 		// ----- Helpers -----

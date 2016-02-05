@@ -3,7 +3,7 @@
 
 namespace game{
 
-	MeleeAttack::MeleeAttack() : Component(){
+	MeleeAttack::MeleeAttack() : Behavior(){
 		this->animation_name = "";
 		this->damage_modifier = 1;
 	}
