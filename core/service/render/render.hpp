@@ -27,21 +27,33 @@ namespace game{
 		private:
 			void InitializeOpenGL();
 			void InitializeGLFW();
+			void InitializeGBuffer();
+			void InitializeShaders();
 			void ProcessReceivedMessages();
 			void UpdateCamera();
 			void RenderDrawingPool();
+			void RenderQuad();
 			void AddGameObjectToDraw(GameObject*);
 			void ClearDrawingPool();
 			Drawable* MakeGameObjectDrawable(GameObject*);
 			void SetActiveCamera(GameObject*);
-			glm::mat4 GetModelViewProjectionMatrixFor(Transform*,
+			glm::mat4 GetModelMatrixFor(Transform*,
 				 								glm::vec3 local = glm::vec3(1.f, 1.f, 1.f));
 			static void GLFWErrorCallback(int, const char*);
 
 			std::vector<GameObject*> objects_to_render_;
 			Camera* camera_;
-			GLuint shader_;
+			GLuint geometry_pass_shader_;
+			GLuint lighting_pass_shader_;
 			GLFWwindow* window_;
+
+			// Defered render
+			GLuint g_buffer_;
+			GLuint g_position_;
+			GLuint g_normal_;
+			GLuint g_albedo_spec_;
+			GLuint depth_buffer_;
+			Drawable* quad_;
 	};
 }
 

@@ -21,8 +21,6 @@ namespace game{
 		this->camera_ = nullptr;
 		this->InitializeGLFW();
 		this->InitializeOpenGL();
-		this->shader_ = Locator::Get<ShaderHelper>()->GetShader("shader/vertex.c",
-																									"shader/fragment.c");
 	}
 
 	Render::~Render(){
@@ -47,6 +45,7 @@ namespace game{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 		this->window_ = glfwCreateWindow( 1440, 900, "Game", NULL, NULL);
 		glfwMakeContextCurrent(this->window_);
 		glfwSwapInterval(1);
@@ -65,14 +64,28 @@ namespace game{
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 		glClearColor(0.67, 0.84, 0.90, 1);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		this->InitializeShaders();
+		this->InitializeGBuffer();
+
+		this->quad_ = new Drawable();
+		Locator::Get<GeometryHelper>()->GetScreenSpaceBox(this->quad_);
+	}
+
+	void Render::InitializeShaders(){
+		ShaderHelper* shaders = Locator::Get<ShaderHelper>();
+		this->geometry_pass_shader_ = shaders->GetShader("shader/g_buffer.vs", "shader/g_buffer.frag");
+		this->lighting_pass_shader_ = shaders->GetShader("shader/deferred_shading.vs", "shader/deferred_shading.frag");
+
+		glUseProgram(this->lighting_pass_shader_);
+		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "gPosition"), 0);
+		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "gNormal"), 1);
+		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "gAlbedoSpec"), 2);
 	}
 
 	void Render::Update(){
 		ProcessReceivedMessages();
 		UpdateCamera();
 		RenderDrawingPool();
-
 	}
 
 	void Render::ProcessReceivedMessages(){
@@ -92,6 +105,63 @@ namespace game{
 		this->MessageHandler<RenderingIntent>::messages_.clear();
 	}
 
+	void Render::InitializeGBuffer(){
+
+		int width, height;
+		glfwGetWindowSize(this->window_, &width, &height);
+
+		glGenFramebuffers(1, &(this->g_buffer_));
+		glBindFramebuffer(GL_FRAMEBUFFER, this->g_buffer_);
+
+		// Position buffer
+		glGenTextures(1, &(this->g_position_));
+		glBindTexture(GL_TEXTURE_2D, this->g_position_);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB,
+		GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+		this->g_position_, 0);
+
+		// - Normal color buffer
+		glGenTextures(1, &(this->g_normal_));
+		glBindTexture(GL_TEXTURE_2D, this->g_normal_);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB,
+		GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D,
+		this->g_normal_, 0);
+
+		// - Color + Specular color buffer
+		glGenTextures(1, &(this->g_albedo_spec_));
+		glBindTexture(GL_TEXTURE_2D, this->g_albedo_spec_);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+		GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D,
+		this->g_albedo_spec_, 0);
+
+		// - Tell OpenGL which color attachments we’ll use (of this framebuffer)
+		// for rendering
+		GLuint attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
+	 	GL_COLOR_ATTACHMENT2};
+		glDrawBuffers(3, attachments);
+
+		// Create and attach depth buffer
+    glGenRenderbuffers(1, &(this->depth_buffer_));
+    glBindRenderbuffer(GL_RENDERBUFFER, this->depth_buffer_);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, this->depth_buffer_);
+
+    // - Finally check if framebuffer is complete
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        LOG(ERROR) << "Framebuffer not complete!" << std::endl;
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
 	void Render::UpdateCamera(){
 		Transform* transform = this->camera_->parent->GetComponent<Transform>();
 		glm::mat4 view = glm::lookAt(transform->position,
@@ -102,56 +172,73 @@ namespace game{
 
 	void Render::RenderDrawingPool(){
 		glfwSwapBuffers(this->window_);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		for(GameObject* game_object : this->objects_to_render_){
-			Drawable* drawable = game_object->GetComponent<Drawable>();
-			Transform* transform = game_object->GetComponent<Transform>();
-			Texture* texture = game_object->GetComponent<Texture>();
-			AnimatedTexture* animated_texture = game_object->GetComponent<AnimatedTexture>();
-			Mesh* mesh = game_object->GetComponent<Mesh>();
-			glm::vec3 local_scale = glm::vec3(1.f, 1.f, 1.f);
+		// Geometry pass
+		glBindFramebuffer(GL_FRAMEBUFFER, this->g_buffer_);
 
-			if(!mesh){
-				if(texture){ local_scale = texture->local_scale; }
-				if(animated_texture){ local_scale = animated_texture->local_scale; }
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glm::mat4 view_projection = this->camera_->view_projection;
+			glm::mat4 model;
+			glUseProgram(this->geometry_pass_shader_);
+			GLuint view_projection_id = glGetUniformLocation(this->geometry_pass_shader_, "ViewProjection");
+			glUniformMatrix4fv(view_projection_id, 1, GL_FALSE, glm::value_ptr(view_projection));
+
+			for(GameObject* game_object : this->objects_to_render_){
+				Drawable* drawable = game_object->GetComponent<Drawable>();
+				Transform* transform = game_object->GetComponent<Transform>();
+				Texture* texture = game_object->GetComponent<Texture>();
+				AnimatedTexture* animated_texture = game_object->GetComponent<AnimatedTexture>();
+				Mesh* mesh = game_object->GetComponent<Mesh>();
+
+				// Set every texture to the same scale
+				// Kind of an ugly hack, find a more elegant way to do it
+				glm::vec3 local_scale = glm::vec3(1.f, 1.f, 1.f);
+				if(!mesh){
+					if(texture){ local_scale = texture->local_scale; }
+					if(animated_texture){ local_scale = animated_texture->local_scale; }
+				}
+
+				model = this->GetModelMatrixFor(transform, local_scale);
+				GLuint model_id = glGetUniformLocation(this->geometry_pass_shader_, "Model");
+				glUniformMatrix4fv(model_id, 1, GL_FALSE, glm::value_ptr(model));
+
+				//-- Draw section
+				glBindVertexArray(drawable->vao);
+
+				// Update uniforms in case of animated textures
+				GLuint tex_ratio = glGetUniformLocation(this->geometry_pass_shader_, "TexRatio");
+				GLuint tex_shift = glGetUniformLocation(this->geometry_pass_shader_, "TexShift");
+				glUniform2f(tex_ratio, -1, -1);
+
+				if(texture){
+					texture->Bind(GL_TEXTURE0);
+				}else if(animated_texture){
+					animated_texture->Bind(GL_TEXTURE0);
+					glUniform2f(tex_ratio, animated_texture->current_ratio.x, animated_texture->current_ratio.y);
+					glUniform2f(tex_shift, animated_texture->shift.x, animated_texture->shift.y);
+				} else {
+					glBindTexture( GL_TEXTURE_2D, 0);
+				}
+
+				glDrawElements(drawable->draw_type, drawable->vertex_amount,
+						GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
 			}
 
-			glm::mat4 model_view_projection = GetModelViewProjectionMatrixFor(transform, local_scale);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-			check_gl_error();
-			glBindVertexArray(drawable->vao);
+		// 2. Lighting Pass
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glUseProgram(this->lighting_pass_shader_);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, this->g_position_);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, this->g_normal_);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, this->g_albedo_spec_);
 
-			check_gl_error();
-				glUseProgram(this->shader_);
-
-			check_gl_error();
-					GLuint matrix_id = glGetUniformLocation(this->shader_, "MVP");
-					glUniformMatrix4fv(matrix_id, 1, GL_FALSE, &model_view_projection[0][0]);
-
-					GLuint tex_ratio = glGetUniformLocation(this->shader_, "TexRatio");
-					GLuint tex_shift = glGetUniformLocation(this->shader_, "TexShift");
-					glUniform2f(tex_ratio, -1, -1);
-
-					if(texture){
-						texture->Bind(GL_TEXTURE0);
-					}else if(animated_texture){
-						animated_texture->Bind(GL_TEXTURE0);
-						glUniform2f(tex_ratio, animated_texture->current_ratio.x, animated_texture->current_ratio.y);
-						glUniform2f(tex_shift, animated_texture->shift.x, animated_texture->shift.y);
-					} else {
-						glBindTexture( GL_TEXTURE_2D, 0);
-					}
-
-			check_gl_error();
-					glEnable(GL_BLEND);
-
-			check_gl_error();
-						glDrawElements(drawable->draw_type, drawable->vertex_amount,
-								GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
-			check_gl_error();
-
-		}
+		glBindVertexArray(this->quad_->vao);
+		glDrawElements(this->quad_->draw_type, this->quad_->vertex_amount,
+				GL_UNSIGNED_INT, BUFFER_OFFSET(this->quad_->offset));
 
 		this->ClearDrawingPool();
 	}
@@ -194,7 +281,7 @@ namespace game{
 		return drawable;
 	}
 
-	glm::mat4 Render::GetModelViewProjectionMatrixFor(Transform* transform, glm::vec3 local_scale){
+	glm::mat4 Render::GetModelMatrixFor(Transform* transform, glm::vec3 local_scale){
 
 		glm::mat4 translation = glm::translate(glm::mat4(1.0f),
 																					 glm::vec3(transform->position));
@@ -210,9 +297,7 @@ namespace game{
 
 		glm::mat4 scale = glm::scale(transform->scale * local_scale);
 
-		glm::mat4 model = rotation_xyz * scale;
-
-		return this->camera_->view_projection * model;
+		return rotation_xyz * scale;
 	}
 
 	void Render::SetActiveCamera(GameObject* camera){
