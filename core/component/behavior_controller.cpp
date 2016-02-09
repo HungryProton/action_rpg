@@ -46,9 +46,9 @@ namespace game{
 	void BehaviorController::Update(){
 		for(auto behavior : this->behaviors_){
 			behavior.second->Update();
-			//if(behavior.second->blocking){
-			//	break;
-			//}
+			if(behavior.second->blocking){
+				break;
+			}
 		}
 	}
 }

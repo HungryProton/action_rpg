@@ -19,7 +19,10 @@ namespace game{
 		virtual MeleeAttack* Clone();
 		virtual void Update();
 
+		float attack_duration;
+
 		private:
+			float start_time;
 			void ProcessReceivedMessages();
 			void Attack();
 	};

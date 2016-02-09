@@ -36,7 +36,7 @@ namespace game{
 		if(!this->velocity){ return; }
 
 		// Early return if things didn't changed
-		if(*(this->velocity) == this->previous_velocity){ return; }
+		//if(*(this->velocity) == this->previous_velocity){ return; }
 
 		AnimationCommand message;
 		message.action = AnimationAction::PLAY;

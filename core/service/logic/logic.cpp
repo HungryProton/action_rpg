@@ -37,8 +37,14 @@ namespace game{
 		SpawnMultipleSprite("../data/characters/female/animated/female_2.txt", 15);
 		SpawnMultipleSprite("../data/characters/female/animated/female_3.txt", 15);
 		GameObject* camera = SpawnCamera(glm::vec3(0, -12, 8));
-		SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
+		GameObject* house = SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
+		new Box(8, 8, house);
+
 		GameObject* player = SpawnPlayer("../data/characters/female/animated/female_2.txt");
+		SpawnRandomMeshes("../data/environment/terrain/vegetation/tree.obj", 20, 0.5f);
+		SpawnRandomMeshes("../data/environment/terrain/vegetation/bush.obj", 20, 0.35f);
+		SpawnRandomMeshes("../data/environment/terrain/rock/rock_01.obj", 10, 1.f);
+		SpawnRandomMeshes("../data/environment/terrain/rock/rock_02.obj", 10, 1.f);
 
 		TerrainBuilder terrain_builder;
 		terrain_builder.SetMapSize(60, 60);
@@ -115,9 +121,10 @@ namespace game{
 		MeleeAttack* m = new MeleeAttack(player);
 		m->animation_name = "attack";
 		m->damage_modifier = 2;
+		m->attack_duration = 0.35f;
 
-		b->AddAction(m, 30);
-		b->AddAction(new InputToMotion(player), 40);
+		b->AddAction(m, 40);
+		b->AddAction(new InputToMotion(player), 30);
 		b->AddAction(new MotionToAnimation(player), 50);
 
 		this->game_objects_.push_back(player);
@@ -134,11 +141,24 @@ namespace game{
 		//transform->rotation.z = (-3.1415/2);
 		new Mesh(file_path, mesh);
 		new Drawable(mesh);
-		new Box(8, 8, mesh);
 		Collider* collider = new Collider(mesh);
 		collider->shape_type = std::type_index(typeid(Box));
+		collider->SetMass(1000);
 		this->game_objects_.push_back(mesh);
 		return mesh;
+	}
+
+	void Logic::SpawnRandomMeshes(std::string file_path, int count, float size){
+		for(int i = 0; i < count; i++){
+			GameObject* m = SpawnMesh(file_path);
+			Transform* t = m->GetComponent<Transform>();
+			t->position.x = 15 - Random::NextFloat(30);
+			t->position.y = 15 - Random::NextFloat(30);
+			t->rotation.z = Random::NextFloat(360)*(3.1415/180.f);
+			new Circle(size, m);
+			Collider* c = m->GetComponent<Collider>();
+			c->shape_type = std::type_index(typeid(Circle));
+		}
 	}
 
 	GameObject* Logic::SpawnCamera(glm::vec3 position){
