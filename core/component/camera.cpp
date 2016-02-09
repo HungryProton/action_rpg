@@ -8,7 +8,7 @@ namespace game{
 		this->active = false;
 		this->up = glm::vec3(0,0,1);
 		this->target = glm::vec3(0,0,0);
-		this->znear = 1;
+		this->znear = 1.f;
 		this->zfar = 1000;
 		this->ratio = 1440.f/900.f;
 		this->fovy = 70;

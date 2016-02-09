@@ -33,18 +33,18 @@ namespace game{
 
 	void Logic::Initialize(){
 
-		SpawnMultipleSprite("../data/characters/female/animated/female_1.txt", 15);
-		SpawnMultipleSprite("../data/characters/female/animated/female_2.txt", 15);
-		SpawnMultipleSprite("../data/characters/female/animated/female_3.txt", 15);
+		SpawnMultipleSprite("../data/characters/female/animated/female_1.txt", 5);
+		SpawnMultipleSprite("../data/characters/female/animated/female_2.txt", 5);
+		SpawnMultipleSprite("../data/characters/female/animated/female_3.txt", 5);
 		GameObject* camera = SpawnCamera(glm::vec3(0, -12, 8));
 		GameObject* house = SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
 		new Box(8, 8, house);
 
 		GameObject* player = SpawnPlayer("../data/characters/female/animated/female_2.txt");
-		SpawnRandomMeshes("../data/environment/terrain/vegetation/tree.obj", 20, 0.5f);
-		SpawnRandomMeshes("../data/environment/terrain/vegetation/bush.obj", 20, 0.35f);
-		SpawnRandomMeshes("../data/environment/terrain/rock/rock_01.obj", 10, 1.f);
-		SpawnRandomMeshes("../data/environment/terrain/rock/rock_02.obj", 10, 1.f);
+		SpawnRandomMeshes("../data/environment/terrain/vegetation/tree.obj", 10, 0.5f);
+		SpawnRandomMeshes("../data/environment/terrain/vegetation/bush.obj", 10, 0.35f);
+		SpawnRandomMeshes("../data/environment/terrain/rock/rock_01.obj", 5, 1.f);
+		SpawnRandomMeshes("../data/environment/terrain/rock/rock_02.obj", 5, 1.f);
 
 		TerrainBuilder terrain_builder;
 		terrain_builder.SetMapSize(60, 60);

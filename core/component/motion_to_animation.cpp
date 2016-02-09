@@ -35,16 +35,18 @@ namespace game{
 	void MotionToAnimation::Update(){
 		if(!this->velocity){ return; }
 
-		// Early return if things didn't changed
-		//if(*(this->velocity) == this->previous_velocity){ return; }
+
+		//if(speed <= 0.01){ return; }
 
 		AnimationCommand message;
 		message.action = AnimationAction::PLAY;
 		message.direction = Direction::LAST;
 		message.loop = true;
 
-		// If the motion stopped
-		if(this->velocity->x == 0 && this->velocity->y == 0){
+		float speed = glm::length(*(this->velocity));
+
+		// If the motion stopped or barely moving
+		if((this->velocity->x == 0 && this->velocity->y == 0) || (speed <= 0.05f)){
 			message.name = "idle";
 			this->previous_velocity = *(this->velocity);
 			this->parent->BroadcastLocally(message);
@@ -68,7 +70,6 @@ namespace game{
 
 		// Determine whether we should run or walk based on how fast the character
 		// moves
-		float speed = glm::length(*(this->velocity));
 		if(speed > 0.10){
 			message.name = "run";
 		} else {
