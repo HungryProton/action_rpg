@@ -18,26 +18,29 @@ namespace game{
 			void GetBox(Drawable*);
 			void GetCircles(Drawable*);
 			void GetMesh(Mesh*, Drawable*);
+			void GetScreenSpaceBox(Drawable*);
 
 		private:
 			/**
 			 * @brief Stores the circles ibo according to their resolution
 			 * (The amount of vertices used to draw the perimeter of the circle)
 			 */
-			std::map<int, GLuint> circles;
+			std::map<int, GLuint> circles_;
 
 			/**
 			 * @brief Stores the meshes ibo sorted associated with their file name
 			 */
 
-			std::map<std::string, GLuint> meshes;
+			std::map<std::string, GLuint> meshes_;
 
 			/**
 			 * @brief All the boxes are the same, they are scaled to their
 			 * proper dimensions on the render system
 			 */
-			GLuint box;
-			int box_offset;
+			GLuint box_;
+			int box_offset_;
+			GLuint screen_box_;
+			int screen_box_offset_;
 
 	};
 }

@@ -8,8 +8,8 @@ namespace game{
 
 	GeometryHelper::GeometryHelper(){
 		Game::RequestForService<BufferHelper>();
-		this->box = 0;
-		this->box_offset = 0;
+		this->box_ = 0;
+		this->box_offset_ = 0;
 	}
 
 	GeometryHelper::~GeometryHelper(){
@@ -22,7 +22,7 @@ namespace game{
 
 	void GeometryHelper::GetBox(Drawable* drawable){
 
-		if( this->box == 0){
+		if( this->box_ == 0){
 
 			std::multimap<int, std::vector<float> > data;
 
@@ -60,14 +60,14 @@ namespace game{
 			std::vector<unsigned int> indices = std::vector<unsigned int>(
 									indexArray, indexArray + 6); // 2 triangles * 3
 
-			this->box = Locator::Get<BufferHelper>()->RegisterData(data, indices, &(drawable->offset));
-			this->box_offset = drawable->offset;
+			this->box_ = Locator::Get<BufferHelper>()->RegisterData(data, indices, &(drawable->offset));
+			this->box_offset_ = drawable->offset;
 		}
 
-		drawable->vao = this->box;
+		drawable->vao = this->box_;
 		drawable->draw_type = GL_TRIANGLES;
 		drawable->vertex_amount = 6;
-		drawable->offset = this->box_offset;
+		drawable->offset = this->box_offset_;
 	}
 
 	/*
@@ -139,9 +139,9 @@ namespace game{
 	void GeometryHelper::GetMesh(Mesh* mesh, Drawable* drawable){
 		std::string file_path = mesh->file_path;
 
-		auto it = this->meshes.find(file_path);
+		auto it = this->meshes_.find(file_path);
 
-		if( it != this->meshes.end() ){
+		if( it != this->meshes_.end() ){
 			drawable->vao = it->second;
 			return;
 		}
@@ -156,5 +156,52 @@ namespace game{
 		drawable->vao = Locator::Get<BufferHelper>()->RegisterData(data, indices, &(drawable->offset));
 		drawable->vertex_amount = mesh->shapes[0].mesh.indices.size();
 		drawable->draw_type = GL_TRIANGLES;
+	}
+
+	void GeometryHelper::GetScreenSpaceBox(Drawable* drawable){
+		if(this->screen_box_ == 0){
+			std::multimap<int, std::vector<float> > data;
+
+			float vertexArray[] = {
+				-1.f, 1.f, 0.f,
+				-1.f, -1.f, 0.f,
+				1.f, 1.f, 0.f,
+				1.f, -1.f, 0.f
+			};
+
+			data.insert( std::pair<int, std::vector<float> >(
+								VERTEX_ARRAY,
+								std::vector<float>(
+									vertexArray,
+									vertexArray + 12))); // 4 vertex * 3
+
+			// Build the texture coordinates array
+			float texture_coords_array[] = {
+				0, 1,
+				0, 0,
+				1, 1,
+				1, 0
+			};
+
+			data.insert( std::pair<int, std::vector<float> >(
+							 TEXTURE_COORDS,
+							 std::vector<float>(texture_coords_array,
+												texture_coords_array + 8)));
+
+			unsigned int indexArray[] = {
+				0, 1, 2,
+			 	3, 2, 1
+			};
+
+			std::vector<unsigned int> indices = std::vector<unsigned int>(
+									indexArray, indexArray + 6); // 3 vertex per triangles
+
+			this->screen_box_ = Locator::Get<BufferHelper>()->RegisterData(data, indices, &(drawable->offset));
+			this->screen_box_offset_ = drawable->offset;
+		}
+		drawable->vao = this->screen_box_;
+		drawable->vertex_amount = 6;
+		drawable->draw_type = GL_TRIANGLES;
+		drawable->offset = this->screen_box_offset_;
 	}
 }
