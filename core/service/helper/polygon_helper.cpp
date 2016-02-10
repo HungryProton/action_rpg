@@ -56,10 +56,10 @@ namespace game{
 
 		for(unsigned int i = 0; i < vertex_array->size(); i++){
 			Vertex* v = &((*vertex_array)[i]);
-			v->texture_coordinates.x = (v->position.x + (width/2.f))/width;
-			v->texture_coordinates.y = (v->position.y + (height/2.f))/height;
-			v->texture_coordinates.x *= this->texture_modifier_;
-			v->texture_coordinates.y *= this->texture_modifier_;
+			v->tex_coords.x = (v->position.x + (width/2.f))/width;
+			v->tex_coords.y = (v->position.y + (height/2.f))/height;
+			v->tex_coords.x *= this->texture_modifier_;
+			v->tex_coords.y *= this->texture_modifier_;
 		}
 	}
 
@@ -201,8 +201,8 @@ namespace game{
 	std::vector<float> PolygonHelper::TextureToFloatArray(std::vector<Vertex> vertex_array){
 		std::vector<float> result;
 		for(Vertex v : vertex_array){
-			result.push_back(v.texture_coordinates.x);
-			result.push_back(v.texture_coordinates.y);
+			result.push_back(v.tex_coords.x);
+			result.push_back(v.tex_coords.y);
 		}
 		return result;
 	}

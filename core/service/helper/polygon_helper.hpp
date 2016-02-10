@@ -4,14 +4,10 @@
 #include <vector>
 #include <map>
 #include "core/service/service.hpp"
+#include "core/component/common.hpp"
 #include "tools/opengl.hpp"
 
 namespace game{
-
-	struct Vertex{
-		glm::vec3 position;
-		glm::vec2 texture_coordinates;
-	};
 
 	struct Polygon{
 		std::vector<Vertex> vertices;
