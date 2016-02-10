@@ -137,6 +137,8 @@ namespace game{
 				return 2;
 			case INDEX_ARRAY:
 				return 3;
+			case NORMAL_ARRAY:
+				return 3;
 		}
 		return 0;
 	}

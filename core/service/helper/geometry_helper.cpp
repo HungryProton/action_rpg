@@ -39,6 +39,19 @@ namespace game{
 									vertexArray,
 									vertexArray + 12))); // 4 vertex * 3
 
+			float normalArray[] = {
+				0.f, -1.f, 0.f,
+				0.f, -1.f, 0.f,
+				0.f, -1.f, 0.f,
+				0.f, -1.f, 0.f
+			};
+
+			data.insert( std::pair<int, std::vector<float> >(
+								NORMAL_ARRAY,
+								std::vector<float>(
+									normalArray,
+									normalArray + 12))); // 4 vertex * 3
+
 			// Build the texture coordinates array
 			float texture_coords_array[] = {
 				0, 1,
@@ -150,6 +163,7 @@ namespace game{
 
 		std::multimap<int, std::vector<float>> data;
 		data.insert(std::pair<int, std::vector<float>>(VERTEX_ARRAY, mesh->shapes[0].mesh.positions));
+		data.insert(std::pair<int, std::vector<float>>(NORMAL_ARRAY, mesh->shapes[0].mesh.normals));
 		data.insert(std::pair<int, std::vector<float>>(TEXTURE_COORDS, mesh->shapes[0].mesh.texcoords));
 		std::vector<unsigned int> indices = mesh->shapes[0].mesh.indices;
 

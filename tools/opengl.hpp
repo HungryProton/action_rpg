@@ -15,9 +15,10 @@
 #define check_gl_error() _check_gl_error(__FILE__,__LINE__)
 
 #define VERTEX_ARRAY 0
-#define COLOR_ARRAY 1
+#define NORMAL_ARRAY 1
 #define TEXTURE_COORDS 2
 #define INDEX_ARRAY 3
+#define COLOR_ARRAY 4
 
 namespace game{
 	void _check_gl_error(const char* file, int line);
