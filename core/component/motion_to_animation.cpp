@@ -46,7 +46,7 @@ namespace game{
 		float speed = glm::length(*(this->velocity));
 
 		// If the motion stopped or barely moving
-		if((this->velocity->x == 0 && this->velocity->y == 0) || (speed <= 0.05f)){
+		if((this->velocity->x == 0 && this->velocity->y == 0) || (speed <= 0.01f)){
 			message.name = "idle";
 			this->previous_velocity = *(this->velocity);
 			this->parent->BroadcastLocally(message);
