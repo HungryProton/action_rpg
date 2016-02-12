@@ -57,12 +57,20 @@ namespace game{
 		polygon_helper.SetTextureCoordModifier(this->size_.x/5.f);
 		Polygon surface;
 		std::vector<float> vertex_array;
+		std::vector<float> normal_array;
 		do{
 			LOG(DEBUG) << "Regenerating outline" << std::endl;
 			vertex_array = this->GenerateOutline();
 			surface = polygon_helper.FloatArrayToSinglePolygon(vertex_array);
 		}while(surface.vertices.size() == 0);
 		polygon_helper.SinglePolygonToGLData(surface, data, index_array);
+
+		for(unsigned long i = 0; i < vertex_array.size()-3; i+=3){
+			normal_array.push_back(0.0f);
+			normal_array.push_back(0.0f);
+			normal_array.push_back(1.0f);
+		}
+		data->insert(std::make_pair(NORMAL_ARRAY, normal_array));
 	}
 
 	std::vector<float> TerrainBuilder::GenerateOutline(){

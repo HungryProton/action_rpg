@@ -13,7 +13,7 @@ void main(){
 	vec3 FragPos = texture(gPositionDepth, TexCoords).rgb;
 	vec3 Normal = texture(gNormal, TexCoords).rgb;
 	vec3 Diffuse = texture(gAlbedoSpec, TexCoords).rgb;
-	//float ssao = texture(ssao, TexCoords).r;
+	float ssao = texture(ssao, TexCoords).r;
 
-	FragColor = vec4(Diffuse, 1.0f);
+	FragColor = vec4(vec3(0.90) * ssao, 1.0f);
 }

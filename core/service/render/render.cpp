@@ -92,6 +92,9 @@ namespace game{
 		glUniform1i(glGetUniformLocation(this->ssao_shader_, "gPositionDepth"), 0);
 		glUniform1i(glGetUniformLocation(this->ssao_shader_, "gNormal"), 1);
 		glUniform1i(glGetUniformLocation(this->ssao_shader_, "texNoise"), 2);
+		glUniform1i(glGetUniformLocation(this->ssao_shader_, "samples"), 3);
+
+		glUseProgram(0);
 	}
 
 	void Render::InitializeSSAO(){
@@ -163,12 +166,12 @@ namespace game{
 		// Generate blur buffer
 		glGenFramebuffers(1, &(this->ssao_blur_buffer_));
 		glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_blur_buffer_);
-    glGenTextures(1, &(this->ssao_blur_color_cuffer_));
-    glBindTexture(GL_TEXTURE_2D, this->ssao_blur_color_cuffer_);
+    glGenTextures(1, &(this->ssao_blur_color_buffer_));
+    glBindTexture(GL_TEXTURE_2D, this->ssao_blur_color_buffer_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RGB, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->ssao_blur_color_cuffer_, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->ssao_blur_color_buffer_, 0);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "SSAO Blur Framebuffer not complete!" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -332,7 +335,7 @@ namespace game{
 			glActiveTexture(GL_TEXTURE3);
 			glBindTexture(GL_TEXTURE_1D, this->ssao_kernel_);
 
-			projection_id = glGetUniformLocation(this->ssao_shader_, "Projection");
+			projection_id = glGetUniformLocation(this->ssao_shader_, "projection");
 			glUniformMatrix4fv(projection_id, 1, GL_FALSE, glm::value_ptr(this->camera_->projection));
 			this->RenderQuad();
 

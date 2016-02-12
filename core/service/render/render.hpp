@@ -60,7 +60,7 @@ namespace game{
 			GLuint ssao_buffer_;
 			GLuint ssao_color_buffer_;
 			GLuint ssao_blur_buffer_;
-			GLuint ssao_blur_color_cuffer_;
+			GLuint ssao_blur_color_buffer_;
 			GLuint noise_texture_;
 			GLuint ssao_shader_;
 			GLuint ssao_blur_shader_;
