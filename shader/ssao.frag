@@ -7,7 +7,7 @@ uniform sampler2D gPositionDepth;
 uniform sampler2D gNormal;
 uniform sampler2D texNoise;
 
-uniform vec3 samples[64];
+uniform sampler1D samples;
 uniform mat4 projection;
 
 // tile noise texture over screen based on screen dimensions divided by
@@ -28,7 +28,7 @@ void main()
 
 	float occlusion = 0.0;
 	for(int i = 0; i < kernelSize; i++){
-		vec3 sample = TBN * samples[i];
+		vec3 sample = TBN * texture(samples, i).rgb;
 		sample = fragPos + sample * radius;
 		vec4 offset = vec4(sample, 1.0);
 		offset = projection * offset; // from view to clip-space

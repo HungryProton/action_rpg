@@ -64,7 +64,7 @@ namespace game{
 			GLuint noise_texture_;
 			GLuint ssao_shader_;
 			GLuint ssao_blur_shader_;
-			std::vector<glm::vec3> ssao_kernel_;
+			GLuint ssao_kernel_;
 	};
 }
 

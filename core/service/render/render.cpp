@@ -97,6 +97,7 @@ namespace game{
 	void Render::InitializeSSAO(){
 
 		// generate hemi sphere kernel
+		std::vector<glm::vec3> ssao_kernel;
 		for(GLuint i = 0; i < KERNEL_SIZE; i++){
 			glm::vec3 sample(
 					Random::NextFloat() * 2.f - 1.f,
@@ -108,8 +109,15 @@ namespace game{
 
 			GLfloat scale = GLfloat(i) / KERNEL_SIZE;
 			scale = Math::lerp(0.1f, 1.0f, scale * scale);
-			this->ssao_kernel_.push_back(sample);
+			ssao_kernel.push_back(sample);
 		}
+		// Save kernel in a 1D texture
+		glGenTextures(1, &(this->noise_texture_));
+		glBindTexture(GL_TEXTURE_2D, this->noise_texture_);
+		glTexImage1D(GL_TEXTURE_1D, 0, GL_RGB16F, KERNEL_SIZE, 1, GL_RGB, GL_FLOAT,
+		&ssao_kernel[0]);
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		// Generate noise
 		std::vector<glm::vec3> ssao_noise;
@@ -321,12 +329,8 @@ namespace game{
 			glBindTexture(GL_TEXTURE_2D, this->g_normal_);
 			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_2D, this->noise_texture_);
-			//
-			// Send kernel + rotation
-			for (GLuint i = 0; i < 16; i++){
-				GLuint sample_id = glGetUniformLocation(this->ssao_shader_, ("samples[" + std::to_string(i) + "]").c_str());
-				glUniform3fv(sample_id, 1, &this->ssao_kernel_[i][0]);
-			}
+			glActiveTexture(GL_TEXTURE3);
+			glBindTexture(GL_TEXTURE_1D, this->ssao_kernel_);
 
 			projection_id = glGetUniformLocation(this->ssao_shader_, "Projection");
 			glUniformMatrix4fv(projection_id, 1, GL_FALSE, glm::value_ptr(this->camera_->projection));
