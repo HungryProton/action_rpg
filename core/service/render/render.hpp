@@ -29,6 +29,7 @@ namespace game{
 			void InitializeGLFW();
 			void InitializeGBuffer();
 			void InitializeShaders();
+			void InitializeSSAO();
 			void ProcessReceivedMessages();
 			void UpdateCamera();
 			void RenderDrawingPool();
@@ -49,11 +50,21 @@ namespace game{
 
 			// Defered render
 			GLuint g_buffer_;
-			GLuint g_position_;
+			GLuint g_position_depth_;
 			GLuint g_normal_;
 			GLuint g_albedo_spec_;
 			GLuint depth_buffer_;
 			Drawable* quad_;
+
+			// SSAO
+			GLuint ssao_buffer_;
+			GLuint ssao_color_buffer_;
+			GLuint ssao_blur_buffer_;
+			GLuint ssao_blur_color_cuffer_;
+			GLuint noise_texture_;
+			GLuint ssao_shader_;
+			GLuint ssao_blur_shader_;
+			std::vector<glm::vec3> ssao_kernel_;
 	};
 }
 

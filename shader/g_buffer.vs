@@ -9,15 +9,16 @@ out vec2 TexCoords;
 out vec3 Normal;
 
 uniform mat4 Model;
-uniform mat4 ViewProjection;
+uniform mat4 View;
+uniform mat4 Projection;
 
 uniform vec2 TexRatio;
 uniform vec2 TexShift;
 
 void main(){
-	vec4 worldPos = Model * vec4(position, 1.0f);
-	FragPos = worldPos.xyz;
-	gl_Position = ViewProjection * worldPos;
+	vec4 viewPos = View * Model * vec4(position, 1.0f);
+	FragPos = viewPos.xyz;
+	gl_Position = Projection * viewPos;
 
 	mat3 normalMatrix = transpose(inverse(mat3(Model)));
 	Normal = normalMatrix * normal;

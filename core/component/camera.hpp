@@ -9,7 +9,7 @@ namespace game{
 	struct Camera : public Component {
 
 		glm::mat4 projection;
-		glm::mat4 view_projection;
+		glm::mat4 view;
 		float fovy;
 		float ratio;
 		float znear;

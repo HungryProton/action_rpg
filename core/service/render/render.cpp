@@ -2,6 +2,8 @@
 #include "render.hpp"
 #include "tools/logger.hpp"
 #include "tools/opengl.hpp"
+#include "tools/random.hpp"
+#include "tools/math.hpp"
 #include "core/game/game.hpp"
 #include "core/service/helper/geometry_helper.hpp"
 #include "core/service/helper/shader_helper.hpp"
@@ -11,6 +13,8 @@
 #include "core/component/drawable.hpp"
 #include "core/component/texture.hpp"
 #include "core/component/animated_texture.hpp"
+
+#define KERNEL_SIZE 16.f
 
 namespace game{
 
@@ -62,10 +66,11 @@ namespace game{
 
 		glDepthFunc(GL_LESS);
 		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
+		//glEnable(GL_CULL_FACE);
 		glClearColor(0.67, 0.84, 0.90, 1);
 		this->InitializeShaders();
 		this->InitializeGBuffer();
+		this->InitializeSSAO();
 
 		this->quad_ = new Drawable();
 		Locator::Get<GeometryHelper>()->GetScreenSpaceBox(this->quad_);
@@ -75,11 +80,90 @@ namespace game{
 		ShaderHelper* shaders = Locator::Get<ShaderHelper>();
 		this->geometry_pass_shader_ = shaders->GetShader("shader/g_buffer.vs", "shader/g_buffer.frag");
 		this->lighting_pass_shader_ = shaders->GetShader("shader/deferred_shading.vs", "shader/deferred_shading.frag");
+		this->ssao_shader_ = shaders->GetShader("shader/ssao.vs", "shader/ssao.frag");
 
 		glUseProgram(this->lighting_pass_shader_);
-		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "gPosition"), 0);
+		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "gPositionDepth"), 0);
 		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "gNormal"), 1);
 		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "gAlbedoSpec"), 2);
+		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "ssao"), 3);
+
+		glUseProgram(this->ssao_shader_);
+		glUniform1i(glGetUniformLocation(this->ssao_shader_, "gPositionDepth"), 0);
+		glUniform1i(glGetUniformLocation(this->ssao_shader_, "gNormal"), 1);
+		glUniform1i(glGetUniformLocation(this->ssao_shader_, "texNoise"), 2);
+	}
+
+	void Render::InitializeSSAO(){
+
+		// generate hemi sphere kernel
+		for(GLuint i = 0; i < KERNEL_SIZE; i++){
+			glm::vec3 sample(
+					Random::NextFloat() * 2.f - 1.f,
+					Random::NextFloat() * 2.f - 1.f,
+					Random::NextFloat()
+					);
+			sample = glm::normalize(sample);
+			sample *= Random::NextFloat();
+
+			GLfloat scale = GLfloat(i) / KERNEL_SIZE;
+			scale = Math::lerp(0.1f, 1.0f, scale * scale);
+			this->ssao_kernel_.push_back(sample);
+		}
+
+		// Generate noise
+		std::vector<glm::vec3> ssao_noise;
+		for(GLuint i = 0; i < KERNEL_SIZE; i++){
+			glm::vec3 noise(
+					Random::NextFloat() * 2.f - 1.f,
+					Random::NextFloat() * 2.f - 1.f,
+					0.f);
+			ssao_noise.push_back(noise);
+		}
+
+		// Save noise in texture
+		glGenTextures(1, &(this->noise_texture_));
+		glBindTexture(GL_TEXTURE_2D, this->noise_texture_);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, 4, 4, 0, GL_RGB, GL_FLOAT,
+		&ssao_noise[0]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		// Generate framebuffer
+		int width, height;
+		glfwGetWindowSize(this->window_, &width, &height);
+
+		glGenFramebuffers(1, &(this->ssao_buffer_));
+		glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_buffer_);
+
+		glGenTextures(1, &(this->ssao_color_buffer_));
+		glBindTexture(GL_TEXTURE_2D, this->ssao_color_buffer_);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RGB,
+		GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+		this->ssao_color_buffer_, 0);
+
+		if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+			std::cout << "SSAO Framebuffer not complete!" << std::endl;
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		// Generate blur buffer
+		glGenFramebuffers(1, &(this->ssao_blur_buffer_));
+		glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_blur_buffer_);
+    glGenTextures(1, &(this->ssao_blur_color_cuffer_));
+    glBindTexture(GL_TEXTURE_2D, this->ssao_blur_color_cuffer_);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->ssao_blur_color_cuffer_, 0);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "SSAO Blur Framebuffer not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	void Render::Update(){
@@ -114,14 +198,16 @@ namespace game{
 		glBindFramebuffer(GL_FRAMEBUFFER, this->g_buffer_);
 
 		// Position buffer
-		glGenTextures(1, &(this->g_position_));
-		glBindTexture(GL_TEXTURE_2D, this->g_position_);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB,
+		glGenTextures(1, &(this->g_position_depth_));
+		glBindTexture(GL_TEXTURE_2D, this->g_position_depth_);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGBA,
 		GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-		this->g_position_, 0);
+		this->g_position_depth_, 0);
 
 		// - Normal color buffer
 		glGenTextures(1, &(this->g_normal_));
@@ -164,10 +250,9 @@ namespace game{
 
 	void Render::UpdateCamera(){
 		Transform* transform = this->camera_->parent->GetComponent<Transform>();
-		glm::mat4 view = glm::lookAt(transform->position,
+		this->camera_->view = glm::lookAt(transform->position,
 																 this->camera_->target,
 																 this->camera_->up);
-		this->camera_->view_projection = this->camera_->projection * view;
 	}
 
 	void Render::RenderDrawingPool(){
@@ -177,11 +262,14 @@ namespace game{
 		glBindFramebuffer(GL_FRAMEBUFFER, this->g_buffer_);
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glm::mat4 view_projection = this->camera_->view_projection;
+			glm::mat4 view = this->camera_->view;
+			glm::mat4 projection = this->camera_->projection;
 			glm::mat4 model;
 			glUseProgram(this->geometry_pass_shader_);
-			GLuint view_projection_id = glGetUniformLocation(this->geometry_pass_shader_, "ViewProjection");
-			glUniformMatrix4fv(view_projection_id, 1, GL_FALSE, glm::value_ptr(view_projection));
+			GLuint view_id = glGetUniformLocation(this->geometry_pass_shader_, "View");
+			GLuint projection_id = glGetUniformLocation(this->geometry_pass_shader_, "Projection");
+			glUniformMatrix4fv(view_id, 1, GL_FALSE, glm::value_ptr(view));
+			glUniformMatrix4fv(projection_id, 1, GL_FALSE, glm::value_ptr(projection));
 
 			for(GameObject* game_object : this->objects_to_render_){
 				Drawable* drawable = game_object->GetComponent<Drawable>();
@@ -224,23 +312,63 @@ namespace game{
 						GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
 			}
 
+		glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_buffer_);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glUseProgram(this->ssao_shader_);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, this->g_position_depth_);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, this->g_normal_);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, this->noise_texture_);
+			//
+			// Send kernel + rotation
+			for (GLuint i = 0; i < 16; i++){
+				GLuint sample_id = glGetUniformLocation(this->ssao_shader_, ("samples[" + std::to_string(i) + "]").c_str());
+				glUniform3fv(sample_id, 1, &this->ssao_kernel_[i][0]);
+			}
+
+			projection_id = glGetUniformLocation(this->ssao_shader_, "Projection");
+			glUniformMatrix4fv(projection_id, 1, GL_FALSE, glm::value_ptr(this->camera_->projection));
+			this->RenderQuad();
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		// 2. Lighting Pass
+		/*
+
+		// 3. Blur SSAO texture to remove noise
+		glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_blur_buffer_);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glUseProgram(this->ssao_blur_shader_);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, this->ssao_color_buffer_);
+			RenderQuad();
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		*/
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		// 4. Lighting Pass
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(this->lighting_pass_shader_);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, this->g_position_);
+		glBindTexture(GL_TEXTURE_2D, this->g_position_depth_);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, this->g_normal_);
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, this->g_albedo_spec_);
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, this->ssao_color_buffer_);
 
+		this->RenderQuad();
+
+		this->ClearDrawingPool();
+	}
+
+	void Render::RenderQuad(){
 		glBindVertexArray(this->quad_->vao);
 		glDrawElements(this->quad_->draw_type, this->quad_->vertex_amount,
 				GL_UNSIGNED_INT, BUFFER_OFFSET(this->quad_->offset));
-
-		this->ClearDrawingPool();
 	}
 
 	void Render::AddGameObjectToDraw(GameObject* game_object){

@@ -7,6 +7,9 @@ namespace game{
 		public:
 			template<class T>
 			static T clamp(T, T, T);
+
+			template<class T>
+			static T lerp(T, T, T);
 	};
 }
 
