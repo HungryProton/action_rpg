@@ -14,7 +14,7 @@
 #include "core/component/texture.hpp"
 #include "core/component/animated_texture.hpp"
 
-#define KERNEL_SIZE 16.f
+#define KERNEL_SIZE 4.f
 
 namespace game{
 
@@ -343,6 +343,8 @@ namespace game{
 
 			projection_id = glGetUniformLocation(this->ssao_shader_, "projection");
 			glUniformMatrix4fv(projection_id, 1, GL_FALSE, glm::value_ptr(this->camera_->projection));
+			GLuint kernel_size_id = glGetUniformLocation(this->ssao_shader_, "kernelSize");
+			glUniform1i(kernel_size_id, KERNEL_SIZE);
 			this->RenderQuad();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
