@@ -16,11 +16,12 @@ uniform vec2 TexRatio;
 uniform vec2 TexShift;
 
 void main(){
-	vec4 viewPos = View * Model * vec4(position, 1.0f);
+	mat4 ModelView = View * Model;
+	vec4 viewPos = ModelView * vec4(position, 1.0f);
 	FragPos = viewPos.xyz;
 	gl_Position = Projection * viewPos;
 
-	mat3 normalMatrix = transpose(inverse(mat3(Model)));
+	mat3 normalMatrix = transpose(inverse(mat3(ModelView)));
 	Normal = normalMatrix * normal;
 
 	TexCoords = vec2(textureCoords.x, 1-textureCoords.y);

@@ -112,12 +112,14 @@ namespace game{
 
 			GLfloat scale = GLfloat(i) / KERNEL_SIZE;
 			scale = Math::lerp(0.1f, 1.0f, scale * scale);
+			sample *= scale;
 			ssao_kernel.push_back(sample);
 		}
+
 		// Save kernel in a 1D texture
-		glGenTextures(1, &(this->noise_texture_));
-		glBindTexture(GL_TEXTURE_2D, this->noise_texture_);
-		glTexImage1D(GL_TEXTURE_1D, 0, GL_RGB16F, KERNEL_SIZE, 1, GL_RGB, GL_FLOAT,
+		glGenTextures(1, &(this->ssao_kernel_));
+		glBindTexture(GL_TEXTURE_2D, this->ssao_kernel_);
+		glTexImage1D(GL_TEXTURE_1D, 0, GL_RGB16F, KERNEL_SIZE, 0, GL_RGB, GL_FLOAT,
 		&ssao_kernel[0]);
 		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -211,7 +213,7 @@ namespace game{
 		// Position buffer
 		glGenTextures(1, &(this->g_position_depth_));
 		glBindTexture(GL_TEXTURE_2D, this->g_position_depth_);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGBA,
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA,
 		GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

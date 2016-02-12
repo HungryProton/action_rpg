@@ -6,8 +6,8 @@ in vec2 TexCoords;
 uniform sampler2D gPositionDepth;
 uniform sampler2D gNormal;
 uniform sampler2D texNoise;
-
 uniform sampler1D samples;
+
 uniform mat4 projection;
 
 // tile noise texture over screen based on screen dimensions divided by
@@ -15,7 +15,7 @@ uniform mat4 projection;
 
 const vec2 noiseScale = vec2(1440.0/4.0, 900.0/4.0);
 const int kernelSize = 16;
-float radius = 10.f;
+float radius = 2.f;
 
 void main()
 {
@@ -27,7 +27,7 @@ void main()
 	mat3 TBN = mat3(tangent, bitangent, normal);
 
 	float occlusion = 0.0;
-	for(int i = 0; i < kernelSize; i++){
+	for(float i = 0; i < kernelSize; i++){
 		vec3 sample = TBN * texture(samples, i).rgb;
 		sample = fragPos + sample * radius;
 		vec4 offset = vec4(sample, 1.0);
@@ -37,6 +37,6 @@ void main()
 		float sampleDepth = -texture(gPositionDepth, offset.xy).w;
 		occlusion += (sampleDepth >= sample.z ? 1.0 : 0.0);
 	}
-	occlusion = 1.0 - (3 * occlusion / kernelSize);
+	occlusion = 1.0 - (occlusion / kernelSize);
 	FragColor = occlusion;
 }
