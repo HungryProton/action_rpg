@@ -81,6 +81,7 @@ namespace game{
 		this->geometry_pass_shader_ = shaders->GetShader("shader/g_buffer.vs", "shader/g_buffer.frag");
 		this->lighting_pass_shader_ = shaders->GetShader("shader/deferred_shading.vs", "shader/deferred_shading.frag");
 		this->ssao_shader_ = shaders->GetShader("shader/ssao.vs", "shader/ssao.frag");
+		this->ssao_blur_shader_ = shaders->GetShader("shader/ssao_blur.vs", "shader/ssao_blur.frag");
 
 		glUseProgram(this->lighting_pass_shader_);
 		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "gPositionDepth"), 0);
@@ -93,6 +94,9 @@ namespace game{
 		glUniform1i(glGetUniformLocation(this->ssao_shader_, "gNormal"), 1);
 		glUniform1i(glGetUniformLocation(this->ssao_shader_, "texNoise"), 2);
 		glUniform1i(glGetUniformLocation(this->ssao_shader_, "samples"), 3);
+
+		glUseProgram(this->ssao_blur_shader_);
+		glUniform1i(glGetUniformLocation(this->ssao_shader_, "ssaoInput"), 0);
 
 		glUseProgram(0);
 	}
@@ -343,8 +347,6 @@ namespace game{
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		/*
-
 		// 3. Blur SSAO texture to remove noise
 		glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_blur_buffer_);
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -352,9 +354,6 @@ namespace game{
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, this->ssao_color_buffer_);
 			RenderQuad();
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		*/
-
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		// 4. Lighting Pass
@@ -367,7 +366,7 @@ namespace game{
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, this->g_albedo_spec_);
 		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, this->ssao_color_buffer_);
+		glBindTexture(GL_TEXTURE_2D, this->ssao_blur_color_buffer_);
 
 		this->RenderQuad();
 

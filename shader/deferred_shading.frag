@@ -15,5 +15,5 @@ void main(){
 	vec3 Diffuse = texture(gAlbedoSpec, TexCoords).rgb;
 	float ssao = texture(ssao, TexCoords).r;
 
-	FragColor = vec4(vec3(0.90) * ssao, 1.0f);
+	FragColor = vec4(Diffuse * ssao, 1.0f);
 }

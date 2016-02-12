@@ -15,7 +15,7 @@ uniform mat4 projection;
 
 const vec2 noiseScale = vec2(1440.0/4.0, 900.0/4.0);
 const int kernelSize = 16;
-float radius = 2.f;
+float radius = 3.f;
 
 void main()
 {
@@ -35,7 +35,8 @@ void main()
 		offset.xyz /= offset.w; // perspective divide
 		offset.xyz = offset.xyz * 0.5 + 0.5; // transform to range 0.0 - 1.0
 		float sampleDepth = -texture(gPositionDepth, offset.xy).w;
-		occlusion += (sampleDepth >= sample.z ? 1.0 : 0.0);
+		float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - sampleDepth));
+		occlusion += (sampleDepth >= sample.z ? 1.0 : 0.0) * rangeCheck;
 	}
 	occlusion = 1.0 - (occlusion / kernelSize);
 	FragColor = occlusion;
