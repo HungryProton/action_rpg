@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "transform.hpp"
+#include "tools/time.hpp"
 
 namespace game{
 	Transform::Transform() : Component(){
@@ -34,7 +35,7 @@ namespace game{
 			this->velocity = glm::vec3(0.f, 0.f, 0.f);
 			return;
 		}
-		this->velocity = this->position - this->previous_position;
+		this->velocity = (this->position - this->previous_position)/Time::GetDeltaTime();
 		this->previous_position = this->position;
 	}
 

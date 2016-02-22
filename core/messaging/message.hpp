@@ -5,7 +5,6 @@ namespace game{
 
 	struct Message{
 		int id;
-		bool children_recursive;
 	};
 }
 

@@ -15,7 +15,7 @@ uniform int kernelSize;
 // noise size
 
 const vec2 noiseScale = vec2(1440.0/4.0, 900.0/4.0);
-float radius = 10.f;
+float radius = 3.f;
 
 void main()
 {
@@ -42,6 +42,6 @@ void main()
 		float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - sampleDepth));
 		occlusion += (sampleDepth >= sample.z ? 1.0 : 0.0) * rangeCheck;
 	}
-	occlusion = 1.0 - (occlusion / (kernelSize + 1));
+	occlusion = 1.0 - (occlusion / (kernelSize));
 	FragColor = occlusion;
 }

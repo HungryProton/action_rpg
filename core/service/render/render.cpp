@@ -14,7 +14,7 @@
 #include "core/component/texture.hpp"
 #include "core/component/animated_texture.hpp"
 
-#define KERNEL_SIZE 4.f
+#define KERNEL_SIZE 0.f
 
 namespace game{
 
@@ -39,7 +39,6 @@ namespace game{
 	}
 
 	void Render::InitializeGLFW(){
-		LOG(INFO) << "Initializing GLFW" << std::endl;
 		glfwSetErrorCallback(Render::GLFWErrorCallback);
 		if(!glfwInit()){
 			LOG(ERROR) << "GLFW initialization failed" << std::endl;
@@ -50,10 +49,9 @@ namespace game{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-		this->window_ = glfwCreateWindow( 1440, 900, "Game", NULL, NULL);
+		this->window_ = glfwCreateWindow(1440, 900, "Game", NULL, NULL);
 		glfwMakeContextCurrent(this->window_);
 		glfwSwapInterval(1);
-		LOG(INFO) << "GLFW initialized" << std::endl;
 	}
 
 	void Render::InitializeOpenGL(){
@@ -66,7 +64,7 @@ namespace game{
 
 		glDepthFunc(GL_LESS);
 		glEnable(GL_DEPTH_TEST);
-		//glEnable(GL_CULL_FACE);
+		glEnable(GL_CULL_FACE);
 		glClearColor(0.67, 0.84, 0.90, 1);
 		this->InitializeShaders();
 		this->InitializeGBuffer();
@@ -165,7 +163,7 @@ namespace game{
 		this->ssao_color_buffer_, 0);
 
 		if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-			std::cout << "SSAO Framebuffer not complete!" << std::endl;
+			LOG(CRITICAL) << "SSAO Framebuffer not complete!" << std::endl;
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -179,7 +177,7 @@ namespace game{
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->ssao_blur_color_buffer_, 0);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        std::cout << "SSAO Blur Framebuffer not complete!" << std::endl;
+        LOG(CRITICAL) << "SSAO Blur Framebuffer not complete!" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
@@ -347,8 +345,6 @@ namespace game{
 			glUniform1i(kernel_size_id, KERNEL_SIZE);
 			this->RenderQuad();
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 		// 3. Blur SSAO texture to remove noise
 		glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_blur_buffer_);
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -356,21 +352,20 @@ namespace game{
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, this->ssao_color_buffer_);
 			RenderQuad();
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		// 4. Lighting Pass
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glUseProgram(this->lighting_pass_shader_);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, this->g_position_depth_);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, this->g_normal_);
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, this->g_albedo_spec_);
-		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, this->ssao_blur_color_buffer_);
-
-		this->RenderQuad();
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glUseProgram(this->lighting_pass_shader_);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, this->g_position_depth_);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, this->g_normal_);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, this->g_albedo_spec_);
+			glActiveTexture(GL_TEXTURE3);
+			glBindTexture(GL_TEXTURE_2D, this->ssao_blur_color_buffer_);
+			this->RenderQuad();
 
 		this->ClearDrawingPool();
 	}
