@@ -6,6 +6,8 @@
 #include "core/service/render/render.hpp"
 #include "core/service/logic/logic.hpp"
 #include "core/service/physic/physic.hpp"
+#include <chrono>
+#include <thread>
 
 namespace game{
 
@@ -46,6 +48,7 @@ namespace game{
 			for(auto service : core_services_){
 				service->Update();
 			}
+			AdjustFrameRate();
 			//LOG(INFO) << "FPS : " << 1.f/Time::GetDeltaTime() << std::endl;
 		}
 		ClearMemory();
@@ -55,7 +58,14 @@ namespace game{
 		return state_;
 	}
 
+	void Game::AdjustFrameRate(){
+		int delay = (frame_rate_target_ - Time::GetCurrentDeltaTime())*1000;
+		if(delay <= 2){ return; }
+		std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+	}
+
 	std::vector<CoreService*> Game::core_services_;
 	std::vector<Service*> Game::secondary_services_;
 	State Game::state_ = UNINITIALIZED;
+	float Game::frame_rate_target_ = 1.f/30.f;
 }

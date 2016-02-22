@@ -12,6 +12,10 @@ namespace game{
 		return delta_;
 	}
 
+	float Time::GetCurrentDeltaTime(){
+		return glfwGetTime() - frame_start_time_;
+	}
+
 	float Time::frame_start_time_ = glfwGetTime();
 	float Time::delta_ = 0.016f;
 }

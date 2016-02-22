@@ -51,7 +51,7 @@ namespace game{
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 		this->window_ = glfwCreateWindow(1440, 900, "Game", NULL, NULL);
 		glfwMakeContextCurrent(this->window_);
-		glfwSwapInterval(1);
+		glfwSwapInterval(0);
 	}
 
 	void Render::InitializeOpenGL(){

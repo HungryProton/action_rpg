@@ -23,6 +23,7 @@ namespace game{
 
         private:
             static void ClearMemory();
+						static void AdjustFrameRate();
 
             template<class T>
             static void DeleteServices(std::vector<T*>*);
@@ -30,9 +31,11 @@ namespace game{
             template<class T>
             static void InstantiateCoreService();
 
+
             static std::vector<CoreService*> core_services_;
             static std::vector<Service*> secondary_services_;
             static State state_;
+						static float frame_rate_target_;
     };
 }
 

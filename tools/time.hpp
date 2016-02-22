@@ -9,6 +9,7 @@ namespace game{
 		public:
 			static void NotifyFrameStart();
 			static float GetDeltaTime();
+			static float GetCurrentDeltaTime();
 
 		private:
 			static float frame_start_time_;
