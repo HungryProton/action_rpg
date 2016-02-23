@@ -4,15 +4,28 @@ in vec2 TexCoords;
 out float fragColor;
 
 uniform sampler2D ssaoInput;
+uniform vec2 dir;
+uniform float resolution;
 
 void main() {
-	vec2 texelSize = 1.0 / vec2(textureSize(ssaoInput, 0));
-	float result = 0.0;
-	for (int x = -2; x < 2; ++x) {
-		for (int y = -2; y < 2; ++y) {
-			vec2 offset = vec2(float(x), float(y)) * texelSize;
-			result += texture(ssaoInput, TexCoords + offset).r;
-		}
-	}
-	fragColor = result / (4.0 * 4.0);
+	fragColor = texture2D(ssaoInput, TexCoords).r;
+	return;
+
+	float sum = 0.f;
+	float radius = 3.f;
+	float blur = radius/resolution;
+
+	sum += texture2D(ssaoInput, vec2(TexCoords.x - 4.0*blur*dir.x, TexCoords.y - 4.0*blur*dir.y)).r * 0.0162162162;
+	sum += texture2D(ssaoInput, vec2(TexCoords.x - 3.0*blur*dir.x, TexCoords.y - 3.0*blur*dir.y)).r * 0.0540540541;
+	sum += texture2D(ssaoInput, vec2(TexCoords.x - 2.0*blur*dir.x, TexCoords.y - 2.0*blur*dir.y)).r * 0.1216216216;
+	sum += texture2D(ssaoInput, vec2(TexCoords.x - 1.0*blur*dir.x, TexCoords.y - 1.0*blur*dir.y)).r * 0.1945945946;
+
+	sum += texture2D(ssaoInput, vec2(TexCoords.x, TexCoords.y)).r * 0.2270270270;
+
+	sum += texture2D(ssaoInput, vec2(TexCoords.x + 1.0*blur*dir.x, TexCoords.y + 1.0*blur*dir.y)).r * 0.1945945946;
+	sum += texture2D(ssaoInput, vec2(TexCoords.x + 2.0*blur*dir.x, TexCoords.y + 2.0*blur*dir.y)).r * 0.1216216216;
+	sum += texture2D(ssaoInput, vec2(TexCoords.x + 3.0*blur*dir.x, TexCoords.y + 3.0*blur*dir.y)).r * 0.0540540541;
+	sum += texture2D(ssaoInput, vec2(TexCoords.x + 4.0*blur*dir.x, TexCoords.y + 4.0*blur*dir.y)).r * 0.0162162162;
+
+	fragColor = sum;
 }
