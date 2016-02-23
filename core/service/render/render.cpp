@@ -14,7 +14,7 @@
 #include "core/component/texture.hpp"
 #include "core/component/animated_texture.hpp"
 
-#define KERNEL_SIZE 12.f
+#define KERNEL_SIZE 32.f
 
 namespace game{
 
@@ -49,7 +49,7 @@ namespace game{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-		this->window_ = glfwCreateWindow(1440, 900, "Game", NULL, NULL);
+		this->window_ = glfwCreateWindow(1366, 768, "Game", NULL, NULL);
 		glfwMakeContextCurrent(this->window_);
 		glfwSwapInterval(0);
 	}
@@ -128,18 +128,19 @@ namespace game{
 
 		// Generate noise
 		std::vector<glm::vec3> ssao_noise;
-		for(GLuint i = 0; i < KERNEL_SIZE; i++){
+		for(GLuint i = 0; i < 16; i++){
 			glm::vec3 noise(
-					Random::NextFloat(2.f)+Random::NextFloat(2.f) - 2.f,
-					Random::NextFloat(2.f)+Random::NextFloat(2.f) - 2.f,
+					Random::NextFloat(2.f) - 1.f,
+					Random::NextFloat(2.f) - 1.f,
 					0.f);
 			ssao_noise.push_back(noise);
+			LOG(DEBUG) << noise.x << " " << noise.y << " " << noise.z << std::endl;
 		}
 
 		// Save noise in texture
 		glGenTextures(1, &(this->noise_texture_));
 		glBindTexture(GL_TEXTURE_2D, this->noise_texture_);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, 3, 4, 0, GL_RGB, GL_FLOAT,	// 3 x 4 = 12 = KERNEL_SIZE
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, 4, 4, 0, GL_RGB, GL_FLOAT,
 		&ssao_noise[0]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -208,6 +209,8 @@ namespace game{
 
 		int width, height;
 		glfwGetWindowSize(this->window_, &width, &height);
+		this->window_width_ = width;
+		this->window_height_ = height;
 
 		glGenFramebuffers(1, &(this->g_buffer_));
 		glBindFramebuffer(GL_FRAMEBUFFER, this->g_buffer_);
@@ -346,11 +349,23 @@ namespace game{
 			this->RenderQuad();
 
 		// 3. Blur SSAO texture to remove noise
+			// Horizontal pass
 		glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_blur_buffer_);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glUseProgram(this->ssao_blur_shader_);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, this->ssao_color_buffer_);
+			GLuint dir_id = glGetUniformLocation(this->ssao_blur_shader_, "dir");
+			GLuint resolution_id = glGetUniformLocation(this->ssao_blur_buffer_, "resolution");
+			glUniform2f(dir_id, 1.f, 0.f);
+			glUniform1f(resolution_id, this->window_width_);
+			RenderQuad();
+
+			// Vertical pass
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, this->ssao_blur_color_buffer_);
+			glUniform2f(dir_id, 0.f, 1.f);
+			glUniform1f(resolution_id, this->window_height_);
 			RenderQuad();
 
 		// 4. Lighting Pass

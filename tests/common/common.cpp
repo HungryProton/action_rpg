@@ -9,7 +9,7 @@ namespace game{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		window_ = glfwCreateWindow( 1440, 900, "Game", NULL, NULL);
+		window_ = glfwCreateWindow( 1366, 768, "Game", NULL, NULL);
 		glfwMakeContextCurrent(window_);
 
 		glewExperimental=GL_TRUE;

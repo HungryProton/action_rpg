@@ -10,7 +10,7 @@ namespace game{
 		this->target = glm::vec3(0,0,0);
 		this->znear = 1.f;
 		this->zfar = 100.f;
-		this->ratio = 1440.f/900.f;
+		this->ratio = 1366.f/768.f;
 		this->fovy = 70;
 		this->projection = glm::perspective(fovy, ratio, znear, zfar);
 	}

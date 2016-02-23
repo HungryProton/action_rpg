@@ -47,6 +47,8 @@ namespace game{
 			GLuint geometry_pass_shader_;
 			GLuint lighting_pass_shader_;
 			GLFWwindow* window_;
+			int window_width_;
+			int window_height_;
 
 			// Defered render
 			GLuint g_buffer_;
