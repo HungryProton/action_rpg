@@ -14,7 +14,7 @@
 #include "core/component/texture.hpp"
 #include "core/component/animated_texture.hpp"
 
-#define KERNEL_SIZE 0.f
+#define KERNEL_SIZE 12.f
 
 namespace game{
 
@@ -105,12 +105,12 @@ namespace game{
 		std::vector<glm::vec3> ssao_kernel;
 		for(GLuint i = 0; i < KERNEL_SIZE; i++){
 			glm::vec3 sample(
-					Random::NextFloat() * 2.f - 1.f,
-					Random::NextFloat() * 2.f - 1.f,
+					Random::NextFloat(2.f) - 1.f,
+					Random::NextFloat(2.f) - 1.f,
 					Random::NextFloat()
 					);
 			sample = glm::normalize(sample);
-			sample *= Random::NextFloat();
+			//sample *= Random::NextFloat();
 
 			GLfloat scale = GLfloat(i) / KERNEL_SIZE;
 			scale = Math::lerp(0.1f, 1.0f, scale * scale);
@@ -130,8 +130,8 @@ namespace game{
 		std::vector<glm::vec3> ssao_noise;
 		for(GLuint i = 0; i < KERNEL_SIZE; i++){
 			glm::vec3 noise(
-					Random::NextFloat() * 2.f - 1.f,
-					Random::NextFloat() * 2.f - 1.f,
+					Random::NextFloat(2.f)+Random::NextFloat(2.f) - 2.f,
+					Random::NextFloat(2.f)+Random::NextFloat(2.f) - 2.f,
 					0.f);
 			ssao_noise.push_back(noise);
 		}
@@ -139,7 +139,7 @@ namespace game{
 		// Save noise in texture
 		glGenTextures(1, &(this->noise_texture_));
 		glBindTexture(GL_TEXTURE_2D, this->noise_texture_);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, 4, 4, 0, GL_RGB, GL_FLOAT,
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, 3, 4, 0, GL_RGB, GL_FLOAT,	// 3 x 4 = 12 = KERNEL_SIZE
 		&ssao_noise[0]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
