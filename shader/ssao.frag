@@ -15,14 +15,10 @@ uniform int kernelSize;
 // noise size
 
 const vec2 noiseScale = vec2(1366.0/4.0, 768.0/4.0);
-float radius = 3.f;
+float radius = 2.f;
 
 void main()
 {
-	if(kernelSize == 0){
-		FragColor = 1;
-		return;
-	}
 	vec3 fragPos = texture(gPositionDepth, TexCoords).xyz;
 	vec3 normal = texture(gNormal, TexCoords).rgb;
 	vec3 randomVec = texture(texNoise, TexCoords * noiseScale).xyz;

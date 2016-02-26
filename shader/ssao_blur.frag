@@ -12,7 +12,7 @@ void main() {
 	return;
 
 	float sum = 0.f;
-	float radius = 3.f;
+	float radius = 10.f;
 	float blur = radius/resolution;
 
 	sum += texture2D(ssaoInput, vec2(TexCoords.x - 4.0*blur*dir.x, TexCoords.y - 4.0*blur*dir.y)).r * 0.0162162162;

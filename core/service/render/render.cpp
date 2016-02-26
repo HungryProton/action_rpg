@@ -107,10 +107,9 @@ namespace game{
 			glm::vec3 sample(
 					Random::NextFloat(2.f) - 1.f,
 					Random::NextFloat(2.f) - 1.f,
-					Random::NextFloat()
+					Random::NextFloat(0.8f) + 0.2f // Prevent samples too parallel to the surface;
 					);
 			sample = glm::normalize(sample);
-			//sample *= Random::NextFloat();
 
 			GLfloat scale = GLfloat(i) / KERNEL_SIZE;
 			scale = Math::lerp(0.1f, 1.0f, scale * scale);
@@ -120,7 +119,7 @@ namespace game{
 
 		// Save kernel in a 1D texture
 		glGenTextures(1, &(this->ssao_kernel_));
-		glBindTexture(GL_TEXTURE_2D, this->ssao_kernel_);
+		glBindTexture(GL_TEXTURE_1D, this->ssao_kernel_);
 		glTexImage1D(GL_TEXTURE_1D, 0, GL_RGB16F, KERNEL_SIZE, 0, GL_RGB, GL_FLOAT,
 		&ssao_kernel[0]);
 		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -133,8 +132,7 @@ namespace game{
 					Random::NextFloat(2.f) - 1.f,
 					Random::NextFloat(2.f) - 1.f,
 					0.f);
-			ssao_noise.push_back(noise);
-			LOG(DEBUG) << noise.x << " " << noise.y << " " << noise.z << std::endl;
+			ssao_noise.push_back(glm::normalize(noise));
 		}
 
 		// Save noise in texture
@@ -330,6 +328,7 @@ namespace game{
 						GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
 			}
 
+		// SSAO Pass
 		glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_buffer_);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glUseProgram(this->ssao_shader_);
