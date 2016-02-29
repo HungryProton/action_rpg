@@ -19,7 +19,7 @@ float radius = 2.f;
 
 void main()
 {
-	vec3 fragPos = texture(gPositionDepth, TexCoords).xyz;
+	vec3 fragPos = texture(gPositionDepth, TexCoords).rgb;
 	vec3 normal = texture(gNormal, TexCoords).rgb;
 	vec3 randomVec = texture(texNoise, TexCoords * noiseScale).xyz;
 	vec3 tangent = normalize(randomVec - normal * dot(randomVec, normal));
@@ -34,8 +34,8 @@ void main()
 		offset = projection * offset; // from view to clip-space
 		offset.xyz /= offset.w; // perspective divide
 		offset.xyz = offset.xyz * 0.5 + 0.5; // transform to range 0.0 - 1.0
-		float sampleDepth = -texture(gPositionDepth, offset.xy).w;
-		float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - sampleDepth));
+		float sampleDepth = -texture(gPositionDepth, offset.xy).a;
+		float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - sampleDepth)) * 1.0f;
 		occlusion += (sampleDepth >= sample.z ? 1.0 : 0.0) * rangeCheck;
 	}
 	occlusion = 1.0 - (occlusion / float(kernelSize));
