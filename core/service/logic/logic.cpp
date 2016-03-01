@@ -33,9 +33,9 @@ namespace game{
 
 	void Logic::Initialize(){
 
-		SpawnMultipleSprite("../data/characters/female/animated/female_1.txt", 5);
-		SpawnMultipleSprite("../data/characters/female/animated/female_2.txt", 5);
-		SpawnMultipleSprite("../data/characters/female/animated/female_3.txt", 5);
+		SpawnMultipleSprite("../data/characters/female/animated/female_1.txt", 15);
+		SpawnMultipleSprite("../data/characters/female/animated/female_2.txt", 15);
+		SpawnMultipleSprite("../data/characters/female/animated/female_3.txt", 15);
 		GameObject* camera = SpawnCamera(glm::vec3(0, -12, 8));
 		GameObject* house = SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
 		new Box(8, 8, house);
@@ -98,8 +98,8 @@ namespace game{
 	void Logic::SpawnMultipleSprite(std::string file_path, int count){
 		for(int i = 0; i < count; i++){
 			glm::vec3 position;
-			position.x = 10 - Random::NextFloat(10);
-			position.y = 10 - Random::NextFloat(10);
+			position.x = 10 - Random::NextFloat(20);
+			position.y = 10 - Random::NextFloat(20);
 			position.z = 0;
 			SpawnSprite(file_path, position);
 		}

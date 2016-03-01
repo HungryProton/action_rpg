@@ -35,9 +35,9 @@ void main()
 		offset.xyz /= offset.w; // perspective divide
 		offset.xyz = offset.xyz * 0.5 + 0.5; // transform to range 0.0 - 1.0
 		float sampleDepth = -texture(gPositionDepth, offset.xy).a;
-		float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - sampleDepth)) * 1.0f;
+		float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - sampleDepth)) * 0.3f;
 		occlusion += (sampleDepth >= sample.z ? 1.0 : 0.0) * rangeCheck;
 	}
 	occlusion = 1.0 - (occlusion / float(kernelSize));
-	FragColor = occlusion;
+	FragColor = occlusion*occlusion;
 }

@@ -18,7 +18,7 @@ INCLUDES = -I $(SRC_PATH)/
 # GLFW link flags
 GLFW_LINK_FLAGS = -lglfw -lpthread
 #OpenGL link flags
-OPENGL_LINK_FLAGS = -lGL -lGLU -lGLEW
+OPENGL_LINK_FLAGS = -lGL -lGLU -lGLEW -DGL_GLEXT_PROTOTYPES
 # General linker settings
 LINK_FLAGS = $(GLFW_LINK_FLAGS) $(OPENGL_LINK_FLAGS)
 # Additional release-specific linker settings

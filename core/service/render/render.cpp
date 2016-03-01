@@ -14,7 +14,7 @@
 #include "core/component/texture.hpp"
 #include "core/component/animated_texture.hpp"
 
-#define KERNEL_SIZE 32.f
+#define KERNEL_SIZE 1
 
 namespace game{
 
@@ -107,7 +107,7 @@ namespace game{
 			glm::vec3 sample(
 					Random::NextFloat(2.f) - 1.f,
 					Random::NextFloat(2.f) - 1.f,
-					Random::NextFloat(0.8f) + 0.2f // Prevent samples too parallel to the surface;
+					Random::NextFloat(0.8f) + 0.2f // Prevent samples too much aligned with the surface;
 					);
 			sample = glm::normalize(sample);
 
@@ -345,27 +345,37 @@ namespace game{
 			glUniformMatrix4fv(projection_id, 1, GL_FALSE, glm::value_ptr(this->camera_->projection));
 			GLuint kernel_size_id = glGetUniformLocation(this->ssao_shader_, "kernelSize");
 			glUniform1i(kernel_size_id, KERNEL_SIZE);
+
 			this->RenderQuad();
 
 		// 3. Blur SSAO texture to remove noise
+		float wide_blur = 3.f;
+		float small_blur = 1.f;
+
 			// Horizontal pass
-		glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_blur_buffer_);
+	 	glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_blur_buffer_);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glUseProgram(this->ssao_blur_shader_);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, this->ssao_color_buffer_);
-			GLuint dir_id = glGetUniformLocation(this->ssao_blur_shader_, "dir");
-			GLuint resolution_id = glGetUniformLocation(this->ssao_blur_buffer_, "resolution");
-			glUniform2f(dir_id, 1.f, 0.f);
-			glUniform1f(resolution_id, this->window_width_);
-			RenderQuad();
+			GLuint dir_id = glGetUniformLocation(this->ssao_blur_shader_, "dirResRad");
+			glUniform4f(dir_id, 1.f, 0.f, this->window_width_, wide_blur);
+			this->RenderQuad();
 
 			// Vertical pass
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, this->ssao_blur_color_buffer_);
-			glUniform2f(dir_id, 0.f, 1.f);
-			glUniform1f(resolution_id, this->window_height_);
-			RenderQuad();
+			glUniform4f(dir_id, 0.f, 1.f, this->window_height_, wide_blur);
+			this->RenderQuad();
+
+			// Horizontal pass #2
+			glUniform4f(dir_id, 1.f, 0.f, this->window_width_, small_blur);
+			this->RenderQuad();
+
+			// Vertical pass #2
+			glUniform4f(dir_id, 0.f, 1.f, this->window_height_, small_blur);
+			this->RenderQuad();
+
 
 		// 4. Lighting Pass
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -449,7 +459,6 @@ namespace game{
 
 	void Render::SetActiveCamera(GameObject* camera){
 		// Should notify the old camera that it's not active anymore maybe?
-		LOG(INFO) << "Setting the new camera" << std::endl;
 		this->camera_ = camera->GetComponent<Camera>();
 	}
 

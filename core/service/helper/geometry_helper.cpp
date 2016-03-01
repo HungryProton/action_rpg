@@ -203,19 +203,18 @@ namespace game{
 												texture_coords_array + 8)));
 
 			unsigned int indexArray[] = {
-				0, 1, 2,
-			 	3, 2, 1
+				0, 1, 2, 3
 			};
 
 			std::vector<unsigned int> indices = std::vector<unsigned int>(
-									indexArray, indexArray + 6); // 3 vertex per triangles
+									indexArray, indexArray + 4);
 
 			this->screen_box_ = Locator::Get<BufferHelper>()->RegisterData(data, indices, &(drawable->offset));
 			this->screen_box_offset_ = drawable->offset;
 		}
 		drawable->vao = this->screen_box_;
-		drawable->vertex_amount = 6;
-		drawable->draw_type = GL_TRIANGLES;
+		drawable->vertex_amount = 4;
+		drawable->draw_type = GL_TRIANGLE_STRIP;
 		drawable->offset = this->screen_box_offset_;
 	}
 }

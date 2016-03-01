@@ -4,16 +4,21 @@ in vec2 TexCoords;
 out float fragColor;
 
 uniform sampler2D ssaoInput;
-uniform vec2 dir;
-uniform float resolution;
+
+uniform vec4 dirResRad;
 
 void main() {
-	fragColor = texture2D(ssaoInput, TexCoords).r;
-	//return;
+	/*if(gl_FragCoord.x < (1366.f/2.f)){
+		fragColor = texture(ssaoInput, TexCoords).r;
+		return;
+	}
+	*/
 
+	vec2 dir = dirResRad.xy;
+	float res = dirResRad.z;
+	float radius = dirResRad.w;
+	float blur = radius/res;
 	float sum = 0.f;
-	float radius = 3.f;
-	float blur = radius;
 
 	sum += texture(ssaoInput, vec2(TexCoords.x - 4.0*blur*dir.x, TexCoords.y - 4.0*blur*dir.y)).r * 0.0162162162;
 	sum += texture(ssaoInput, vec2(TexCoords.x - 3.0*blur*dir.x, TexCoords.y - 3.0*blur*dir.y)).r * 0.0540540541;
