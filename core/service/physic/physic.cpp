@@ -75,7 +75,7 @@ namespace game{
 				Collider* collider_b = (*it_b)->GetComponent<Collider>();
 
 				// early return if both objects are static
-				if((collider_a->mass == 0) && (collider_b->mass == 0)){ return; }
+				if((collider_a->mass == 0) && (collider_b->mass == 0)){ continue; }
 
 				if(collider_a->shape_type == typeid(Circle)){
 

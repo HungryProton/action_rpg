@@ -143,7 +143,7 @@ namespace game{
 		new Drawable(mesh);
 		Collider* collider = new Collider(mesh);
 		collider->shape_type = std::type_index(typeid(Box));
-		collider->SetMass(1000);
+		collider->SetMass(0);
 		this->game_objects_.push_back(mesh);
 		return mesh;
 	}
