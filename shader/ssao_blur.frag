@@ -8,11 +8,6 @@ uniform sampler2D ssaoInput;
 uniform vec4 dirResRad;
 
 void main() {
-	/*if(gl_FragCoord.x < (1366.f/2.f)){
-		fragColor = texture(ssaoInput, TexCoords).r;
-		return;
-	}
-	*/
 
 	vec2 dir = dirResRad.xy;
 	float res = dirResRad.z;
