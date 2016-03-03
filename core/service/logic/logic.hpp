@@ -28,6 +28,7 @@ namespace game{
 			GameObject* SpawnMesh(std::string);
 			void SpawnRandomMeshes(std::string, int, float);
 			GameObject* SpawnPlayer(std::string);
+			GameObject* SpawnPillar();
 	};
 }
 

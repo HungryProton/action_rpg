@@ -20,6 +20,8 @@
 #include "core/component/shapes/circle.hpp"
 #include "core/component/battle/melee_attack.hpp"
 #include "core/component/behavior_controller.hpp"
+#include "core/component/particle_emitter.hpp"
+#include "core/component/particle.hpp"
 
 namespace game{
 
@@ -45,6 +47,8 @@ namespace game{
 		SpawnRandomMeshes("../data/environment/terrain/vegetation/bush.obj", 10, 0.35f);
 		SpawnRandomMeshes("../data/environment/terrain/rock/rock_01.obj", 5, 1.f);
 		SpawnRandomMeshes("../data/environment/terrain/rock/rock_02.obj", 5, 1.f);
+
+		SpawnPillar();
 
 		TerrainBuilder terrain_builder;
 		terrain_builder.SetMapSize(60, 60);
@@ -159,6 +163,34 @@ namespace game{
 			Collider* c = m->GetComponent<Collider>();
 			c->shape_type = std::type_index(typeid(Circle));
 		}
+	}
+
+	GameObject* Logic::SpawnPillar(){
+		GameObject* pillar = SpawnMesh("../data/environment/terrain/misc/respawn_pillar.obj");
+
+		Transform* t = pillar->GetComponent<Transform>();
+		t->position.x = 10 - Random::NextFloat(20);
+		t->position.y = 10 - Random::NextFloat(20);
+		t->rotation.z = Random::NextFloat(360)*(3.1415/180.f);
+		new Circle(0.6f, pillar);
+		Collider* c = pillar->GetComponent<Collider>();
+		c->shape_type = std::type_index(typeid(Circle));
+
+		ParticleEmitter* pe = new ParticleEmitter(pillar);
+		GameObject* particle = new GameObject();
+		new Transform(particle);
+		new Texture("../data/environment/terrain/misc/spark.png", particle);
+		new Drawable(particle);
+		new Particle(particle);
+
+		pe->SetParticle(particle);
+		pe->min_life = 2.f;
+		pe->max_life = 6.f;
+		pe->speed = 2.f;
+		pe->min_count = 30;
+		pe->max_count = 50;
+
+		return pillar;
 	}
 
 	GameObject* Logic::SpawnCamera(glm::vec3 position){
