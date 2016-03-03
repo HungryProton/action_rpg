@@ -10,6 +10,8 @@ namespace game{
 		Game::RequestForService<BufferHelper>();
 		this->box_ = 0;
 		this->box_offset_ = 0;
+		this->screen_box_ = 0;
+		this->screen_box_offset_ = 0;
 	}
 
 	GeometryHelper::~GeometryHelper(){

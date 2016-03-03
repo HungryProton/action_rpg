@@ -2,11 +2,12 @@
 
 layout (location = 0) out vec4 gPositionDepth;
 layout (location = 1) out vec3 gNormal;
-layout (location = 2) out vec3 gAlbedoSpec;
+layout (location = 2) out vec4 gAlbedoSpec;
 
 in vec2 TexCoords;
 in vec3 FragPos;
 in vec3 Normal;
+in float Alpha;
 
 uniform sampler2D myTexture;
 
@@ -24,7 +25,7 @@ void main(){
 		discard;
 	}
 
-	gAlbedoSpec = tex.rgb;
+	gAlbedoSpec = vec4(tex.rgb, Alpha);
 	gPositionDepth.xyz = FragPos;
 	gPositionDepth.a = LinearizeDepth(gl_FragCoord.z);
 	gNormal = normalize(Normal);

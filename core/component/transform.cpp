@@ -24,6 +24,8 @@ namespace game{
 		this->rotation = transform->rotation;
 		this->scale = transform->scale;
 		this->velocity = transform->velocity;
+		this->target_velocity = transform->target_velocity;
+		this->previous_position = transform->previous_position;
 	}
 
 	Transform* Transform::Clone(){

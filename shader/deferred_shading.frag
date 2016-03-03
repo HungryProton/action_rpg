@@ -14,11 +14,12 @@ float GetVignetteFactor(){
 
 void main(){
 
-	vec3 Diffuse = texture(gAlbedoSpec, TexCoords).rgb;
+	vec4 Diffuse = texture(gAlbedoSpec, TexCoords).rgba;
 	float SSAO = texture(ssao, TexCoords).r;
 
+	Diffuse = mix(Diffuse, vec4(0.90f), 0.9);
 	Diffuse *= SSAO;
 
-	FragColor = vec4( mix( Diffuse, Diffuse * GetVignetteFactor(), 0.5f), 1.0f);
+	FragColor = mix( Diffuse, Diffuse * GetVignetteFactor(), 0.5f);
 	return;
 }

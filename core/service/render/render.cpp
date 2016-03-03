@@ -314,6 +314,10 @@ namespace game{
 				GLuint tex_shift = glGetUniformLocation(this->geometry_pass_shader_, "TexShift");
 				glUniform2f(tex_ratio, -1, -1);
 
+				// Update transparency uniform
+				GLuint alpha_id = glGetUniformLocation(this->geometry_pass_shader_, "in_alpha");
+				glUniform1f(alpha_id, drawable->alpha);
+
 				if(texture){
 					texture->Bind(GL_TEXTURE0);
 				}else if(animated_texture){
