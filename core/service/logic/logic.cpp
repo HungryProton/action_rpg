@@ -38,7 +38,7 @@ namespace game{
 		SpawnMultipleSprite("../data/characters/female/animated/female_1.txt", 15);
 		SpawnMultipleSprite("../data/characters/female/animated/female_2.txt", 15);
 		SpawnMultipleSprite("../data/characters/female/animated/female_3.txt", 15);
-		GameObject* camera = SpawnCamera(glm::vec3(0, -12, 8));
+		GameObject* camera = SpawnCamera(glm::vec3(0, -20, 10));
 		GameObject* house = SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
 		new Box(8, 8, house);
 
@@ -184,8 +184,8 @@ namespace game{
 		new Particle(particle);
 
 		pe->SetParticle(particle);
-		pe->min_life = 2.f;
-		pe->max_life = 6.f;
+		pe->min_duration = 2.f;
+		pe->max_duration = 6.f;
 		pe->speed = 2.f;
 		pe->min_count = 30;
 		pe->max_count = 50;

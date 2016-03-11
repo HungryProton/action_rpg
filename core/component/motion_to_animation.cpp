@@ -16,7 +16,7 @@ namespace game{
 	}
 
 	MotionToAnimation::MotionToAnimation(MotionToAnimation* m) : MotionToAnimation(){
-
+		this->previous_velocity = m->previous_velocity;
 	}
 
 	MotionToAnimation::~MotionToAnimation(){

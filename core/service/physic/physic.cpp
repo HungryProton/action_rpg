@@ -58,6 +58,9 @@ namespace game{
 		for(GameObject* object : this->collider_pool_){
 			Transform* transform = object->GetComponent<Transform>();
 			//transform->position += transform->target_velocity*Time::GetDeltaTime();
+			float friction_modifier = 0.1; // Retrieve that from material when possible
+			glm::vec3 friction_vector = glm::normalize(transform->target_velocity) * friction_modifier * Time::GetDeltaTime();
+			transform->target_velocity -= friction_vector;
 		}
 	}
 
