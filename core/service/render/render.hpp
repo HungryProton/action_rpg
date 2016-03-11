@@ -30,6 +30,8 @@ namespace game{
 			void InitializeGBuffer();
 			void InitializeShaders();
 			void InitializeSSAO();
+			void InitializeBloom();
+			void InitializeLightFlare();
 			void ProcessReceivedMessages();
 			void UpdateCamera();
 			void RenderDrawingPool();
@@ -44,19 +46,19 @@ namespace game{
 
 			std::vector<GameObject*> objects_to_render_;
 			Camera* camera_;
-			GLuint geometry_pass_shader_;
-			GLuint lighting_pass_shader_;
 			GLFWwindow* window_;
 			int window_width_;
 			int window_height_;
 
 			// Defered render
+			Drawable* quad_;
 			GLuint g_buffer_;
 			GLuint g_position_depth_;
 			GLuint g_normal_;
 			GLuint g_albedo_spec_;
 			GLuint depth_buffer_;
-			Drawable* quad_;
+			GLuint geometry_pass_shader_;
+			GLuint lighting_pass_shader_;
 
 			// SSAO
 			GLuint ssao_buffer_;
@@ -65,8 +67,24 @@ namespace game{
 			GLuint ssao_blur_color_buffer_;
 			GLuint noise_texture_;
 			GLuint ssao_shader_;
-			GLuint ssao_blur_shader_;
 			GLuint ssao_kernel_;
+
+			// Generics
+			GLuint monochromatic_blur_shader_;
+			GLuint color_blur_shader_;
+			GLuint high_contrast_shader_;
+
+			// Bloom
+			GLuint bloom_buffer_;
+			GLuint bloom_color_buffer_;
+			GLuint bloom_blur_buffer_;
+			GLuint bloom_blur_color_buffer_;
+
+			// Light flare
+			GLuint light_flare_buffer_;
+			GLuint light_flare_color_buffer_;
+			GLuint light_flare_blur_buffer_;
+			GLuint light_flare_blur_color_buffer_;
 	};
 }
 

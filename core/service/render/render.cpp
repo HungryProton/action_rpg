@@ -69,6 +69,8 @@ namespace game{
 		this->InitializeShaders();
 		this->InitializeGBuffer();
 		this->InitializeSSAO();
+		this->InitializeBloom();
+		this->InitializeLightFlare();
 
 		this->quad_ = new Drawable();
 		Locator::Get<GeometryHelper>()->GetScreenSpaceBox(this->quad_);
@@ -79,13 +81,17 @@ namespace game{
 		this->geometry_pass_shader_ = shaders->GetShader("shader/g_buffer.vs", "shader/g_buffer.frag");
 		this->lighting_pass_shader_ = shaders->GetShader("shader/deferred_shading.vs", "shader/deferred_shading.frag");
 		this->ssao_shader_ = shaders->GetShader("shader/ssao.vs", "shader/ssao.frag");
-		this->ssao_blur_shader_ = shaders->GetShader("shader/ssao_blur.vs", "shader/ssao_blur.frag");
+		this->monochromatic_blur_shader_ = shaders->GetShader("shader/monochromatic_blur.vs", "shader/monochromatic_blur.frag");
+		this->color_blur_shader_ = shaders->GetShader("shader/color_blur.vs", "shader/color_blur.frag");
+		this->high_contrast_shader_ = shaders->GetShader("shader/high_contrast.vs", "shader/high_contrast.frag");
 
 		glUseProgram(this->lighting_pass_shader_);
 		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "gPositionDepth"), 0);
 		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "gNormal"), 1);
 		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "gAlbedoSpec"), 2);
 		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "ssao"), 3);
+		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "bloom"), 4);
+		glUniform1i( glGetUniformLocation(this->lighting_pass_shader_, "flare"), 5);
 
 		glUseProgram(this->ssao_shader_);
 		glUniform1i(glGetUniformLocation(this->ssao_shader_, "gPositionDepth"), 0);
@@ -93,8 +99,14 @@ namespace game{
 		glUniform1i(glGetUniformLocation(this->ssao_shader_, "texNoise"), 2);
 		glUniform1i(glGetUniformLocation(this->ssao_shader_, "samples"), 3);
 
-		glUseProgram(this->ssao_blur_shader_);
-		glUniform1i(glGetUniformLocation(this->ssao_shader_, "ssaoInput"), 0);
+		glUseProgram(this->monochromatic_blur_shader_);
+		glUniform1i(glGetUniformLocation(this->monochromatic_blur_shader_, "texInput"), 0);
+
+		glUseProgram(this->color_blur_shader_);
+		glUniform1i(glGetUniformLocation(this->color_blur_shader_, "texInput"), 0);
+
+		glUseProgram(this->high_contrast_shader_);
+		glUniform1i(glGetUniformLocation(this->high_contrast_shader_, "texInput"), 0);
 
 		glUseProgram(0);
 	}
@@ -172,12 +184,56 @@ namespace game{
     glGenTextures(1, &(this->ssao_blur_color_buffer_));
     glBindTexture(GL_TEXTURE_2D, this->ssao_blur_color_buffer_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RGB, GL_FLOAT, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->ssao_blur_color_buffer_, 0);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         LOG(CRITICAL) << "SSAO Blur Framebuffer not complete!" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	void Render::InitializeBloom(){
+		glGenFramebuffers(1, &(this->bloom_buffer_));
+		glBindFramebuffer(GL_FRAMEBUFFER, this->bloom_buffer_);
+		glGenTextures(1, &(this->bloom_color_buffer_));
+		glBindTexture(GL_TEXTURE_2D, this->bloom_color_buffer_);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->window_width_,
+			this->window_height_, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+		this->bloom_color_buffer_, 0);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        LOG(CRITICAL) << "Bloom Framebuffer not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		glGenFramebuffers(1, &(this->bloom_blur_buffer_));
+		glBindFramebuffer(GL_FRAMEBUFFER, this->bloom_blur_buffer_);
+		glGenTextures(1, &(this->bloom_blur_color_buffer_));
+		glBindTexture(GL_TEXTURE_2D, this->bloom_blur_color_buffer_);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->window_width_,
+			this->window_height_, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+		this->bloom_blur_color_buffer_, 0);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        LOG(CRITICAL) << "Bloom blur Framebuffer not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	}
+
+	void Render::InitializeLightFlare(){
+		glGenFramebuffers(1, &(this->light_flare_buffer_));
+		glBindFramebuffer(GL_FRAMEBUFFER, this->light_flare_buffer_);
+		glGenTextures(1, &(this->light_flare_color_buffer_));
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->window_width_,
+			this->window_height_, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+		this->light_flare_color_buffer_, 0);
 	}
 
 	void Render::Update(){
@@ -359,10 +415,10 @@ namespace game{
 			// Horizontal pass
 	 	glBindFramebuffer(GL_FRAMEBUFFER, this->ssao_blur_buffer_);
 			glClear(GL_COLOR_BUFFER_BIT);
-			glUseProgram(this->ssao_blur_shader_);
+			glUseProgram(this->monochromatic_blur_shader_);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, this->ssao_color_buffer_);
-			GLuint dir_id = glGetUniformLocation(this->ssao_blur_shader_, "dirResRad");
+			GLuint dir_id = glGetUniformLocation(this->monochromatic_blur_shader_, "dirResRad");
 			glUniform4f(dir_id, 1.f, 0.f, this->window_width_, wide_blur);
 			this->RenderQuad();
 
@@ -380,6 +436,52 @@ namespace game{
 			glUniform4f(dir_id, 0.f, 1.f, this->window_height_, small_blur);
 			this->RenderQuad();
 
+		// Bloom filter
+		glBindFramebuffer(GL_FRAMEBUFFER, this->bloom_buffer_);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glUseProgram(this->high_contrast_shader_);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, this->g_albedo_spec_);
+			GLuint threshold_id = glGetUniformLocation(this->high_contrast_shader_, "threshold");
+			glUniform2f(threshold_id, 0.8, 0.8);
+			this->RenderQuad();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, this->bloom_blur_buffer_);
+			glClear(GL_COLOR_BUFFER_BIT);
+			//Horizontal Pass
+			glUseProgram(this->color_blur_shader_);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, this->bloom_color_buffer_);
+			glUniform4f(dir_id, 1.f, 0.f, this->window_width_, wide_blur);
+			this->RenderQuad();
+
+			// Vertical pass
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, this->bloom_blur_color_buffer_);
+			glUniform4f(dir_id, 0.f, 1.f, this->window_height_, wide_blur);
+			this->RenderQuad();
+
+			// Horizontal pass #2
+			glUniform4f(dir_id, 1.f, 0.f, this->window_width_, small_blur);
+			this->RenderQuad();
+
+			// Vertical pass #2
+			glUniform4f(dir_id, 0.f, 1.f, this->window_height_, small_blur);
+			this->RenderQuad();
+
+		// LightFlare filter
+	/*	glBindFramebuffer(GL_FRAMEBUFFER, this->light_flare_buffer_);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glUseProgram(this->high_contrast_shader_);
+			glUniform2f(threshold_id, 0.95, 0.95);
+
+			//Horizontal Pass
+			glUseProgram(this->color_blur_shader_);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, this->light_flare_color_buffer_);
+			glUniform4f(dir_id, 1.f, 0.f, this->window_width_, wide_blur*2);
+			this->RenderQuad();
+			*/
 
 		// 4. Lighting Pass
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -393,6 +495,10 @@ namespace game{
 			glBindTexture(GL_TEXTURE_2D, this->g_albedo_spec_);
 			glActiveTexture(GL_TEXTURE3);
 			glBindTexture(GL_TEXTURE_2D, this->ssao_blur_color_buffer_);
+			glActiveTexture(GL_TEXTURE4);
+			glBindTexture(GL_TEXTURE_2D, this->bloom_blur_color_buffer_);
+			glActiveTexture(GL_TEXTURE5);
+			glBindTexture(GL_TEXTURE_2D, this->light_flare_color_buffer_);
 			this->RenderQuad();
 
 		this->ClearDrawingPool();
