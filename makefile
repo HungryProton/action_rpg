@@ -9,6 +9,8 @@ SRC_EXT = cpp
 SRC_PATH = .
 # General compiler flags
 COMPILE_FLAGS = -std=c++11 -Wall -Wextra -Wuninitialized -g
+# Additional flags for code coverage
+COV_COMPILE_FLAGS = -fprofile-arcs -ftest-coverage
 # Additional release-specific flags
 RCOMPILE_FLAGS = -D NDEBUG
 # Additional debug-specific flags
@@ -19,6 +21,8 @@ INCLUDES = -I $(SRC_PATH)/
 GLFW_LINK_FLAGS = -lglfw -lpthread
 #OpenGL link flags
 OPENGL_LINK_FLAGS = -lGL -lGLU -lGLEW -DGL_GLEXT_PROTOTYPES
+#Coverage flags for gcov
+COVERAGE_LINK_FLAGS = -lgcov --coverage
 # General linker settings
 LINK_FLAGS = $(GLFW_LINK_FLAGS) $(OPENGL_LINK_FLAGS)
 # Additional release-specific linker settings
@@ -61,8 +65,8 @@ release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(RCOMPILE_FLAGS)
 release: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(RLINK_FLAGS)
 debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(DCOMPILE_FLAGS)
 debug: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(DLINK_FLAGS)
-test: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(RCOMPILE_FLAGS)
-test: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(RLINK_FLAGS)
+test: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(COV_COMPILE_FLAGS) $(RCOMPILE_FLAGS)
+test: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(RLINK_FLAGS) $(COVERAGE_LINK_FLAGS)
 
 # Build and output paths
 release: export BUILD_PATH := $(BUILD_DIR)/release
@@ -74,7 +78,6 @@ debug: export EXCLUDED_ENTRY_POINT = $(TEST_PATH)
 test: export BUILD_PATH := $(BUILD_DIR)/test
 test: export BIN_PATH := $(BUILD_DIR)/bin/test
 test: export EXCLUDED_ENTRY_POINT = $(MAIN_ENTRY_POINT)
-#test: export BIN_NAME := $(BIN_NAME)_tests
 install: export BIN_PATH := $(BUILD_DIR)/bin/release
 print-%: export EXCLUDED_ENTRY_POINT = $(MAIN_ENTRY_POINT)
 
