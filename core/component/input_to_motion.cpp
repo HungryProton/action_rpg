@@ -22,7 +22,7 @@ namespace game{
 	}
 
 	void InputToMotion::Update(){
-		ProcessReceivedMessages();
+		this->MessageHandler<InputMessage>::UpdateMessages();
 	}
 
 	void InputToMotion::NotifyNewComponentAdded(){
@@ -30,14 +30,7 @@ namespace game{
 		this->motion = this->parent->GetComponent<Motion>();
 	}
 
-	void InputToMotion::ProcessReceivedMessages(){
-		for(auto message : this->MessageHandler<InputMessage>::messages_){
-			this->HandleKeyEvent(message);
-		}
-		this->MessageHandler<InputMessage>::messages_.clear();
-	}
-
-	void InputToMotion::HandleKeyEvent(InputMessage message){
+	void InputToMotion::OnMessage(InputMessage message){
 		if(!this->motion){ return; }
 
 		int modifier;

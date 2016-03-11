@@ -21,23 +21,20 @@ namespace game{
 	}
 
 	void Physic::Update(){
-		this->ProcessReceivedMessages();
+		this->MessageHandler<PhysicIntent>::UpdateMessages();
 		this->UpdatePositions();
 		this->ResolveCollisions();
 	}
 
-	void Physic::ProcessReceivedMessages(){
-		for(PhysicIntent message : this->MessageHandler<PhysicIntent>::messages_){
-			switch(message.action){
-				case PhysicAction::APPLY_FORCE:
-					this->ApplyForce(message.force, message.game_object);
-					break;
-				case PhysicAction::ADD_COLLIDER:
-					this->AddGameObjectToColliderPool(message.game_object);
-					break;
-			}
+	void Physic::OnMessage(PhysicIntent message){
+		switch(message.action){
+			case PhysicAction::APPLY_FORCE:
+				this->ApplyForce(message.force, message.game_object);
+				break;
+			case PhysicAction::ADD_COLLIDER:
+				this->AddGameObjectToColliderPool(message.game_object);
+				break;
 		}
-		this->MessageHandler<PhysicIntent>::messages_.clear();
 	}
 
 	void Physic::AddGameObjectToColliderPool(GameObject* object){

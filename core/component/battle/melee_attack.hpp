@@ -23,8 +23,8 @@ namespace game{
 
 		private:
 			float start_time;
-			void ProcessReceivedMessages();
 			void Attack();
+			virtual void OnMessage(InputMessage);
 	};
 }
 

@@ -71,7 +71,7 @@ namespace game{
 	AnimatedTexture::AnimatedTexture(std::string file_path) : AnimatedTexture(file_path, nullptr){ }
 
 	void AnimatedTexture::Update(){
-		ProcessReceivedMessages();
+		this->MessageHandler<AnimationCommand>::UpdateMessages();
 		if(!play){ return; }
 
 		auto it = this->animations.find(current_animation);
@@ -126,21 +126,18 @@ namespace game{
 		this->Pause();
 	}
 
-	void AnimatedTexture::ProcessReceivedMessages(){
-		for(AnimationCommand message : this->MessageHandler<AnimationCommand>::messages_){
-			switch(message.action){
-				case AnimationAction::PLAY:
-				 	this->Play(message.name, message.direction);
-					break;
-				case AnimationAction::PAUSE:
-					this->Pause();
-					break;
-				case AnimationAction::STOP:
-					this->Stop();
-					break;
-			}
+	void AnimatedTexture::OnMessage(AnimationCommand message){
+		switch(message.action){
+			case AnimationAction::PLAY:
+				this->Play(message.name, message.direction);
+				break;
+			case AnimationAction::PAUSE:
+				this->Pause();
+				break;
+			case AnimationAction::STOP:
+				this->Stop();
+				break;
 		}
-		this->MessageHandler<AnimationCommand>::messages_.clear();
 	}
 
 	void AnimatedTexture::LoadSpriteSheet(std::string name, std::string path, int priority){

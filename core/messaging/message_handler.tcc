@@ -18,4 +18,12 @@ namespace game{
 	void MessageHandler<T>::NotifyNewMessage(T message){
 		this->messages_.push_back(message);
 	}
+
+	template<class T>
+	void MessageHandler<T>::UpdateMessages(){
+		for(T message : this->messages_){
+			OnMessage(message);
+		}
+		this->messages_.clear();
+	}
 }

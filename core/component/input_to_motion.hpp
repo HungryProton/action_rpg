@@ -9,7 +9,8 @@ namespace game{
 
 	struct Motion;
 
-	struct InputToMotion : public Behavior, public MessageHandler<InputMessage>{
+	struct InputToMotion : public Behavior,
+												 public MessageHandler<InputMessage>{
 		InputToMotion();
 		InputToMotion(GameObject*);
 		InputToMotion(InputToMotion*);
@@ -17,10 +18,11 @@ namespace game{
 		virtual void Update();
 		virtual InputToMotion* Clone();
 		virtual void NotifyNewComponentAdded();
-		void ProcessReceivedMessages();
-		void HandleKeyEvent(InputMessage);
 
 		Motion* motion;
+
+		private:
+			virtual void OnMessage(InputMessage);
 	};
 }
 

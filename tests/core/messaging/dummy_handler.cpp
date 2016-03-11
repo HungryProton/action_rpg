@@ -16,10 +16,13 @@ namespace game{
 	}
 
   void DummyHandler::Process(){
-		for(Message message : this->MessageHandler<Message>::messages_){
-			this->received_messages_count_++;
-		}
+		this->MessageHandler<Message>::UpdateMessages();
   }
+
+	void DummyHandler::OnMessage(Message msg){
+			this->received_messages_count_++;
+	}
+
 
   void DummyHandler::SendDummyMessage(){
     Message message;

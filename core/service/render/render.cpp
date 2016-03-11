@@ -237,26 +237,22 @@ namespace game{
 	}
 
 	void Render::Update(){
-		ProcessReceivedMessages();
+		this->MessageHandler<RenderingIntent>::UpdateMessages();
 		UpdateCamera();
 		RenderDrawingPool();
 	}
 
-	void Render::ProcessReceivedMessages(){
-		for(RenderingIntent intent : this->MessageHandler<RenderingIntent>::messages_){
-			switch(intent.action){
-				case(RI_ACTIVE_CAMERA):
-					this->SetActiveCamera(intent.game_object);
-					break;
-				case(RI_RENDER_DRAWABLE):
-					this->AddGameObjectToDraw(intent.game_object);
-					break;
-				case(RI_NONE):
-					break;
-			}
+	void Render::OnMessage(RenderingIntent intent){
+		switch(intent.action){
+			case(RI_ACTIVE_CAMERA):
+				this->SetActiveCamera(intent.game_object);
+				break;
+			case(RI_RENDER_DRAWABLE):
+				this->AddGameObjectToDraw(intent.game_object);
+				break;
+			case(RI_NONE):
+				break;
 		}
-
-		this->MessageHandler<RenderingIntent>::messages_.clear();
 	}
 
 	void Render::InitializeGBuffer(){

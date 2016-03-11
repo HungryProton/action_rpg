@@ -15,6 +15,7 @@ namespace game{
       int GetReceivedMessagesCount();
 
     private:
+			virtual void OnMessage(Message);
       int received_messages_count_;
   };
 }

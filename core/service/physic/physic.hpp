@@ -25,7 +25,6 @@ namespace game{
 
 		private:
 			void AddGameObjectToColliderPool(GameObject*);
-			void ProcessReceivedMessages();
 			void ApplyForce(glm::vec3 force, GameObject*);
 
 			void UpdatePositions();
@@ -36,6 +35,7 @@ namespace game{
 			void ApplyImpulse(Manifold);
 			void ApplyFriction(Manifold);
 			void PositionalCorrection(Manifold);
+			virtual void OnMessage(PhysicIntent);
 
 			std::vector<GameObject*> collider_pool_;
 	};

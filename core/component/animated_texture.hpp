@@ -18,7 +18,8 @@ namespace game{
 		int priority;		// the lower, the higher the priority
 	};
 
-	struct AnimatedTexture : public Component, public MessageHandler<AnimationCommand>{
+	struct AnimatedTexture : public Component,
+													 public MessageHandler<AnimationCommand>{
 
 		std::string base_name;
 		std::map<std::string, Texture*> atlas;
@@ -47,6 +48,7 @@ namespace game{
 		void Pause();
 		void Stop();
 		void Bind(GLenum);
+		void OnMessage(AnimationCommand);
 
 		void LoadSpriteSheet(std::string, std::string, int);
 		Direction GetDirectionFromAngle(int);

@@ -32,7 +32,6 @@ namespace game{
 			void InitializeSSAO();
 			void InitializeBloom();
 			void InitializeLightFlare();
-			void ProcessReceivedMessages();
 			void UpdateCamera();
 			void RenderDrawingPool();
 			void RenderQuad();
@@ -42,6 +41,7 @@ namespace game{
 			void SetActiveCamera(GameObject*);
 			glm::mat4 GetModelMatrixFor(Transform*,
 				 								glm::vec3 local = glm::vec3(1.f, 1.f, 1.f));
+			virtual void OnMessage(RenderingIntent);
 			static void GLFWErrorCallback(int, const char*);
 
 			std::vector<GameObject*> objects_to_render_;

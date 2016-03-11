@@ -27,7 +27,7 @@ namespace game{
 	}
 
 	void MeleeAttack::Update(){
-		this->ProcessReceivedMessages();
+		this->MessageHandler<InputMessage>::UpdateMessages();
 
 		if(!this->blocking){ return; }
 
@@ -37,17 +37,14 @@ namespace game{
 		}
 	}
 
-	void MeleeAttack::ProcessReceivedMessages(){
-		for(InputMessage message : this->MessageHandler<InputMessage>::messages_){
-			switch(message.command){
-				case Command::ATTACK:
-					Attack();
-					break;
-				default:
-					break;
-			}
+	void MeleeAttack::OnMessage(InputMessage message){
+		switch(message.command){
+			case Command::ATTACK:
+				Attack();
+				break;
+			default:
+				break;
 		}
-		this->MessageHandler<InputMessage>::messages_.clear();
 	}
 
 	void MeleeAttack::Attack(){
