@@ -12,8 +12,8 @@ namespace game{
 		float max_size;
 		float min_count;
 		float max_count;
-		float min_life;
-		float max_life;
+		float min_duration;
+		float max_duration;
 		glm::vec3 direction;
 		float scattering;
 		float speed; //in m/s

@@ -9,6 +9,7 @@ namespace game{
 
 	struct Particle : public Component{
 		float life;
+		float fade;
 
 		Particle();
 		Particle(GameObject*);

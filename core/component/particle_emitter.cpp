@@ -10,8 +10,8 @@ namespace game{
 		this->max_size = 1.f;
 		this->min_count = 10;
 		this->max_count = 20;
-		this->min_life = 1;
-		this->max_life = 3;
+		this->min_duration = 1;
+		this->max_duration = 3;
 		this->direction = glm::vec3(0.f, 0.f, 1.f);
 		this->scattering = 1.0f;
 		this->speed = 1;
@@ -31,8 +31,8 @@ namespace game{
 		this->max_size = pe->max_size;
 		this->min_count = pe->min_count;
 		this->max_count = pe->max_count;
-		this->min_life = pe->min_life;
-		this->max_life = pe->max_life;
+		this->min_duration = pe->min_duration;
+		this->max_duration = pe->max_duration;
 		this->direction = pe->direction;
 		this->scattering = pe->scattering;
 		this->speed = pe->speed;
@@ -84,7 +84,8 @@ namespace game{
 
 		Transform* t = dead_particle->GetComponent<Transform>();
 
-		p_comp->life = Random::NextFloat(this->max_life - this->min_life) + this->min_life;
+		p_comp->life = 1.f;
+		p_comp->fade = 1.f/(Random::NextFloat(this->max_duration - this->min_duration) + this->min_duration);
 		t->position = this->parent->GetComponent<Transform>()->position;
 		t->target_velocity = glm::normalize(glm::vec3(scattering/2.f - Random::NextFloat(scattering)) + this->direction) * this->speed;
 	}

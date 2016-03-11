@@ -6,6 +6,7 @@ namespace game{
 
 	Particle::Particle() : Component(){
 		this->life = 0.f;
+		this->fade = 0.f;
 		this->transform = nullptr;
 		this->drawable = nullptr;
 	}
@@ -34,7 +35,7 @@ namespace game{
 		if( !this->IsAlive() || !this->drawable || !this->transform){ return; }
 		float delta = Time::GetDeltaTime();
 
-		life = std::max(0.f, life - delta);
+		life = std::max(0.f, life - fade * delta);
 		this->drawable->alpha = life;
 		glm::vec3 target_velocity = this->transform->target_velocity;
 		this->transform->position += target_velocity * delta;
