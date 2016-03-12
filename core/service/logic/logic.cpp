@@ -24,6 +24,8 @@
 #include "core/component/particle_emitter.hpp"
 #include "core/component/particle.hpp"
 #include "core/component/artificial_intelligence/random.hpp"
+#include "core/component/health.hpp"
+#include "core/component/death_controller.hpp"
 
 namespace game{
 
@@ -94,12 +96,19 @@ namespace game{
 		new AnimatedTexture(file_path, sprite);
 		new Drawable(sprite);
 		new Circle(0.35f, sprite);
-		new MotionToAnimation(sprite);
 		new Motion(sprite);
-		new IntentToMotion(sprite);
+
+		BehaviorController* b = new BehaviorController(sprite);
+
 		new RandomAi(sprite);
+
+		b->AddAction(new DeathController(sprite), 10);
+		b->AddAction(new IntentToMotion(sprite), 30);
+		b->AddAction(new MotionToAnimation(sprite), 40);
+
 		Collider* collider = new Collider(sprite);
 		collider->shape_type = std::type_index(typeid(Circle));
+		new Health(sprite);
 		this->game_objects_.push_back(sprite);
 		return sprite;
 	}

@@ -1,6 +1,8 @@
 #include "tools/time.hpp"
 #include "melee_attack.hpp"
 #include "core/messaging/concrete_messages/animation_command.hpp"
+#include "core/messaging/concrete_messages/damages_message.hpp"
+#include "core/component/transform.hpp"
 
 namespace game{
 
@@ -57,9 +59,26 @@ namespace game{
 		this->blocking = true;
 		this->start_time = glfwGetTime();
 
+		this->SendDamageMessage();
+
 		// Send sound message
 
 		// Send Damage message Or Attack message?
 		// How about stuff that deals damage and aren't attacks?
+	}
+
+	void MeleeAttack::SendDamageMessage(){
+		DamagesMessage msg;
+		msg.type = DamagesType::SLASH;
+		msg.amount = this->damage_modifier * 50; // Base weapon damage
+		msg.origin = this->parent;
+		Area area;
+		area.position = this->parent->GetComponent<Transform>()->position;
+		area.type = AreaType::CIRCLE;
+		area.radius = 1;
+
+		msg.area_of_effect = area;
+
+		MessageBus::Push(msg);
 	}
 }

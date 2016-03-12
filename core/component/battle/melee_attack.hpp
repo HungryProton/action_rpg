@@ -25,6 +25,7 @@ namespace game{
 			float start_time;
 			void Attack();
 			virtual void OnMessage(InputMessage);
+			void SendDamageMessage();
 	};
 }
 
