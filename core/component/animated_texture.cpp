@@ -78,13 +78,25 @@ namespace game{
 		if(it == this->animations.end()){ return; }
 
 		int frame_count = it->second.frame_count;
+
+		if(!(this->loop) && previous_frame == frame_count-1){ return; }
+
 		float elapsed_time = glfwGetTime() - this->start_time;
-		int current_frame = ((int)(elapsed_time*24.f))%frame_count;
+		int current_frame = (int)(elapsed_time*24.f);
+
+		if(loop){
+			current_frame %= frame_count;
+		} else if( current_frame >= frame_count){
+			current_frame = frame_count-1;
+		}
 
 		if(current_frame == this->previous_frame){
 			return;
 		}
 		this->previous_frame = current_frame;
+
+
+
 		auto it2 = it->second.position.find(current_direction);
 
 		this->shift = it2->second[current_frame];
@@ -129,6 +141,7 @@ namespace game{
 	void AnimatedTexture::OnMessage(AnimationCommand message){
 		switch(message.action){
 			case AnimationAction::PLAY:
+				this->loop = message.loop;
 				this->Play(message.name, message.direction);
 				break;
 			case AnimationAction::PAUSE:
