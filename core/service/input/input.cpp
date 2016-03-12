@@ -27,7 +27,7 @@ namespace game{
 		glfwPollEvents();
 
 		// TODO : change this to use the messaging system
-		if (this->GetKeyStatus(GLFW_KEY_ESCAPE) == KEY_PRESSED){
+		if (this->GetKeyStatus(GLFW_KEY_ESCAPE) == KeyStatus::PRESSED){
 			Game::Stop();
 		}
 
@@ -41,7 +41,7 @@ namespace game{
 		auto pair = this->previous_keys_status_.find(key_code);
 		KeyStatus status;
 
-		glfw_status == GLFW_PRESS ? status = KEY_PRESSED : status = KEY_RELEASED;
+		glfw_status == GLFW_PRESS ? status = KeyStatus::PRESSED : status = KeyStatus::RELEASED;
 
 		// If previous state wasn't stored
 		if(pair == this->previous_keys_status_.end()){
@@ -54,7 +54,7 @@ namespace game{
 			pair->second = glfw_status;
 
 			if(glfw_status == GLFW_RELEASE){
-				status = KEY_JUST_RELEASED;
+				status = KeyStatus::JUST_RELEASED;
 			}
 		}
 		return status;
@@ -64,21 +64,23 @@ namespace game{
 		InputMessage msg;
 		msg.status = GetKeyStatus(key_code);
 		msg.command = command;
-		msg.modifier_pressed = (GetKeyStatus(this->modifier_code) == KEY_PRESSED);
+		msg.first_modifier_pressed = (GetKeyStatus(this->first_modifier_code) == KeyStatus::PRESSED);
+		msg.second_modifier_pressed = (GetKeyStatus(this->second_modifier_code) == KeyStatus::PRESSED);
 
-		if(msg.status != KEY_RELEASED){
+		if(msg.status != KeyStatus::RELEASED){
 			MessageBus::Push(msg);
 		}
 	}
 
 	void Input::LoadDefaultKeymap(){
 		this->keymap_.clear();
-		AddEntryInKeymap(GLFW_KEY_W, Command::MOVE_UP);
-		AddEntryInKeymap(GLFW_KEY_S, Command::MOVE_DOWN);
-		AddEntryInKeymap(GLFW_KEY_A, Command::MOVE_LEFT);
-		AddEntryInKeymap(GLFW_KEY_D, Command::MOVE_RIGHT);
+		AddEntryInKeymap(GLFW_KEY_W, Command::UP);
+		AddEntryInKeymap(GLFW_KEY_S, Command::DOWN);
+		AddEntryInKeymap(GLFW_KEY_A, Command::LEFT);
+		AddEntryInKeymap(GLFW_KEY_D, Command::RIGHT);
 		AddEntryInKeymap(GLFW_KEY_V, Command::ATTACK);
-		this->modifier_code = GLFW_KEY_LEFT_ALT;
+		this->first_modifier_code = GLFW_KEY_LEFT_SHIFT;
+		this->second_modifier_code = GLFW_KEY_LEFT_ALT;
 	}
 
 	void Input::AddEntryInKeymap(int key_code, Command command){

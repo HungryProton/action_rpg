@@ -10,7 +10,8 @@
 #include "core/component/drawable.hpp"
 #include "core/component/texture.hpp"
 #include "core/component/animated_texture.hpp"
-#include "core/component/input_to_motion.hpp"
+#include "core/component/input_to_intent.hpp"
+#include "core/component/intent_to_motion.hpp"
 #include "core/component/motion_to_animation.hpp"
 #include "core/component/motion.hpp"
 #include "core/component/mesh.hpp"
@@ -22,6 +23,7 @@
 #include "core/component/behavior_controller.hpp"
 #include "core/component/particle_emitter.hpp"
 #include "core/component/particle.hpp"
+#include "core/component/artificial_intelligence/random.hpp"
 
 namespace game{
 
@@ -38,7 +40,7 @@ namespace game{
 		SpawnMultipleSprite("../data/characters/female/animated/female_1.txt", 15);
 		SpawnMultipleSprite("../data/characters/female/animated/female_2.txt", 15);
 		SpawnMultipleSprite("../data/characters/female/animated/female_3.txt", 15);
-		GameObject* camera = SpawnCamera(glm::vec3(0, -20, 10));
+		GameObject* camera = SpawnCamera(glm::vec3(0, -20, 12));
 		GameObject* house = SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
 		new Box(8, 8, house);
 
@@ -93,6 +95,9 @@ namespace game{
 		new Drawable(sprite);
 		new Circle(0.35f, sprite);
 		new MotionToAnimation(sprite);
+		new Motion(sprite);
+		new IntentToMotion(sprite);
+		new RandomAi(sprite);
 		Collider* collider = new Collider(sprite);
 		collider->shape_type = std::type_index(typeid(Circle));
 		this->game_objects_.push_back(sprite);
@@ -119,6 +124,7 @@ namespace game{
 		Collider* collider = new Collider(player);
 		collider->shape_type = std::type_index(typeid(Circle));
 		new Motion(player);
+		new InputToIntent(player);
 
 		BehaviorController* b = new BehaviorController(player);
 
@@ -127,8 +133,8 @@ namespace game{
 		m->damage_modifier = 2;
 		m->attack_duration = 0.35f;
 
+		b->AddAction(new IntentToMotion(player), 30);
 		b->AddAction(m, 40);
-		b->AddAction(new InputToMotion(player), 30);
 		b->AddAction(new MotionToAnimation(player), 50);
 
 		this->game_objects_.push_back(player);

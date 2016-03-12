@@ -28,7 +28,8 @@ namespace game{
 			GLFWwindow* window_;
 			std::map<int, Command> keymap_;
 			std::map<int, int> previous_keys_status_;
-			int modifier_code;
+			int first_modifier_code;
+			int second_modifier_code;
 	};
 }
 
