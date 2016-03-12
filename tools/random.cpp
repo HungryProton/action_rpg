@@ -4,7 +4,7 @@
 namespace game{
 
 	int Random::NextInt(int count){
-		return int_distribution_(generator_)%count;
+		return int_distribution_(generator_)%(count+1);
 	}
 
 	float Random::NextFloat(float count){

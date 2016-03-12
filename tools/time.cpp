@@ -8,6 +8,10 @@ namespace game{
 		frame_start_time_ = current_time;
 	}
 
+	float Time::GetCurrentTime(){
+		return glfwGetTime();
+	}
+
 	float Time::GetDeltaTime(){
 		return delta_;
 	}
