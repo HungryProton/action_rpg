@@ -17,6 +17,7 @@ namespace game{
 			glm::vec3 scale;
 			glm::vec3 max_force;
 			float target_speed;
+			float friction;
 
 			// Helpers
 			Motion();

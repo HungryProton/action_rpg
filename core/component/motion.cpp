@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "motion.hpp"
 #include "tools/time.hpp"
 #include "tools/logger.hpp"
@@ -12,6 +13,7 @@ namespace game{
 		this->max_force = glm::vec3(0.f,0.f,0.f);
 		this->target_speed = 0;
 		this->transform = nullptr;
+		this->friction = 0.5;
 	}
 
 	Motion::Motion(GameObject* parent) : Motion(){
@@ -60,6 +62,11 @@ namespace game{
 		}
 		this->transform->rotation += this->rotation * time;
 		this->transform->scale += this->scale * time;
+
+		if(target_speed != 0){
+			this->target_speed -= Time::GetDeltaTime() / this->friction;
+			this->target_speed = std::max(0.f, this->target_speed);
+		}
 	}
 
 	void Motion::ServoResolve(){
