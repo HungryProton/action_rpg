@@ -7,7 +7,7 @@ namespace game{
 		this->amount = 100;
 	}
 
-	Health::Health(GameObject* parent) : Component(){
+	Health::Health(GameObject* parent) : Health(){
 		if(parent){
 			parent->AttachComponent(this);
 		}
@@ -33,6 +33,7 @@ namespace game{
 		// Early return if already dead
 		if(this->amount <= 0){ return; }
 
+		if(msg.origin == this->parent){ return; } // Prevent dying from your own attacks
 		if(!msg.area_of_effect.IsObjectWithin(this->parent)){ return; }
 
 		this->amount -= msg.amount;

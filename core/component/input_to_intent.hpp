@@ -21,6 +21,7 @@ namespace game{
 		protected:
 			virtual void OnMessage(InputMessage);
 			void SendIntentIfAny();
+			void ResetIntent();
 
 			bool input_detected;
 			IntentMessage intent;

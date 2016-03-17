@@ -37,6 +37,10 @@ namespace game{
 			modifier = 0;
 		}
 
+		if(message.second_modifier_pressed){
+			this->intent.intent = Intent::WALK;
+		}
+
 		switch(message.command){
 			case Command::UP:
 				this->intent.direction.y = +modifier;
@@ -74,7 +78,12 @@ namespace game{
 			this->intent.intent = Intent::IDLE;
 		}
 		this->parent->BroadcastLocally(this->intent);
-		this->intent = IntentMessage();
+		this->ResetIntent();
 		this->input_detected = false;
+	}
+
+	void InputToIntent::ResetIntent(){
+		this->intent = IntentMessage();
+		this->intent.intent = Intent::RUN;
 	}
 }
