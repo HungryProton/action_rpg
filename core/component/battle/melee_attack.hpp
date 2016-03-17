@@ -11,15 +11,14 @@ namespace game{
 											 public MessageHandler<InputMessage>{
 		std::string animation_name;
 		float damage_modifier;
-
+		std::vector<int> attacks_durations; // In frames
+		int current_attack;
 
 		MeleeAttack();
 		MeleeAttack(GameObject*);
 		MeleeAttack(MeleeAttack*);
 		virtual MeleeAttack* Clone();
 		virtual void Update();
-
-		float attack_duration;
 
 		private:
 			float start_time;

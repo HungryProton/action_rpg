@@ -13,6 +13,7 @@ namespace game{
 		this->previous_frame = -1;
 		this->current_animation = "";
 		this->current_priority = -1;
+		this->offset = 0;
 	}
 
 	AnimatedTexture::~AnimatedTexture(){
@@ -54,6 +55,7 @@ namespace game{
 		this->animations = texture->animations;
 		this->loop = texture->loop;
 		this->play = texture->play;
+		this->offset = texture->offset;
 		this->previous_frame = texture->previous_frame;
 		this->current_direction = texture->current_direction;
 		this->current_ratio = texture->current_ratio;
@@ -82,7 +84,7 @@ namespace game{
 		if(!(this->loop) && previous_frame == frame_count-1){ return; }
 
 		float elapsed_time = glfwGetTime() - this->start_time;
-		int current_frame = (int)(elapsed_time*24.f);
+		int current_frame = (int)(elapsed_time*24.f) + this->offset;
 
 		if(loop){
 			current_frame %= frame_count;
@@ -142,6 +144,7 @@ namespace game{
 		switch(message.action){
 			case AnimationAction::PLAY:
 				this->loop = message.loop;
+				this->offset = message.offset;
 				this->Play(message.name, message.direction);
 				break;
 			case AnimationAction::PAUSE:

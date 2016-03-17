@@ -46,11 +46,11 @@ namespace game{
 		GameObject* house = SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
 		new Box(8, 8, house);
 
-		GameObject* player = SpawnPlayer("../data/characters/female/animated/female_2.txt");
-		SpawnRandomMeshes("../data/environment/terrain/vegetation/tree.obj", 10, 0.5f);
+		GameObject* player = SpawnPlayer("../data/characters/female/animated/female_1.txt");
+		SpawnRandomMeshes("../data/environment/terrain/vegetation/tree.obj", 15, 0.5f);
 		SpawnRandomMeshes("../data/environment/terrain/vegetation/bush.obj", 10, 0.35f);
-		SpawnRandomMeshes("../data/environment/terrain/rock/rock_01.obj", 5, 1.f);
-		SpawnRandomMeshes("../data/environment/terrain/rock/rock_02.obj", 5, 1.f);
+		SpawnRandomMeshes("../data/environment/terrain/rock/rock_01.obj", 8, 1.f);
+		SpawnRandomMeshes("../data/environment/terrain/rock/rock_02.obj", 8, 1.f);
 
 		SpawnPillar();
 
@@ -140,7 +140,9 @@ namespace game{
 		MeleeAttack* m = new MeleeAttack(player);
 		m->animation_name = "attack";
 		m->damage_modifier = 2;
-		m->attack_duration = 0.35f;
+		m->attacks_durations.push_back(7);
+		m->attacks_durations.push_back(10);
+		m->attacks_durations.push_back(13);
 
 		b->AddAction(new IntentToMotion(player), 30);
 		b->AddAction(m, 40);

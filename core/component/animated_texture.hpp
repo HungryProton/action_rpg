@@ -27,6 +27,7 @@ namespace game{
 
 		bool loop;
 		bool play;
+		int offset;
 		float start_time;
 		std::string current_animation;
 		Direction current_direction;

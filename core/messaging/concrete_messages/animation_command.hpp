@@ -12,12 +12,14 @@ namespace game{
 	struct AnimationCommand : public Message{
 		AnimationAction action;
 		std::string name;
+		int offset;
 		Direction direction;
 		bool loop;
 
 		AnimationCommand(){
 			direction = Direction::LAST;
 			loop = false;
+			offset = 0;
 		}
 	};
 }

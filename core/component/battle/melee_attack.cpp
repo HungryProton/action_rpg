@@ -9,7 +9,8 @@ namespace game{
 	MeleeAttack::MeleeAttack() : Behavior(){
 		this->animation_name = "";
 		this->damage_modifier = 1;
-		this->attack_duration = 0.5f;
+		this->attacks_durations.clear();
+		this->current_attack = 0;
 	}
 
 	MeleeAttack::MeleeAttack(GameObject* parent) : MeleeAttack(){
@@ -21,7 +22,7 @@ namespace game{
 	MeleeAttack::MeleeAttack(MeleeAttack* melee_attack) : MeleeAttack(){
 		this->animation_name = melee_attack->animation_name;
 		this->damage_modifier = melee_attack->damage_modifier;
-		this->attack_duration = melee_attack->attack_duration;
+		this->attacks_durations = melee_attack->attacks_durations;
 	}
 
 	MeleeAttack* MeleeAttack::Clone(){
@@ -34,7 +35,7 @@ namespace game{
 		if(!this->blocking){ return; }
 
 		float elapsed_time = glfwGetTime() - this->start_time;
-		if(elapsed_time >= this->attack_duration){
+		if(elapsed_time >= this->attacks_durations[current_attack]/24.f){
 			this->blocking = false;
 		}
 	}
@@ -54,12 +55,19 @@ namespace game{
 		AnimationCommand animation_message;
 		animation_message.name = this->animation_name;
 		animation_message.action = AnimationAction::PLAY;
+		int offset = 0;
+		for(int i = 0; i < this->current_attack; i++){
+			offset += this->attacks_durations[i];
+		}
+
+		animation_message.offset = offset;
 		this->parent->BroadcastLocally(animation_message);
 
 		this->blocking = true;
 		this->start_time = glfwGetTime();
 
 		this->SendDamageMessage();
+		this->current_attack = (this->current_attack + 1)%this->attacks_durations.size();
 
 		// Send sound message
 
@@ -70,7 +78,7 @@ namespace game{
 	void MeleeAttack::SendDamageMessage(){
 		DamagesMessage msg;
 		msg.type = DamagesType::SLASH;
-		msg.amount = this->damage_modifier * 50; // Base weapon damage
+		msg.amount = this->damage_modifier * 30; // Base weapon damage
 		msg.origin = this->parent;
 		Area area;
 		area.position = this->parent->GetComponent<Transform>()->position;
