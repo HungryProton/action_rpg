@@ -3,12 +3,12 @@
 
 #include "../behavior.hpp"
 #include "core/messaging/message_handler.hpp"
-#include "core/messaging/concrete_messages/input_message.hpp"
+#include "core/messaging/concrete_messages/intent_message.hpp"
 
 namespace game{
 
 	struct MeleeAttack : public Behavior,
-											 public MessageHandler<InputMessage>{
+											 public MessageHandler<IntentMessage>{
 		std::string animation_name;
 		float damage_modifier;
 		std::vector<int> attacks_durations; // In frames
@@ -23,7 +23,7 @@ namespace game{
 		private:
 			float start_time;
 			void Attack();
-			virtual void OnMessage(InputMessage);
+			virtual void OnMessage(IntentMessage);
 			void SendDamageMessage();
 	};
 }

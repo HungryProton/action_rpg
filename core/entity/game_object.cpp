@@ -83,6 +83,7 @@ namespace game{
 	void GameObject::Update(){
 		for(auto c : this->components_){
 			if(c.second->manual_update){continue;}
+			if(!c.second->enabled){continue;}
 			c.second->Update();
 		}
 	}

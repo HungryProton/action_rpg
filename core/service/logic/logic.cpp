@@ -26,6 +26,7 @@
 #include "core/component/artificial_intelligence/random.hpp"
 #include "core/component/health.hpp"
 #include "core/component/death_controller.hpp"
+#include "core/component/entity_notifier.hpp"
 
 namespace game{
 
@@ -100,11 +101,22 @@ namespace game{
 
 		BehaviorController* b = new BehaviorController(sprite);
 
+		MeleeAttack* m = new MeleeAttack(sprite);
+		m->animation_name = "attack";
+		m->damage_modifier = 2;
+		m->attacks_durations.push_back(7);
+		m->attacks_durations.push_back(10);
+		m->attacks_durations.push_back(13);
+
 		new RandomAi(sprite);
 
 		b->AddAction(new DeathController(sprite), 10);
 		b->AddAction(new IntentToMotion(sprite), 30);
+		b->AddAction(m, 35);
 		b->AddAction(new MotionToAnimation(sprite), 40);
+
+		EntityNotifier en =	new EntityNotifier(sprite);
+		en.notify_position = true;
 
 		Collider* collider = new Collider(sprite);
 		collider->shape_type = std::type_index(typeid(Circle));
@@ -147,6 +159,8 @@ namespace game{
 		b->AddAction(new IntentToMotion(player), 30);
 		b->AddAction(m, 40);
 		b->AddAction(new MotionToAnimation(player), 50);
+
+		new Health(player);
 
 		this->game_objects_.push_back(player);
 

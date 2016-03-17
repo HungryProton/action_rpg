@@ -59,6 +59,7 @@ namespace game{
 				break;
 
 			case Command::ATTACK:
+				this->intent.intent = Intent::ATTACK;
 
 			case Command::BLOCK:
 
@@ -75,7 +76,9 @@ namespace game{
 		if(!this->input_detected){ return; }
 
 		if(this->intent.direction == glm::vec3(0.f, 0.f, 0.f)){
-			this->intent.intent = Intent::IDLE;
+			if(this->intent.intent != Intent::ATTACK){
+				this->intent.intent = Intent::IDLE;
+			}
 		}
 		this->parent->BroadcastLocally(this->intent);
 		this->ResetIntent();

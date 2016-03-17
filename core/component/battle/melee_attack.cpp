@@ -16,6 +16,7 @@ namespace game{
 	MeleeAttack::MeleeAttack(GameObject* parent) : MeleeAttack(){
 		if(parent){
 			parent->AttachComponent(this);
+			parent->RegisterToLocalBus(this);
 		}
 	}
 
@@ -30,7 +31,7 @@ namespace game{
 	}
 
 	void MeleeAttack::Update(){
-		this->MessageHandler<InputMessage>::UpdateMessages();
+		this->MessageHandler<IntentMessage>::UpdateMessages();
 
 		if(!this->blocking){ return; }
 
@@ -40,9 +41,9 @@ namespace game{
 		}
 	}
 
-	void MeleeAttack::OnMessage(InputMessage message){
-		switch(message.command){
-			case Command::ATTACK:
+	void MeleeAttack::OnMessage(IntentMessage message){
+		switch(message.intent){
+			case Intent::ATTACK:
 				Attack();
 				break;
 			default:

@@ -31,6 +31,7 @@ namespace game{
 
 	void DeathController::OnMessage(EventMessage msg){
 		if(msg.object != this->parent){ return; }
+		if(msg.type != EventType::DIED){ return; }
 
 		AnimationCommand anim_msg;
 		anim_msg.name = this->death_animation;
