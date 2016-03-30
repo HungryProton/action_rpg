@@ -94,6 +94,22 @@ namespace game{
 		}
 	}
 
+	void GameObject::AttachChild(GameObject* child){
+		for(GameObject* c : this->children_){
+			if(c == child){ return; }
+		}
+		this->children_.push_back(child);
+	}
+
+	void GameObject::RemoveChild(GameObject* child){
+		for(auto it = this->children_.begin(); it != this->children_.end(); it++){
+			if(it == child){
+				this->children_.erase(it);
+				return;
+			}
+		}
+	}
+
 	GameObject* GameObject::Clone(){
 		GameObject* new_game_object = new GameObject();
 

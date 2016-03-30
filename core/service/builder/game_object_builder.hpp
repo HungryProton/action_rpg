@@ -18,6 +18,7 @@ namespace game{
 			GameObject* CreateFromPreset(std::string);
 
 			void RegisterPreset(std::string, GameObject*);
+			GameObject* LoadAnimatedSprite(std::string);
 
 		private:
 			std::map<std::string, GameObject*> presets_;

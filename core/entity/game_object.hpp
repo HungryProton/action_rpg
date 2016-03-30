@@ -49,6 +49,10 @@ namespace game{
 
 			void DetachAndDestroyComponent(Component*);
 
+			void AttachChild(GameObject*);
+
+			void RemoveChild(GameObject*);
+
 			void Update();
 
 
@@ -100,6 +104,8 @@ namespace game{
 			 *	direct children
 			 */
 			std::vector<GameObject*> children_;
+
+			GameObject* parent_;
 
 			unsigned int channel_id_;
 	};

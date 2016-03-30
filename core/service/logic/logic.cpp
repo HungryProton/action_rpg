@@ -5,28 +5,7 @@
 #include "core/game/game.hpp"
 #include "tools/random.hpp"
 
-#include "core/component/transform.hpp"
-#include "core/component/camera.hpp"
-#include "core/component/drawable.hpp"
-#include "core/component/texture.hpp"
-#include "core/component/animated_texture.hpp"
-#include "core/component/input_to_intent.hpp"
-#include "core/component/intent_to_motion.hpp"
-#include "core/component/motion_to_animation.hpp"
-#include "core/component/motion.hpp"
-#include "core/component/mesh.hpp"
-#include "core/component/constraint.hpp"
-#include "core/component/collider.hpp"
-#include "core/component/shapes/box.hpp"
-#include "core/component/shapes/circle.hpp"
-#include "core/component/battle/melee_attack.hpp"
-#include "core/component/behavior_controller.hpp"
-#include "core/component/particle_emitter.hpp"
-#include "core/component/particle.hpp"
-#include "core/component/artificial_intelligence/random.hpp"
-#include "core/component/health.hpp"
-#include "core/component/death_controller.hpp"
-#include "core/component/entity_notifier.hpp"
+#include "core/component/full_list.hpp"
 
 namespace game{
 
@@ -47,7 +26,7 @@ namespace game{
 		GameObject* house = SpawnMesh("../data/environment/architecture/building/house_01/house01.obj");
 		new Box(8, 8, house);
 
-		GameObject* player = SpawnPlayer("../data/characters/female/animated/female_1.txt");
+		GameObject* player = SpawnPlayer("../data/characters/female/body/f_body.txt");
 		SpawnRandomMeshes("../data/environment/terrain/vegetation/tree.obj", 15, 0.5f);
 		SpawnRandomMeshes("../data/environment/terrain/vegetation/bush.obj", 10, 0.35f);
 		SpawnRandomMeshes("../data/environment/terrain/rock/rock_01.obj", 8, 1.f);
@@ -140,6 +119,10 @@ namespace game{
 
 		new Transform(player);
 		new AnimatedTexture(resource_path, player);
+
+		SpriteCustomization* cc = new SpriteCustomization(player);
+		cc->AddPart("../data/characters/female/hair/long_02/long_hair_02.txt", 3);
+
 		new Drawable(player);
 		new Circle(0.35f, player);
 		Collider* collider = new Collider(player);
@@ -156,11 +139,16 @@ namespace game{
 		m->attacks_durations.push_back(10);
 		m->attacks_durations.push_back(13);
 
+		b->AddAction(new DeathController(player), 20);
 		b->AddAction(new IntentToMotion(player), 30);
 		b->AddAction(m, 40);
 		b->AddAction(new MotionToAnimation(player), 50);
 
-		new Health(player);
+		EntityNotifier* en = new EntityNotifier(player);
+		en->notify_position = true;
+
+		Health* h = new Health(player);
+		h->amount = 1000;
 
 		this->game_objects_.push_back(player);
 
@@ -190,6 +178,8 @@ namespace game{
 			t->position.x = 15 - Random::NextFloat(30);
 			t->position.y = 15 - Random::NextFloat(30);
 			t->rotation.z = Random::NextFloat(360)*(3.1415/180.f);
+			float scale_factor = Random::NextFloat()+0.5f;
+			t->scale = glm::vec3(scale_factor);
 			new Circle(size, m);
 			Collider* c = m->GetComponent<Collider>();
 			c->shape_type = std::type_index(typeid(Circle));

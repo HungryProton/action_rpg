@@ -1,5 +1,6 @@
 #include "tools/logger.hpp"
 #include "game_object_builder.hpp"
+#include "core/component/full_list.hpp"
 
 namespace game{
 
@@ -46,6 +47,14 @@ namespace game{
 			this->presets_.erase(preset);
 		}
 		this->presets_.insert(std::pair<std::string, GameObject*>(name, object));
+	}
+
+	GameObject* GameObjectBuilder::LoadAnimatedSprite(std::string resource){
+		GameObject* sprite = this->CreateBlank();
+		new Transform(sprite);
+		new AnimatedTexture(resource, sprite);
+		new Drawable(sprite);
+		return sprite;
 	}
 
 	void GameObjectBuilder::ClearMemory(){
