@@ -27,9 +27,11 @@ namespace game{
 		return new MotionToAnimation(this);
 	}
 
-	void MotionToAnimation::NotifyNewComponentAdded(){
+	void MotionToAnimation::Notify(SystemEvent event){
 		if(this->velocity){ return; }
-		this->velocity = &(this->parent->GetComponent<Transform>()->velocity);
+		if(event == SystemEvent::NEW_COMPONENT){
+			this->velocity = &(this->parent->GetComponent<Transform>()->velocity);
+		}
 	}
 
 	void MotionToAnimation::Update(){

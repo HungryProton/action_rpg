@@ -29,9 +29,17 @@ namespace game{
 		this->MessageHandler<IntentMessage>::UpdateMessages();
 	}
 
-	void IntentToMotion::NotifyNewComponentAdded(){
+	void IntentToMotion::Notify(SystemEvent event){
 		if(!this->parent){ return; }
-		this->motion = this->parent->GetComponent<Motion>();
+		switch(event){
+			case SystemEvent::NEW_COMPONENT:
+				this->motion = this->parent->GetComponent<Motion>();
+				break;
+
+			case SystemEvent::CHANNEL_CHANGED:
+				parent->RegisterToLocalBus((MessageHandler<IntentMessage>*)this);
+				break;
+		}
 	}
 
 	void IntentToMotion::OnMessage(IntentMessage message){

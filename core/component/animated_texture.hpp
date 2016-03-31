@@ -50,6 +50,7 @@ namespace game{
 		void Stop();
 		void Bind(GLenum);
 		void OnMessage(AnimationCommand);
+		void Notify(SystemEvent);
 
 		void LoadSpriteSheet(std::string, std::string, int);
 		Direction GetDirectionFromAngle(int);

@@ -38,9 +38,11 @@ namespace game{
 		return new Motion(this);
 	}
 
-	void Motion::NotifyNewComponentAdded(){
+	void Motion::Notify(SystemEvent event){
 		if(!this->parent){ return; }
-		this->transform = this->parent->GetComponent<Transform>();
+		if(event == SystemEvent::NEW_COMPONENT){
+			this->transform = this->parent->GetComponent<Transform>();
+		}
 	}
 
 	void Motion::Update(){

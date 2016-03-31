@@ -17,7 +17,7 @@ namespace game{
 		~Particle();
 		virtual Particle* Clone();
 		virtual void Update();
-		virtual void NotifyNewComponentAdded();
+		virtual void Notify(SystemEvent);
 		bool IsAlive();
 
 		private:

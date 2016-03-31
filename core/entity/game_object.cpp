@@ -6,6 +6,7 @@
 
 #include "game_object.hpp"
 #include "core/component/component.hpp"
+#include "core/component/common.hpp"
 #include "tools/logger.hpp"
 
 namespace game{
@@ -90,7 +91,7 @@ namespace game{
 
 	void GameObject::NotifyAttachedComponents(){
 		for(auto c : this->components_){
-			c.second->NotifyNewComponentAdded();
+			c.second->Notify(SystemEvent::NEW_COMPONENT);
 		}
 	}
 
@@ -98,12 +99,16 @@ namespace game{
 		for(GameObject* c : this->children_){
 			if(c == child){ return; }
 		}
+
+		if(this->channel_id_ != 0){
+			child->SetChannelId(this->channel_id_);
+		}
 		this->children_.push_back(child);
 	}
 
 	void GameObject::RemoveChild(GameObject* child){
 		for(auto it = this->children_.begin(); it != this->children_.end(); it++){
-			if(it == child){
+			if(*it == child){
 				this->children_.erase(it);
 				return;
 			}
@@ -120,5 +125,15 @@ namespace game{
 			new_game_object->AttachComponent(cloned_component);
 		}
 		return new_game_object;
+	}
+
+	void GameObject::SetChannelId(int new_channel_id){
+		this->channel_id_ = new_channel_id;
+
+		if(this->channel_id_ != 0){
+			for(auto pair : this->components_){
+				pair.second->Notify(SystemEvent::CHANNEL_CHANGED);
+			}
+		}
 	}
 }

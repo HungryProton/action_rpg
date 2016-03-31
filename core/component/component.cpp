@@ -17,7 +17,7 @@ namespace game{
 
 	}
 
-	void Component::NotifyNewComponentAdded(){
+	void Component::Notify(SystemEvent event){
 
 	}
 }

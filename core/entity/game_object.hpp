@@ -108,6 +108,8 @@ namespace game{
 			GameObject* parent_;
 
 			unsigned int channel_id_;
+
+			void SetChannelId(int);
 	};
 }
 

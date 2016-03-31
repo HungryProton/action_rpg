@@ -3,6 +3,7 @@
 #include "tools/time.hpp"
 #include "animated_texture.hpp"
 #include "drawable.hpp"
+#include "common.hpp"
 
 namespace game{
 
@@ -96,8 +97,6 @@ namespace game{
 			return;
 		}
 		this->previous_frame = current_frame;
-
-
 
 		auto it2 = it->second.position.find(current_direction);
 
@@ -240,6 +239,12 @@ namespace game{
 				return Direction::SW;
 			default:
 				return Direction::S;
+		}
+	}
+
+	void AnimatedTexture::Notify(SystemEvent event){
+		if(event == SystemEvent::CHANNEL_CHANGED && this->parent){
+			parent->RegisterToLocalBus((MessageHandler<AnimationCommand>*)this);
 		}
 	}
 

@@ -5,6 +5,7 @@
 #include  "core/entity/game_object.hpp"
 
 namespace game{
+	enum class SystemEvent{NEW_COMPONENT, CHANNEL_CHANGED};
 	enum class Direction{N,S,E,W,NE,NW,SE,SW,LAST};
 
 	struct Vertex{

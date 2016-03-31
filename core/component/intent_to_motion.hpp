@@ -17,7 +17,7 @@ namespace game{
 
 		virtual void Update();
 		virtual IntentToMotion* Clone();
-		virtual void NotifyNewComponentAdded();
+		virtual void Notify(SystemEvent);
 
 		Motion* motion;
 		float run_speed;

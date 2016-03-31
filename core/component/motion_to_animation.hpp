@@ -17,7 +17,7 @@ namespace game{
 		MotionToAnimation(MotionToAnimation*);
 		~MotionToAnimation();
 		virtual MotionToAnimation* Clone();
-		virtual void NotifyNewComponentAdded();
+		virtual void Notify(SystemEvent);
 		virtual void Update();
 		Direction GetDirectionFromMotion();
 	};

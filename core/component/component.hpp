@@ -2,6 +2,7 @@
 #define GAME_CORE_ENTITY_CORE_COMPONENT_HPP
 
 #include "core/entity/game_object.hpp"
+#include "common.hpp"
 
 namespace game{
 
@@ -16,7 +17,7 @@ namespace game{
 		virtual ~Component();
 		virtual Component* Clone() = 0;
 		virtual void Update();
-		virtual void NotifyNewComponentAdded();
+		virtual void Notify(SystemEvent);
 	};
 }
 

@@ -25,7 +25,7 @@ namespace game{
 			Motion(Motion*);
 			~Motion();
 
-			virtual void NotifyNewComponentAdded();
+			virtual void Notify(SystemEvent);
 			virtual void Update();
 			virtual Motion* Clone();
 

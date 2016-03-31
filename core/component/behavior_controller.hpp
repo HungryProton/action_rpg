@@ -16,7 +16,7 @@ namespace game{
 			BehaviorController(BehaviorController*);
 			~BehaviorController();
 			virtual BehaviorController* Clone();
-			virtual void NotifyNewComponentAdded();
+			virtual void Notify(SystemEvent);
 			virtual void Update();
 	};
 }

@@ -45,8 +45,9 @@ namespace game{
 		return this->life > 0;
 	}
 
-	void Particle::NotifyNewComponentAdded(){
+	void Particle::Notify(SystemEvent event){
 		if(!this->parent){ return; }
+		if(event != SystemEvent::NEW_COMPONENT){ return; }
 
 		if(!this->transform){
 			this->transform = this->parent->GetComponent<Transform>();

@@ -29,9 +29,9 @@ namespace game{
 		return new BehaviorController(this);
 	}
 
-	void BehaviorController::NotifyNewComponentAdded(){
+	void BehaviorController::Notify(SystemEvent event){
 		for(auto behavior : this->behaviors_){
-			behavior.second->NotifyNewComponentAdded();
+			behavior.second->Notify(event);
 		}
 	}
 
