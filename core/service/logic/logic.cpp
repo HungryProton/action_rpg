@@ -121,6 +121,7 @@ namespace game{
 		new AnimatedTexture(resource_path, player);
 
 		SpriteCustomization* cc = new SpriteCustomization(player);
+		cc->AddPart("../data/characters/female/clothes/01/clothes_01.txt", 1);
 		cc->AddPart("../data/characters/female/hair/long_02/long_hair_02.txt", 3);
 
 		new Drawable(player);
