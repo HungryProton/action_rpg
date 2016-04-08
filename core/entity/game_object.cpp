@@ -87,6 +87,10 @@ namespace game{
 			if(!c.second->enabled){continue;}
 			c.second->Update();
 		}
+
+		for(auto g : this->children_){
+			g->Update();
+		}
 	}
 
 	void GameObject::NotifyAttachedComponents(){
@@ -129,7 +133,6 @@ namespace game{
 
 	void GameObject::SetChannelId(int new_channel_id){
 		this->channel_id_ = new_channel_id;
-
 		if(this->channel_id_ != 0){
 			for(auto pair : this->components_){
 				pair.second->Notify(SystemEvent::CHANNEL_CHANGED);
