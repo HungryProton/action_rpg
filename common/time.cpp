@@ -12,11 +12,11 @@ namespace game{
 		return glfwGetTime();
 	}
 
-	float Time::GetDeltaTime(){
+	float Time::GetPreviousDeltaTime(){
 		return delta_;
 	}
 
-	float Time::GetCurrentDeltaTime(){
+	float Time::GetCurrentFrameAdvance(){
 		return glfwGetTime() - frame_start_time_;
 	}
 

@@ -2,5 +2,6 @@ game
 */**/*.swp*
 tests/logs.txt
 .ycm*
+.release_time
 
 

@@ -9,13 +9,14 @@ namespace game{
 	const lest::test logger[] = {
 
 		CASE("Should write a string to a file"){
+			std::string file_path = "test/data/logs.txt";
 			// Write to file
-			std::ofstream outfile ("tests/data/logs.txt", std::ios::binary);
+			std::ofstream outfile (file_path, std::ios::binary);
 			FLOG(INFO, outfile) << "Line of log" << std::endl;
 			outfile.close();
 
 			// Read from file to check
-			std::ifstream infile ("tests/data/logs.txt", std::ifstream::in | std::ios::binary);
+			std::ifstream infile (file_path, std::ifstream::in | std::ios::binary);
 
 			if (infile){
 				infile.seekg( 0, infile.end );
@@ -24,7 +25,7 @@ namespace game{
 				EXPECT( size != 0 );
 				infile.close();
 			} else {
-				std::string err = "Could not open file tests/data/logs.txt";
+				std::string err = "Could not open file " + file_path;
 				EXPECT(err == "");
 			}
 		},

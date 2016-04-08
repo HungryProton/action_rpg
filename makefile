@@ -38,7 +38,7 @@ INSTALL_PREFIX = usr/local
 # Main entry point
 MAIN_ENTRY_POINT = $(SRC_PATH)/core/main.cpp
 # Tests entry point
-TEST_PATH = $(SRC_PATH)/tests/*
+TEST_PATH = $(SRC_PATH)/test/*
 #### END PROJECT SETTINGS ####
 
 # Generally should not need to edit below this line
@@ -193,7 +193,7 @@ clean:
 	@$(RM) $(BIN_NAME)
 	#@$(RM) $(BIN_NAME)_tests
 	@echo "Deleting directories"
-	@$(RM) -r $(BUILD_DIR)/* 
+	@$(RM) -r $(BUILD_DIR)/*
 
 print-%  : ; @echo $* = $($*)
 

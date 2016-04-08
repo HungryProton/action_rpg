@@ -1,0 +1,1 @@
+test/common/test_logger.cpp - operator():15 [32minfo : [39mLine of log[39m
