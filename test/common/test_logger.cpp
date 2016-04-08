@@ -21,7 +21,6 @@ namespace game{
 			if (infile){
 				infile.seekg( 0, infile.end );
 				int size = infile.tellg();
-				LOG(DEBUG) << size << std::endl;
 				EXPECT( size != 0 );
 				infile.close();
 			} else {
