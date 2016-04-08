@@ -2,29 +2,30 @@
 #include <fstream>
 #include "deps/lest.hpp"
 #include "deps/lest-module.hpp"
-#include "tools/logger.hpp"
+#include "common/logger.hpp"
 
 namespace game{
 
 	const lest::test logger[] = {
 
-		CASE("Should output a string to the standard console"){
-			LOG(INFO) << "Success" << std::endl;
-		},
-
 		CASE("Should write a string to a file"){
 			// Write to file
-			std::ofstream outfile ("tests/logs.txt", std::ios::binary);
-			FLOG(INFO, outfile) << "Line of log";
+			std::ofstream outfile ("tests/data/logs.txt", std::ios::binary);
+			FLOG(INFO, outfile) << "Line of log" << std::endl;
+			outfile.close();
 
 			// Read from file to check
-			std::ifstream infile ("tests/logs.txt", std::ifstream::in | std::ios::binary);
+			std::ifstream infile ("tests/data/logs.txt", std::ifstream::in | std::ios::binary);
 
 			if (infile){
 				infile.seekg( 0, infile.end );
 				int size = infile.tellg();
-				size = 20; // Test fails to read the file properly for unknown reason
+				LOG(DEBUG) << size << std::endl;
 				EXPECT( size != 0 );
+				infile.close();
+			} else {
+				std::string err = "Could not open file tests/data/logs.txt";
+				EXPECT(err == "");
 			}
 		},
 	};
