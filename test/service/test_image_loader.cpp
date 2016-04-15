@@ -29,6 +29,15 @@ namespace game{
 						EXPECT(img->height == 100);
 					}
 				}
+				WHEN("an invalid image is requested"){
+
+					Image *invalid_img = loader.LoadFromFile("file/does/not/exists.png");
+
+					THEN("it should return a null pointer"){
+						EXPECT(invalid_img == nullptr);
+					}
+				}
+
 				loader.ClearMemory();
 				ContextUtil::DestroyOpenGLContext();
 			}
