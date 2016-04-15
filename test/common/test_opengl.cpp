@@ -15,7 +15,6 @@ namespace game{
 				ContextUtil::CreateOpenGLContext();
 				check_gl_error();	// Throw away eventual errors which happened before
 													// the tests
-
 				WHEN("A valid operation is performed"){
 					GLuint vertexArray;
 					glGenVertexArrays(1, &vertexArray);

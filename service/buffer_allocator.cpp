@@ -61,6 +61,7 @@ namespace game{
 									BUFFER_OFFSET(vbo_last_position));
 
 			vbo_last_position += d_size;
+			check_gl_error();
 		}
 
 		FillIndexBuffer(indices, offset);
@@ -102,7 +103,7 @@ namespace game{
 
 		// Create a new Vertex buffer if the previous one don't
 		// have enough space to store the new data.
-		if( *last_position + data_size >= MAX_BUFFER_SIZE || *last_position == 0 ){
+		if( *last_position + data_size >= MAX_BUFFER_SIZE-sizeof(float) || *last_position == 0 ){
 
 			GLuint buf;
 			glGenBuffers(1, &buf);
@@ -135,8 +136,6 @@ namespace game{
 				return 3;
 			case TEXTURE_COORDS:
 				return 2;
-			case INDEX_ARRAY:
-				return 3;
 			case NORMAL_ARRAY:
 				return 3;
 		}
@@ -154,14 +153,6 @@ namespace game{
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, ibo_last_position % MAX_BUFFER_SIZE,
 						size, &indices[0]);
 		ibo_last_position += size;
-	}
-
-	std::vector<unsigned int> BufferAllocator::VectorFloatToUnsignedInt(std::vector<float> array){
-		std::vector<unsigned int> result;
-		for(auto it = array.begin(); it != array.end(); it++){
-			result.push_back( (unsigned int)(*it) );
-		}
-		return result;
 	}
 }
 

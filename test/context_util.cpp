@@ -12,6 +12,7 @@ namespace game{
 
 		glewExperimental=GL_TRUE;
 		GLenum err = glewInit();
+		glGetError(); // Silence an error from glew
 		if (GLEW_OK != err){
 			LOG(ERROR) << "GlewInit failed" << std::endl;
 			LOG(ERROR) << glewGetErrorString(err) << std::endl;
