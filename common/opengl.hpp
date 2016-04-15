@@ -19,7 +19,7 @@
 #define COLOR_ARRAY 4
 
 namespace game{
-	void _check_gl_error(const char* file, int line);
+	int _check_gl_error(const char* file, int line);
 }
 
 #endif //GAME_TOOLS_OPENGL_HPP

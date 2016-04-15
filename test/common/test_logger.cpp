@@ -28,6 +28,14 @@ namespace game{
 				EXPECT(err == "");
 			}
 		},
+		CASE("It should offer multiple LOG level"){
+			LOG(INFO) << "Info" << std::endl;
+			LOG(WARNING) << "Warning" << std::endl;
+			LOG(DEBUG) << "Debug" << std::endl;
+			LOG(ERROR) << "Error" << std::endl;
+			LOG(CRITICAL) << "Critical" << std::endl;
+			LOG(SILENT) << "Silent" << std::endl;
+		}
 	};
 
 	extern lest::tests & specifications();

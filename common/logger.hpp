@@ -74,15 +74,11 @@ namespace game{
 						id_color_code = text_color_code = color::FG_RED;
 						identifier = "critical : ";
 						break;
+					default:
 					case SILENT:
 						id_color_code = color::FG_DEFAULT;
 						text_color_code = color::FG_DEFAULT;
 						this->begining_ = false;
-						break;
-					default:
-						id_color_code = color::FG_YELLOW;
-						text_color_code = color::FG_DEFAULT;
-						identifier = "unknow :";
 				}
 
 				// Display message type
