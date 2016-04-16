@@ -2,7 +2,7 @@
 #define GAME_CORE_MESSAGING_INPUT_MESSAGE_HPP
 
 #include "../message.hpp"
-#include "tools/glm.hpp"
+#include "common/glm.hpp"
 
 namespace game{
 
@@ -21,6 +21,7 @@ namespace game{
 		BLOCK,
 		ACTION,
 		TARGET,
+		RETURN
 	};
 
 	struct InputMessage : public Message{

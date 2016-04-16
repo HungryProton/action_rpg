@@ -24,5 +24,9 @@ namespace game{
 		glfwTerminate();
 	}
 
+	GLFWwindow* ContextUtil::GetWindow(){
+		return window_;
+	}
+
 	GLFWwindow* ContextUtil::window_;
 }

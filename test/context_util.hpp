@@ -10,6 +10,7 @@ namespace game{
 		public:
 			static void CreateOpenGLContext();
 			static void DestroyOpenGLContext();
+			static GLFWwindow* GetWindow();
 
 		private:
 			static GLFWwindow* window_;
