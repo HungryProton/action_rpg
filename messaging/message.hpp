@@ -4,7 +4,9 @@
 namespace game{
 
 	struct Message{
-		int id;
+		unsigned long id;
+		unsigned long from_id;
+		unsigned long dest_id;
 	};
 }
 
