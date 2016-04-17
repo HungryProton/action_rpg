@@ -6,6 +6,7 @@ namespace game{
 	class System{
 		public:
 			virtual ~System(){};
+			virtual void AssociateEntity(unsigned long) = 0;
 			virtual void Update() = 0;
 	};
 }

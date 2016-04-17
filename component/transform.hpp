@@ -25,6 +25,7 @@ namespace game{
 
 		// ---- Helper Methods ----
 		Transform();
+		Transform(unsigned long);
 		Transform(Transform*);
 		virtual Transform* Clone();
 		void dbg_display();
