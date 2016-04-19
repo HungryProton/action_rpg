@@ -8,9 +8,10 @@
 
 namespace game{
 
+	enum class Shape{BOX, CIRCLE};
+
 	struct Collider : public Component{
 
-		std::type_index shape_type;
 		bool sleeping;
 		bool is_static;
 
@@ -21,12 +22,13 @@ namespace game{
 
 		float gravity;
 
+		Shape shape_type;
+
 		// Helper methods
 		Collider();
-		Collider(GameObject*);
+		Collider(unsigned long);
 		Collider(Collider*);
 		virtual Collider* Clone();
-		virtual void Update();
 
 		// Caution, use this method instead of changing the mass directly
 		void SetMass(float mass);

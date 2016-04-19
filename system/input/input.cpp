@@ -16,7 +16,7 @@ namespace game{
 		this->window_ = window;
 	}
 
-	void Input::Update(){
+	void Input::BeforeUpdate(){
 		glfwPollEvents();
 
 		for(auto it = this->keymap_.begin(); it != this->keymap_.end(); it++){

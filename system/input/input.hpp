@@ -15,7 +15,7 @@ namespace game{
 			~Input();
 
 			void Initialize(GLFWwindow*);
-			void Update();
+			virtual void BeforeUpdate();
 
 		private:
 			void LoadKeymapFromFile(std::string);

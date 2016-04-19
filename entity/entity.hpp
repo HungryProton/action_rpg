@@ -1,6 +1,7 @@
 #ifndef GAME_ENTITY_ENTITY_HPP
 #define GAME_ENTITY_ENTITY_HPP
 
+#include <map>
 #include "entity_builder.hpp"
 
 namespace game{
@@ -11,13 +12,14 @@ namespace game{
 			static void Destroy(unsigned long);
 
 			template<class T>
-			static void AddComponent(unsigned long, T*);
+			static void AttachComponent(unsigned long, T*);
 
 			template<class T>
 			static T* GetComponent(unsigned long);
 
 		private:
-			static EntityBuilder builder;
+			static EntityBuilder builder_;
+			static std::map<unsigned long, std::vector<void(*)(unsigned long)>> delete_map_;
 	};
 }
 

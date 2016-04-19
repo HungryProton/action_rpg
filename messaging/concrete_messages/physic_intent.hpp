@@ -6,7 +6,7 @@
 
 namespace game{
 
-	enum class PhysicAction{ADD_COLLIDER, APPLY_FORCE};
+	enum class PhysicAction{APPLY_FORCE};
 
 	struct PhysicIntent : public Message{
 		PhysicAction action;

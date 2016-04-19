@@ -1,19 +1,19 @@
 #include <glm/glm.hpp>
 #include "box.hpp"
-#include "core/entity/game_object.hpp"
+#include "entity/entity.hpp"
 
 namespace game{
 
-	Box::Box(): Component(){
+	Box::Box() : ShapeComponent(){
 		this->width = -1;
 		this->height = -1;
 	}
 
-	Box::Box(GameObject* p):Box(){
-		p->AttachComponent(this);
+	Box::Box(unsigned long id) : Box(){
+		Entity::AttachComponent<Box>(id, this);
 	}
 
-	Box::Box(float w, float h, GameObject* p) : Box(p){
+	Box::Box(float w, float h, unsigned long id) : Box(id){
 		this->SetDimensions(w,h);
 	}
 

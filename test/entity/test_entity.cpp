@@ -39,7 +39,7 @@ namespace game{
 
 				WHEN("a component is added to the entity"){
 					Transform *transform = new Transform();
-					Entity::AddComponent<Transform>(id, transform);
+					Entity::AttachComponent<Transform>(id, transform);
 
 					THEN("it should be possible to retrieve it"){
 						Transform *retrieved = Entity::GetComponent<Transform>(id);

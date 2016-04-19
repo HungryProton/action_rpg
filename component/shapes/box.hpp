@@ -2,13 +2,13 @@
 #define GAME_COMPONENT_BOX_HPP
 
 #include <glm/glm.hpp>
-#include "../component.hpp"
+#include "shape.hpp"
 
 namespace game{
 
 	class GameObject;
 
-	struct Box : public Component{
+	struct Box : public ShapeComponent{
 		float width;
 		float height;
 
@@ -17,8 +17,8 @@ namespace game{
 		// define an automatic size according to texture size.
 		// 256 pixels = 1 meter
 		Box();
-		Box(GameObject*);
-		Box(float, float, GameObject*);
+		Box(unsigned long);
+		Box(float, float, unsigned long);
 		Box(Box*);
 		virtual Box* Clone();
 		void SetDimensions(glm::vec2);

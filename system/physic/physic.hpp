@@ -7,43 +7,47 @@
 #include "messaging/concrete_messages/physic_intent.hpp"
 #include "component/collider.hpp"
 #include "component/transform.hpp"
+#include "component/shapes/shape.hpp"
 
 namespace game{
 
-	class GameObject;
-	struct Manifold;
+	struct PhysicManifold;
 	struct PhysicComponents;
 
 	class Physic : public System,
 								 public MessageHandler<PhysicIntent>{
 		public:
+			Physic();
 			~Physic();
-			virtual void AssociateEntity(unsigned long);
-			virtual void Update();
+
+		protected:
+			virtual void BeforeUpdate();
+			virtual void OnUpdate(unsigned long);
+			virtual void OnMessage(PhysicIntent);
 
 		private:
 			void ApplyForce(glm::vec3 force, unsigned long);
 
-			void UpdatePositions();
-			void ResolveCollisions();
-			void BoxvsBox(unsigned long, unsigned long);
-			void CirclevsCircle(unsigned long, unsigned long);
-			void BoxvsCircle(unsigned long, unsigned long);
-			void ApplyImpulse(Manifold);
-			void ApplyFriction(Manifold);
-			void PositionalCorrection(Manifold);
-			virtual void OnMessage(PhysicIntent);
+			void UpdatePositions(PhysicComponents*);
+			void ResolveCollisions(unsigned long, PhysicComponents*);
+			void BoxvsBox(PhysicComponents*, PhysicComponents*);
+			void CirclevsCircle(PhysicComponents*, PhysicComponents*);
+			void BoxvsCircle(PhysicComponents*, PhysicComponents*);
+			void ApplyImpulse(PhysicManifold);
+			void ApplyFriction(PhysicManifold);
+			void PositionalCorrection(PhysicManifold);
+			PhysicComponents* GetComponentsFor(unsigned long);
 
-			std::vector<unsigned long> collider_pool_;
 			std::map<unsigned long, PhysicComponents> entities_;
 	};
 
 	struct PhysicComponents{
 		Collider* collider;
 		Transform* transform;
+		ShapeComponent* shape;
 	};
 
-	struct Manifold{
+	struct PhysicManifold{
 		Collider* collider_a;
 		Collider* collider_b;
 		Transform* transform_a;

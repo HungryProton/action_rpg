@@ -15,7 +15,7 @@ namespace game{
 	}
 
 	Transform::Transform(unsigned long id) : Transform(){
-		Entity::AddComponent<Transform>(id, this);
+		Entity::AttachComponent<Transform>(id, this);
 	}
 
 	Transform::Transform(Transform* transform) : Transform(){

@@ -3,7 +3,7 @@
 namespace game{
 
 	template<class T>
-	void ComponentRegister<T>::AddComponent(unsigned long id, T* component){
+	void ComponentRegister<T>::AttachComponent(unsigned long id, T* component){
 		for(auto pair : components_){
 			if(pair.first == id){
 				return;
@@ -17,6 +17,13 @@ namespace game{
 		auto pair = components_.find(id);
 		if(pair == components_.end()){ return nullptr; }
 		return (*pair).second;
+	}
+
+	template<class T>
+	void ComponentRegister<T>::RemoveComponent(unsigned long id){
+		auto pair = components_.find(id);
+		if(pair == components_.end()){ return; }
+		components_.erase(pair);
 	}
 
 	template<class T>

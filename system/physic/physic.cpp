@@ -12,14 +12,39 @@
 
 namespace game{
 
-	Physic::~Physic(){
+	Physic::Physic() : System(){}
+	Physic::~Physic(){}
 
+	void Physic::BeforeUpdate(){
+		this->MessageHandler<PhysicIntent>::UpdateMessages();
 	}
 
-	void Physic::Update(){
-		this->MessageHandler<PhysicIntent>::UpdateMessages();
-		this->UpdatePositions();
-		this->ResolveCollisions();
+	void Physic::OnUpdate(unsigned long entity){
+		PhysicComponents* components = this->GetComponentsFor(entity);
+		if(components != nullptr){
+			this->UpdatePositions(components);
+			this->ResolveCollisions(entity, components);
+		}
+	}
+
+	PhysicComponents* Physic::GetComponentsFor(unsigned long id){
+		auto pair = this->entities_.find(id);
+		if(pair == this->entities_.end()){
+			PhysicComponents c;
+			c.transform = Entity::GetComponent<Transform>(id);
+			c.collider = Entity::GetComponent<Collider>(id);
+			if(c.transform == nullptr || c.collider == nullptr){ return nullptr; }
+			switch(c.collider->shape_type){
+				case Shape::BOX:
+					c.shape = Entity::GetComponent<Box>(id);
+					break;
+				case Shape::CIRCLE:
+					c.shape = Entity::GetComponent<Circle>(id);
+			}
+			if(c.shape == nullptr){ return nullptr; }
+			this->entities_.insert(std::make_pair(id, c));
+		}
+		return &(this->entities_.find(id)->second);
 	}
 
 	void Physic::OnMessage(PhysicIntent message){
@@ -27,82 +52,69 @@ namespace game{
 			case PhysicAction::APPLY_FORCE:
 				this->ApplyForce(message.force, message.dest_id);
 				break;
-			case PhysicAction::ADD_COLLIDER:
-				this->AddGameObjectToColliderPool(message.from_id);
-				break;
 		}
-	}
-
-	void Physic::AddGameObjectToColliderPool(unsigned long object){
-		if(!(Entity::GetComponent<Collider>(object))){ return; }
-		if(!(Entity::GetComponent<Transform>(object))){ return; }
-
-		this->collider_pool_.push_back(object);
 	}
 
 	void Physic::ApplyForce(glm::vec3 force, unsigned long object){
-		Transform* transform = object->GetComponent<Transform>();
-		Collider* collider = object->GetComponent<Collider>();
-		transform->target_velocity += force * collider->inv_mass * Time::GetDeltaTime();
+		PhysicComponents* c = this->GetComponentsFor(object);
+		if(c == nullptr){ return; }
+		c->transform->target_velocity += force
+			* c->collider->inv_mass
+			* Time::GetPreviousDeltaTime();
 	}
 
-	void Physic::UpdatePositions(){
-		for(unsigned long object : this->collider_pool_){
-			Transform* transform = object->GetComponent<Transform>();
-			//transform->position += transform->target_velocity*Time::GetDeltaTime();
-			float friction_modifier = 0.1; // Retrieve that from material when possible
-			glm::vec3 friction_vector = glm::normalize(transform->target_velocity) * friction_modifier * Time::GetDeltaTime();
-			transform->target_velocity -= friction_vector;
-		}
+	void Physic::UpdatePositions(PhysicComponents* c){
+		//c->transform->position += c->transform->target_velocity*Time::GetDeltaTime();
+		float friction_modifier = 0.1; // Retrieve that from material when possible
+		glm::vec3 friction_vector = glm::normalize(c->transform->target_velocity)
+			* friction_modifier
+			* Time::GetPreviousDeltaTime();
+		c->transform->target_velocity -= friction_vector;
 	}
 
-	void Physic::ResolveCollisions(){
+	void Physic::ResolveCollisions(unsigned long id, PhysicComponents* ca){
+		LOG(DEBUG) << "Resolve collisions for " << id << std::endl;
 
-		for(auto it_a = this->collider_pool_.begin();
-				it_a != this->collider_pool_.end();
-				it_a++){
+		Collider* collider_a = ca->collider;
 
-			Collider* collider_a = (*it_a)->GetComponent<Collider>();
+		for(auto pair : this->entities_){
+			if(pair.first == id){ continue; }
+			PhysicComponents* cb = &(pair.second);
 
-			auto it_b = it_a;
-			for(it_b++; it_b != this->collider_pool_.end(); it_b++){
+			Collider* collider_b = cb->collider;
 
-				Collider* collider_b = (*it_b)->GetComponent<Collider>();
+			// early return if both objects are static
+			if((collider_a->mass == 0) && (collider_b->mass == 0)){ continue; }
 
-				// early return if both objects are static
-				if((collider_a->mass == 0) && (collider_b->mass == 0)){ continue; }
+			if(collider_a->shape_type == Shape::CIRCLE){
 
-				if(collider_a->shape_type == typeid(Circle)){
+				if(collider_b->shape_type == Shape::CIRCLE){
+					this->CirclevsCircle(ca, cb);
+				} else if(collider_b->shape_type == Shape::BOX){
+					this->BoxvsCircle(ca, cb);
+				}
+			} else if(collider_a->shape_type == Shape::BOX){
 
-					if( collider_b->shape_type == typeid(Circle)){
-						this->CirclevsCircle(*it_a, *it_b);
-					} else if (collider_b->shape_type == typeid(Box)){
-						this->BoxvsCircle(*it_a, *it_b);
-					}
-				} else if(collider_a->shape_type == std::type_index(typeid(Box))){
-
-					if( collider_b->shape_type == std::type_index(typeid(Box))){
-						this->BoxvsBox(*it_a, *it_b);
-					} else if ( collider_b->shape_type == std::type_index(typeid(Circle))){
-						this->BoxvsCircle(*it_a, *it_b);
-					}
+				if(collider_b->shape_type == Shape::BOX){
+					this->BoxvsBox(ca, cb);
+				} else if(collider_b->shape_type == Shape::CIRCLE){
+					this->BoxvsCircle(ca, cb);
 				}
 			}
 		}
-		this->collider_pool_.clear();
 	}
 
 	// Resolve collision between the two objects and mark them as resolved
 	// to avoid the other object trying to resolve the collisions once more
 	// during the same frame.
 
-	void Physic::BoxvsBox(unsigned long a, GameObject* b){
+	void Physic::BoxvsBox(PhysicComponents* a, PhysicComponents* b){
 
-		Box* box_a = a->GetComponent<Box>();
-		Box* box_b = b->GetComponent<Box>();
+		Box* box_a = (Box*)a->shape;
+		Box* box_b = (Box*)b->shape;
 
-		Transform* transform_a = a->GetComponent<Transform>();
-		Transform* transform_b = b->GetComponent<Transform>();
+		Transform* transform_a = a->transform;
+		Transform* transform_b = b->transform;
 
 		float first_extent = box_a->width / 2;
 		float second_extent = box_b->width / 2;
@@ -139,10 +151,10 @@ namespace game{
 			penetration = overlap_y;
 		}
 
-		Manifold m;
+		PhysicManifold m;
 		m.penetration = penetration;
-		m.collider_a = a->GetComponent<Collider>();
-		m.collider_b = b->GetComponent<Collider>();
+		m.collider_a = a->collider;
+		m.collider_b = b->collider;
 		m.transform_a = transform_a;
 		m.transform_b = transform_b;
 		m.normal = normal;
@@ -152,13 +164,13 @@ namespace game{
 		PositionalCorrection(m);
 	}
 
-	void Physic::CirclevsCircle(unsigned long a, GameObject* b){
+	void Physic::CirclevsCircle(PhysicComponents* a, PhysicComponents* b){
 
-		Transform* transform_a = a->GetComponent<Transform>();
-		Transform* transform_b = b->GetComponent<Transform>();
+		Transform* transform_a = a->transform;
+		Transform* transform_b = b->transform;
 
-		Circle* circle_a = a->GetComponent<Circle>();
-		Circle* circle_b = b->GetComponent<Circle>();
+		Circle* circle_a = (Circle*)a->shape;
+		Circle* circle_b = (Circle*)b->shape;
 
 		glm::vec3 normal = transform_b->position - transform_a->position;
 		float r = circle_b->radius + circle_a->radius;
@@ -177,10 +189,10 @@ namespace game{
 			normal = glm::vec3(0, 0, 1);
 		}
 
-		Manifold m;
+		PhysicManifold m;
 		m.penetration = penetration;
-		m.collider_a = a->GetComponent<Collider>();
-		m.collider_b = b->GetComponent<Collider>();
+		m.collider_a = a->collider;
+		m.collider_b = b->collider;
 		m.transform_a = transform_a;
 		m.transform_b = transform_b;
 		m.normal = normal;
@@ -190,7 +202,7 @@ namespace game{
 		PositionalCorrection(m);
 	}
 
-	void Physic::BoxvsCircle(unsigned long a, GameObject* b){
+	void Physic::BoxvsCircle(PhysicComponents* a, PhysicComponents* b){
 
 		// First, determine wheter a or b is a circle or a box
 		Circle* circle;
@@ -199,22 +211,22 @@ namespace game{
 		Transform* transform_circle;
 		Transform* transform_box;
 
-		Collider* collider_circle = a->GetComponent<Collider>();
+		Collider* collider_circle = a->collider;
 		Collider* collider_box;
 
-		if(collider_circle->shape_type == typeid(Circle)){
-			circle = a->GetComponent<Circle>();
-			box = b->GetComponent<Box>();
-			collider_box = b->GetComponent<Collider>();
-			transform_box = b->GetComponent<Transform>();
-			transform_circle = a->GetComponent<Transform>();
+		if(collider_circle->shape_type == Shape::CIRCLE){
+			circle = (Circle*)a->shape;
+			box = (Box*)b->shape;
+			collider_box = b->collider;
+			transform_box = b->transform;
+			transform_circle = a->transform;
 		} else {
-			circle = b->GetComponent<Circle>();
-			box = a->GetComponent<Box>();
+			circle = (Circle*)b->shape;
+			box = (Box*)a->shape;
 			collider_box = collider_circle;
-			collider_circle = b->GetComponent<Collider>();
-			transform_box = a->GetComponent<Transform>();
-			transform_circle = b->GetComponent<Transform>();
+			collider_circle = b->collider;
+			transform_box = a->transform;
+			transform_circle = b->transform;
 		}
 
 		glm::vec3 V_AB = transform_circle->position - transform_box->position;
@@ -252,7 +264,7 @@ namespace game{
 			normal = -normal;
 		}
 
-		Manifold m;
+		PhysicManifold m;
 		m.penetration = std::abs(circle->radius - glm::length(normal));
 		m.normal = normal;
 		m.collider_a = collider_box;
@@ -265,7 +277,7 @@ namespace game{
 		PositionalCorrection(m);
 	}
 
-	void Physic::ApplyImpulse(Manifold m){
+	void Physic::ApplyImpulse(PhysicManifold m){
 		// Relative velocity
 		glm::vec3 relative_velocity = m.transform_b->velocity - m.transform_a->velocity;
 
@@ -292,7 +304,7 @@ namespace game{
 		m.transform_b->target_velocity += ratio * impulse;
 	}
 
-	void Physic::ApplyFriction(Manifold m){
+	void Physic::ApplyFriction(PhysicManifold m){
 		glm::vec3 rv = m.transform_b->velocity - m.transform_a->velocity;
 		glm::vec3 tangent;
 		tangent.x = -m.normal.z;
@@ -308,7 +320,7 @@ namespace game{
 		m.transform_b->target_velocity += m.collider_b->inv_mass * friction;
 	}
 
-	void Physic::PositionalCorrection(Manifold m){
+	void Physic::PositionalCorrection(PhysicManifold m){
 		// Positionnal correction :
 		// Prevent objects from sinking into infinite mass objects
 
