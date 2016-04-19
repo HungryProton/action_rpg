@@ -17,6 +17,15 @@ namespace game{
 		delete_map_.erase(pair);
 	}
 
+	void Entity::ClearMemory(){
+		unsigned long id = builder_.Create();
+
+		while(id > 0){
+			Destroy(id);
+			id--;
+		}
+	}
+
 	EntityBuilder Entity::builder_;
 	std::map<unsigned long, std::vector<void(*)(unsigned long)>> Entity::delete_map_;
 }
