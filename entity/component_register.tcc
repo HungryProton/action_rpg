@@ -1,4 +1,5 @@
 #include "component_register.hpp"
+#include "common/logger.hpp"
 
 namespace game{
 
@@ -16,13 +17,14 @@ namespace game{
 	T* ComponentRegister<T>::GetComponent(unsigned long id){
 		auto pair = components_.find(id);
 		if(pair == components_.end()){ return nullptr; }
-		return (*pair).second;
+		return pair->second;
 	}
 
 	template<class T>
 	void ComponentRegister<T>::RemoveComponent(unsigned long id){
 		auto pair = components_.find(id);
 		if(pair == components_.end()){ return; }
+		delete pair->second;
 		components_.erase(pair);
 	}
 

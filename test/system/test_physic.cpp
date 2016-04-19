@@ -18,8 +18,6 @@ namespace game{
 				unsigned long circle1 = Entity::Create();
 				unsigned long circle2 = Entity::Create();
 
-				LOG(DEBUG) << circle1 << " " << circle2 << std::endl;
-
 				Transform* t1 = new Transform(circle1);
 				Transform* t2 = new Transform(circle2);
 				Circle* c1 = new Circle(circle1);
@@ -51,8 +49,6 @@ namespace game{
 				Physic physic_system;
 				unsigned long box1 = Entity::Create();
 				unsigned long box2 = Entity::Create();
-
-				LOG(DEBUG) << box1 << " " << box2 << std::endl;
 
 				Transform* t1 = new Transform(box1);
 				Transform* t2 = new Transform(box2);

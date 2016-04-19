@@ -5,6 +5,7 @@
 #include "entity/entity.hpp"
 #include "common/logger.hpp"
 #include "component/transform.hpp"
+#include "component/shapes/box.hpp"
 
 namespace game{
 
@@ -44,6 +45,23 @@ namespace game{
 					THEN("it should be possible to retrieve it"){
 						Transform *retrieved = Entity::GetComponent<Transform>(id);
 						EXPECT(retrieved == transform);
+					}
+				}
+			}
+		},
+		SCENARIO("It should destroy every component associated with id"){
+
+			GIVEN("a registered entity with a few components"){
+				unsigned long entity = Entity::Create();
+				new Transform(entity);
+				new Box(entity);
+
+				WHEN("the entity is destroyed"){
+					Entity::Destroy(entity);
+
+					THEN("the components should be deleted"){
+						EXPECT(Entity::GetComponent<Transform>(entity) == nullptr);
+						EXPECT(Entity::GetComponent<Box>(entity) == nullptr);
 					}
 				}
 			}

@@ -73,8 +73,6 @@ namespace game{
 	}
 
 	void Physic::ResolveCollisions(unsigned long id, PhysicComponents* ca){
-		LOG(DEBUG) << "Resolve collisions for " << id << std::endl;
-
 		Collider* collider_a = ca->collider;
 
 		for(auto pair : this->entities_){

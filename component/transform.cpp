@@ -5,6 +5,9 @@
 #include "common/time.hpp"
 
 namespace game{
+
+	Transform::~Transform(){}
+
 	Transform::Transform() : Component(){
 		this->position = glm::vec3(0.f, 0.f, 0.f);
 		this->rotation = glm::vec3(0.f, 0.f, 0.f);
