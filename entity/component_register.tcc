@@ -11,6 +11,7 @@ namespace game{
 			}
 		}
 		components_.insert(std::make_pair(id, component));
+		component->parent = id;
 	}
 
 	template<class T>

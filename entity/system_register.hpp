@@ -20,7 +20,7 @@ namespace game{
 			static void ClearMemory();
 
 			template<class T>
-			static void CreateSystem();
+			static T* CreateSystem();
 
 			static std::map<std::type_index, System*> systems_;
 	};

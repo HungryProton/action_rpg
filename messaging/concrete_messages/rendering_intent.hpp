@@ -2,7 +2,7 @@
 #define GAME_CORE_MESSAGING_RENDERING_INTENT_HPP
 
 #include "../message.hpp"
-#include "core/component/drawable.hpp"
+#include "component/drawable.hpp"
 
 namespace game{
 
@@ -14,7 +14,6 @@ namespace game{
 
 	struct RenderingIntent : public Message{
 		Action action;
-		GameObject* game_object;
 	};
 }
 #endif //GAME_CORE_MESSAGING_RENDERING_INTENT_HPP

@@ -3,9 +3,11 @@
 namespace game{
 
 	template<class T>
-	void SystemRegister::CreateSystem(){
+	T* SystemRegister::CreateSystem(){
 		for(auto pair : systems_){
-			if(pair.first == typeid(T)){ return; }
+			if(pair.first == typeid(T)){
+				return static_cast<T*>(pair.second);
+			}
 		}
 		T* system = new T();
 		systems_.insert(std::pair<std::type_index, System*>(typeid(T), system));

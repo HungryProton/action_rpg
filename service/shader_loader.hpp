@@ -4,10 +4,11 @@
 #include <map>
 #include <string>
 #include "common/opengl.hpp"
+#include "service_worker.hpp"
 
 namespace game{
 
-	class ShaderLoader{
+	class ShaderLoader : public ServiceWorker{
 		public:
 			ShaderLoader();
 			~ShaderLoader();

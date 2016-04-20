@@ -3,10 +3,12 @@
 
 #include <map>
 #include "image.hpp"
+#include "image_loader.hpp"
+#include "service_worker.hpp"
 
 namespace game{
 
-	class ImageLoader{
+	class ImageLoader : public ServiceWorker{
 		public:
 			ImageLoader();
 			~ImageLoader();

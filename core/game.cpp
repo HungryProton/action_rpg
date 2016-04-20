@@ -5,6 +5,7 @@
 #include "common/time.hpp"
 #include "entity/system_register.hpp"
 #include "entity/entity.hpp"
+#include "service/service.hpp"
 
 namespace game{
 
@@ -19,6 +20,7 @@ namespace game{
 	void Game::ClearMemory(){
 		SystemRegister::ClearMemory();
 		Entity::ClearMemory();
+		Service::ClearMemory();
 	}
 
 	void Game::Play(){

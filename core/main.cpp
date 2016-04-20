@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include "core/game/game.hpp"
+#include "core/game.hpp"
 
 int main(){
     game::Game::Initialize();

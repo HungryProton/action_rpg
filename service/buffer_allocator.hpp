@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include "common/opengl.hpp"
+#include "service_worker.hpp"
 
 #define MAX_BUFFER_SIZE 1048576 // 1024 x 1024
 
@@ -13,7 +14,7 @@
 
 namespace game{
 
-	class BufferAllocator{
+	class BufferAllocator : public ServiceWorker{
 		public:
 			BufferAllocator();
 			~BufferAllocator();
