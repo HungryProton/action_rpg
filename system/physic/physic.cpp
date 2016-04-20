@@ -60,11 +60,12 @@ namespace game{
 		if(c == nullptr){ return; }
 		c->transform->target_velocity += force
 			* c->collider->inv_mass
-			* Time::GetPreviousDeltaTime();
+			* Time::GetPreviousDeltaTime()
+			* 0.5f;
 	}
 
 	void Physic::UpdatePositions(PhysicComponents* c){
-		//c->transform->position += c->transform->target_velocity*Time::GetDeltaTime();
+		c->transform->position += c->transform->target_velocity*Time::GetPreviousDeltaTime();
 		float friction_modifier = 0.1; // Retrieve that from material when possible
 		glm::vec3 friction_vector = glm::normalize(c->transform->target_velocity)
 			* friction_modifier

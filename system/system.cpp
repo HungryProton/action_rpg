@@ -26,6 +26,17 @@ namespace game{
 		this->associated_entities_.push_back(new_id);
 	}
 
+	void System::DissociateEntity(unsigned long id){
+		for(auto it = this->associated_entities_.begin();
+				it != this->associated_entities_.end();
+				it++){
+			if(*it == id){
+				this->associated_entities_.erase(it);
+				return;
+			}
+		}
+	}
+
 	float System::GetExecutionTime(){
 		return this->last_execution_time_;
 	}

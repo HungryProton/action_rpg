@@ -5,6 +5,8 @@
 #include "component/transform.hpp"
 #include "component/shapes/circle.hpp"
 #include "component/shapes/box.hpp"
+#include "messaging/concrete_messages/physic_intent.hpp"
+#include "common/time.hpp"
 
 using lest::approx;
 
@@ -112,6 +114,18 @@ namespace game{
 						EXPECT(t2->position.y == approx(2.5f).epsilon(0.1));
 					}
 				}
+				WHEN("the order is reversed (circle -> box)"){
+					physic_system.DissociateEntity(box);
+					physic_system.AssociateEntity(box);
+
+					t2->position.y = 2.f;
+					physic_system.Update();
+
+					THEN("it should behave exactly the same way"){
+						EXPECT(t1->position.y == approx(-0.5f).epsilon(0.1));
+						EXPECT(t2->position.y == approx(2.5f).epsilon(0.1));
+					}
+				}
 				WHEN("collision occurs because the circle is inside the box"){
 					b1->height = 6.f;
 					b1->height = 6.f;
@@ -127,6 +141,34 @@ namespace game{
 				}
 				Entity::Destroy(box);
 				Entity::Destroy(circle);
+			}
+		},
+		SCENARIO("Forces can be applied on physic objects"){
+
+			GIVEN("a physical object alone"){
+				Physic physic_system;
+				unsigned long box = Entity::Create();
+
+				Transform* t = new Transform(box);
+				new Box(2.f, 2.f, box);
+				Collider* c = new Collider(box);
+				c->shape_type = Shape::BOX;
+
+				physic_system.AssociateEntity(box);
+
+				WHEN("a force is applied on it"){
+					PhysicIntent msg;
+					msg.action = PhysicAction::APPLY_FORCE;
+					msg.dest_id = box;
+					msg.force = glm::vec3(2000, 0, 0);	// force in newtons in each axis
+					MessageBus::Push(msg);
+
+					physic_system.Update();
+
+					THEN("it the object should have been moved"){
+						EXPECT(t->position.x > 0);
+					}
+				}
 			}
 		}
 	};

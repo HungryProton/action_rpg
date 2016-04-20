@@ -33,6 +33,13 @@ namespace game{
 						EXPECT(allocator == nullptr);
 					}
 				}
+				WHEN("locator's memory is cleared"){
+					locator.ClearMemory();
+
+					THEN("it should destroy registered services"){
+						EXPECT(locator.Get<ImageLoader>() == nullptr);
+					}
+				}
 			}
 		}
 	};

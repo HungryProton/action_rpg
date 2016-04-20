@@ -19,6 +19,12 @@ namespace game{
 		}
 	}
 
+	void SystemRegister::DissociateEntityFromAll(unsigned long id){
+		for(auto pair : systems_){
+			pair.second->DissociateEntity(id);
+		}
+	}
+
 	void SystemRegister::ClearMemory(){
 		for(auto pair : systems_){
 			delete pair.second;

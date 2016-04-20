@@ -21,5 +21,14 @@ namespace game{
 			}
 		}
 	}
+
+	template<class T>
+	void SystemRegister::DissociateEntityFrom(unsigned long id){
+		for(auto pair : systems_){
+			if(pair.first == typeid(T)){
+				pair.second->DissociateEntity(id);
+			}
+		}
+	}
 }
 

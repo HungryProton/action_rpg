@@ -1,4 +1,5 @@
 #include "entity.hpp"
+#include "system_register.hpp"
 
 namespace game{
 
@@ -8,6 +9,8 @@ namespace game{
 
 	void Entity::Destroy(unsigned long id){
 		builder_.NotifyDelete(id);
+		SystemRegister::DissociateEntityFromAll(id);
+
 		auto pair = delete_map_.find(id);
 		if(pair == delete_map_.end()){ return; }
 

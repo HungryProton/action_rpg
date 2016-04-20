@@ -14,6 +14,11 @@ namespace game{
 			template<class T>
 			static void AssociateEntityTo(unsigned long);
 
+			template<class T>
+			static void DissociateEntityFrom(unsigned long);
+
+			static void DissociateEntityFromAll(unsigned long);
+
 		private:
 			static void Initialize();
 			static void Update();
