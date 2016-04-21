@@ -7,6 +7,8 @@ namespace game{
 
 	Mesh::Mesh() : Component(){ }
 
+	Mesh::~Mesh(){ }
+
 	Mesh::Mesh(unsigned long parent) : Mesh() {
 		Entity::AttachComponent<Mesh>(parent, this);
 	}

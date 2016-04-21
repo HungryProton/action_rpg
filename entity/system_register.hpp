@@ -12,6 +12,9 @@ namespace game{
 		friend Game;
 		public:
 			template<class T>
+			static T* Get();
+
+			template<class T>
 			static void AssociateEntityTo(unsigned long);
 
 			template<class T>

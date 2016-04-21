@@ -15,8 +15,8 @@ namespace game{
 			virtual float GetExecutionTime() final;
 
 		protected:
-			virtual void OnUpdate(unsigned long){}
-			virtual void BeforeUpdate(){}
+			virtual void OnUpdate(unsigned long);
+			virtual void BeforeUpdate();
 			std::vector<unsigned long> associated_entities_;
 
 		private:

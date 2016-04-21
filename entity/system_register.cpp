@@ -2,6 +2,7 @@
 
 #include "system/input/input.hpp"
 #include "system/physic/physic.hpp"
+#include "system/renderer/renderer.hpp"
 
 namespace game{
 
@@ -11,6 +12,12 @@ namespace game{
 	void SystemRegister::Initialize(){
 		CreateSystem<Input>();
 		CreateSystem<Physic>();
+		CreateSystem<Renderer>();
+
+		Input* input = Get<Input>();
+		Renderer* renderer = Get<Renderer>();
+
+		input->Initialize(renderer->GetWindow());
 	}
 
 	void SystemRegister::Update(){

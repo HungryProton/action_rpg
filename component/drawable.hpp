@@ -6,7 +6,10 @@
 
 namespace game{
 
+	enum class DrawableType{NONE, SPRITE, MESH};
+
 	struct Drawable : public Component{
+		DrawableType type;
 		GLenum draw_type;
 		GLuint vao;
 		GLuint shader;
@@ -15,6 +18,7 @@ namespace game{
 		float alpha;
 
 		Drawable();
+		virtual ~Drawable();
 		Drawable(unsigned long);
 		Drawable(Drawable*);
 		Drawable* Clone();

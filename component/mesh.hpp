@@ -29,6 +29,7 @@ namespace game{
 		// ---- Helper methods ----
 
 		Mesh();
+		virtual ~Mesh();
 		Mesh(unsigned long);
 		Mesh(std::string, unsigned long);
 		Mesh(std::string);

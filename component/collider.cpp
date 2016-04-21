@@ -15,6 +15,8 @@ namespace game{
 		this->restitution_factor = 0.8f;
 	}
 
+	Collider::~Collider(){ }
+
 	Collider::Collider(unsigned long id) : Collider(){
 		Entity::AttachComponent<Collider>(id, this);
 	}

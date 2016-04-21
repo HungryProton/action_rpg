@@ -39,6 +39,8 @@ namespace game{
 
 				WHEN("a player presses a key"){
 
+					input_system.Update();
+
 					THEN("it should emit a KeyPressed InputMessage"){
 
 					}

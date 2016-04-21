@@ -19,6 +19,10 @@ namespace game{
 		last_execution_time_ = Time::GetCurrentTime() - start_time_;
 	}
 
+	void System::OnUpdate(unsigned long){}
+
+	void System::BeforeUpdate(){}
+
 	void System::AssociateEntity(unsigned long new_id){
 		for(unsigned long stored_id : this->associated_entities_){
 			if(stored_id == new_id){ return; }

@@ -15,10 +15,10 @@ namespace game{
 			~GeometryHelper();
 			void ClearMemory();
 
-			void GetBox(Drawable*);
-			void GetCircles(Drawable*);
-			void GetMesh(Mesh*, Drawable*);
-			void GetScreenSpaceBox(Drawable*);
+			void MakeDrawableUseBoxBuffer(Drawable*);
+			void MakeDrawableUseCircleBuffer(Drawable*);
+			void MakeDrawableUseMeshBuffer(Mesh*, Drawable*);
+			void MakeDrawableUseScreenSpaceBox(Drawable*);
 
 		private:
 			/**

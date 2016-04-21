@@ -12,7 +12,10 @@ namespace game{
 		this->vertex_amount = 0;
 		this->offset = 0;
 		this->alpha = 1.0;
+		this->type = DrawableType::NONE;
 	}
+
+	Drawable::~Drawable(){ }
 
 	Drawable::Drawable(unsigned long entity) : Drawable(){
 		Entity::AttachComponent<Drawable>(entity, this);

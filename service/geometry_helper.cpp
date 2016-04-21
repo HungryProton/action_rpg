@@ -20,7 +20,7 @@ namespace game{
 
 	}
 
-	void GeometryHelper::GetBox(Drawable* drawable){
+	void GeometryHelper::MakeDrawableUseBoxBuffer(Drawable* drawable){
 
 		if( this->box_ == 0){
 
@@ -149,7 +149,7 @@ namespace game{
 	}
 	*/
 
-	void GeometryHelper::GetMesh(Mesh* mesh, Drawable* drawable){
+	void GeometryHelper::MakeDrawableUseMeshBuffer(Mesh* mesh, Drawable* drawable){
 		std::string file_path = mesh->file_path;
 
 		auto it = this->meshes_.find(file_path);
@@ -172,7 +172,7 @@ namespace game{
 		drawable->draw_type = GL_TRIANGLES;
 	}
 
-	void GeometryHelper::GetScreenSpaceBox(Drawable* drawable){
+	void GeometryHelper::MakeDrawableUseScreenSpaceBox(Drawable* drawable){
 		if(this->screen_box_ == 0){
 			std::multimap<int, std::vector<float> > data;
 
