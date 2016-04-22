@@ -12,6 +12,7 @@ namespace game{
 
 			void Initialize();
 			GLFWwindow* GetWindow();
+			void SwapBuffers();
 			bool IsContextValid();
 
 		private:

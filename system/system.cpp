@@ -11,17 +11,20 @@ namespace game{
 	System::~System(){}
 
 	void System::Update(){
-		this->BeforeUpdate();
 		start_time_ = Time::GetCurrentTime();
+		BeforeUpdate();
 		for(unsigned long entity : associated_entities_){
 			OnUpdate(entity);
 		}
+		AfterUpdate();
 		last_execution_time_ = Time::GetCurrentTime() - start_time_;
 	}
 
+	void System::BeforeUpdate(){}
+
 	void System::OnUpdate(unsigned long){}
 
-	void System::BeforeUpdate(){}
+	void System::AfterUpdate(){}
 
 	void System::AssociateEntity(unsigned long new_id){
 		for(unsigned long stored_id : this->associated_entities_){

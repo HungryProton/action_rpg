@@ -17,6 +17,7 @@ namespace game{
 		protected:
 			virtual void OnUpdate(unsigned long);
 			virtual void BeforeUpdate();
+			virtual void AfterUpdate();
 			std::vector<unsigned long> associated_entities_;
 
 		private:

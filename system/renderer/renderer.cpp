@@ -1,5 +1,6 @@
 #include "renderer.hpp"
 #include "entity/entity.hpp"
+#include "component/camera.hpp"
 
 namespace game{
 
@@ -12,15 +13,34 @@ namespace game{
 	}
 
 	void Renderer::BeforeUpdate(){
-
+		UpdateCamera();
+		context_controller_.SwapBuffers();
+		shader_controller_.Enable(Program::G_BUFFER);
 	}
 
-	void Renderer::OnUpdate(unsigned long){
+	void Renderer::OnUpdate(unsigned long entity){
+		RenderComponent* node = GetComponentsFor(entity);
+		if(node == nullptr){ return; }
 
+		delete node;
+	}
+
+	void Renderer::AfterUpdate(){
+		// So some shader stuff
+	}
+
+	void Renderer::UpdateCamera(){
+		Transform* transform = Entity::GetComponent<Transform>(camera_);
+		Camera* camera = Entity::GetComponent<Camera>(camera_);
+		if(!transform || !camera){ return; }
+
+		camera->view = glm::lookAt(transform->position,
+															 camera->target,
+															 camera->up );
 	}
 
 	RenderComponent* Renderer::GetComponentsFor(unsigned long entity){
-		RenderComponent* node;
+		RenderComponent* node = new RenderComponent();
 		node->drawable = Entity::GetComponent<Drawable>(entity);
 
 		if(!node->drawable){ return nullptr; }

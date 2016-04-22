@@ -29,13 +29,16 @@ namespace game{
 		protected:
 			void BeforeUpdate();
 			void OnUpdate(unsigned long);
+			void AfterUpdate();
 
 		private:
 			RenderComponent* GetComponentsFor(unsigned long);
+			void UpdateCamera();
 
 			ContextController context_controller_;
 			ShaderController shader_controller_;
 			DrawableBuilder drawable_builder_;
+			unsigned long camera_;
 	};
 }
 #endif //GAME_SYSTEM_RENDERER_HPP

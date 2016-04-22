@@ -52,6 +52,10 @@ namespace game{
 		return 1;
 	}
 
+	void ContextController::SwapBuffers(){
+		glfwSwapBuffers(window_);
+	}
+
 	GLFWwindow* ContextController::GetWindow(){
 		return window_;
 	}
