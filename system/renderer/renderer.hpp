@@ -35,6 +35,7 @@ namespace game{
 		private:
 			RenderComponent GetComponentsFor(unsigned long);
 			void UpdateCamera();
+			void Draw(Drawable* drawable);
 
 			ContextController context_controller_;
 			ShaderController shader_controller_;

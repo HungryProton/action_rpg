@@ -6,11 +6,13 @@
 #include "entity/system_register.hpp"
 #include "entity/entity.hpp"
 #include "service/service.hpp"
+#include "world/world.hpp"
 
 namespace game{
 
 	void Game::Initialize(){
 		SystemRegister::Initialize();
+		World::GenerateNew();
 	}
 
 	void Game::Stop(){

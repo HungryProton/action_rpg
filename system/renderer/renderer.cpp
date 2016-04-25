@@ -23,10 +23,7 @@ namespace game{
 		RenderComponent node = GetComponentsFor(entity);
 		if(!node.is_valid){ return; }
 
-		glBindVertexArray(node.drawable->vao);
-
-		glDrawElements(node.drawable->draw_type, node.drawable->vertex_amount,
-				GL_UNSIGNED_INT, BUFFER_OFFSET(node.drawable->offset));
+		Draw(node.drawable);
 	}
 
 	void Renderer::AfterUpdate(){
@@ -42,6 +39,12 @@ namespace game{
 		camera->view = glm::lookAt(transform->position,
 															 camera->target,
 															 camera->up );
+	}
+
+	void Renderer::Draw(Drawable* drawable){
+		glBindVertexArray(drawable->vao);
+		glDrawElements(drawable->draw_type, drawable->vertex_amount,
+				GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
 	}
 
 	RenderComponent Renderer::GetComponentsFor(unsigned long entity){

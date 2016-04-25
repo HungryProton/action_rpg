@@ -215,11 +215,8 @@ namespace game{
 			std::vector<unsigned int> indices = std::vector<unsigned int>(
 									indexArray, indexArray + 4);
 
-			LOG(DEBUG) << "Test" << std::endl;
 			this->screen_box_ = Service::Get<BufferAllocator>()->RegisterData(data, indices, &(drawable->offset));
-			LOG(DEBUG) << "Test" << std::endl;
 			this->screen_box_offset_ = drawable->offset;
-			LOG(DEBUG) << "Test" << std::endl;
 		}
 		drawable->vao = this->screen_box_;
 		drawable->vertex_amount = 4;
