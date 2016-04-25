@@ -1,5 +1,7 @@
 #include "shader_controller.hpp"
 #include "common/opengl.hpp"
+#include "service/service.hpp"
+#include "service/geometry_helper.hpp"
 
 namespace game{
 
@@ -8,7 +10,12 @@ namespace game{
 	}
 
 	ShaderController::~ShaderController(){
+		delete screen_quad_;
+	}
 
+	void ShaderController::Initialize(){
+		screen_quad_ = new Drawable();
+		Service::Get<GeometryHelper>()->MakeDrawableUseScreenSpaceBox(screen_quad_);
 	}
 
 	void ShaderController::Enable(Program program){

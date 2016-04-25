@@ -17,6 +17,7 @@ namespace game{
 		Texture* texture;
 		Mesh* mesh;
 		Drawable* drawable;
+		bool is_valid;
 	};
 
 	class Renderer : public System{
@@ -32,7 +33,7 @@ namespace game{
 			void AfterUpdate();
 
 		private:
-			RenderComponent* GetComponentsFor(unsigned long);
+			RenderComponent GetComponentsFor(unsigned long);
 			void UpdateCamera();
 
 			ContextController context_controller_;

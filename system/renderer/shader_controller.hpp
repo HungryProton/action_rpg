@@ -5,6 +5,9 @@
 #include "component/drawable.hpp"
 
 namespace game{
+	/*
+	 * CAUTION : This class requires a valid OpenGL context to work
+	 */
 
 	enum class Program{NONE, G_BUFFER, SSAO, HBLUR, VBLUR,
 											BLOOM, LIGHT_FLARE, LIGHTING};
@@ -14,6 +17,7 @@ namespace game{
 			ShaderController();
 			~ShaderController();
 
+			void Initialize();
 			void Enable(Program);
 			void RenderToScreen();
 

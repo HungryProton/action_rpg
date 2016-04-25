@@ -6,6 +6,7 @@ namespace game{
 
 	Renderer::Renderer() : System(){
 		context_controller_.Initialize();
+		shader_controller_.Initialize();
 	}
 
 	Renderer::~Renderer(){
@@ -19,14 +20,18 @@ namespace game{
 	}
 
 	void Renderer::OnUpdate(unsigned long entity){
-		RenderComponent* node = GetComponentsFor(entity);
-		if(node == nullptr){ return; }
+		RenderComponent node = GetComponentsFor(entity);
+		if(!node.is_valid){ return; }
 
-		delete node;
+		glBindVertexArray(node.drawable->vao);
+
+		glDrawElements(node.drawable->draw_type, node.drawable->vertex_amount,
+				GL_UNSIGNED_INT, BUFFER_OFFSET(node.drawable->offset));
 	}
 
 	void Renderer::AfterUpdate(){
-		// So some shader stuff
+		shader_controller_.Enable(Program::LIGHTING);
+		shader_controller_.RenderToScreen();
 	}
 
 	void Renderer::UpdateCamera(){
@@ -39,18 +44,20 @@ namespace game{
 															 camera->up );
 	}
 
-	RenderComponent* Renderer::GetComponentsFor(unsigned long entity){
-		RenderComponent* node = new RenderComponent();
-		node->drawable = Entity::GetComponent<Drawable>(entity);
+	RenderComponent Renderer::GetComponentsFor(unsigned long entity){
+		RenderComponent node;
+		node.is_valid = false;
+		node.drawable = Entity::GetComponent<Drawable>(entity);
 
-		if(!node->drawable){ return nullptr; }
-		if(node->drawable->vao == 0){
+		if(!node.drawable){ return node; }
+		if(node.drawable->vao == 0){
 			int err = drawable_builder_.UpdateDrawableOf(entity);
-			if(err){ return nullptr; }
+			if(err){ return node; }
 		}
-		node->transform = Entity::GetComponent<Transform>(entity);
-		node->texture = Entity::GetComponent<Texture>(entity);
-		node->mesh = Entity::GetComponent<Mesh>(entity);
+		node.transform = Entity::GetComponent<Transform>(entity);
+		node.texture = Entity::GetComponent<Texture>(entity);
+		node.mesh = Entity::GetComponent<Mesh>(entity);
+		node.is_valid = true;
 		return node;
 	}
 

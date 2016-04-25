@@ -2,6 +2,7 @@
 #include "service/service.hpp"
 #include "buffer_allocator.hpp"
 #include "common/opengl.hpp"
+#include "common/logger.hpp"
 
 namespace game{
 
@@ -173,6 +174,11 @@ namespace game{
 	}
 
 	void GeometryHelper::MakeDrawableUseScreenSpaceBox(Drawable* drawable){
+		if(!drawable){
+			LOG(ERROR) << "Null pointer was passed" << std::endl;
+			return;
+		}
+
 		if(this->screen_box_ == 0){
 			std::multimap<int, std::vector<float> > data;
 
@@ -209,8 +215,11 @@ namespace game{
 			std::vector<unsigned int> indices = std::vector<unsigned int>(
 									indexArray, indexArray + 4);
 
+			LOG(DEBUG) << "Test" << std::endl;
 			this->screen_box_ = Service::Get<BufferAllocator>()->RegisterData(data, indices, &(drawable->offset));
+			LOG(DEBUG) << "Test" << std::endl;
 			this->screen_box_offset_ = drawable->offset;
+			LOG(DEBUG) << "Test" << std::endl;
 		}
 		drawable->vao = this->screen_box_;
 		drawable->vertex_amount = 4;
