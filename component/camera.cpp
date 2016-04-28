@@ -16,6 +16,8 @@ namespace game{
 		this->projection = glm::perspective(fovy, ratio, znear, zfar);
 	}
 
+	Camera::~Camera(){}
+
 	Camera::Camera(unsigned long entity) : Camera(){
 		Entity::AttachComponent<Camera>(entity, this);
 	}
@@ -37,7 +39,7 @@ namespace game{
 
 	void Camera::SetActive(){
 		RenderingIntent intent;
-		intent.action = RI_ACTIVE_CAMERA;
+		intent.action = RIntent::SET_ACTIVE_CAMERA;
 		intent.from_id = this->parent;
 		MessageBus::Push(intent);
 		active = true;

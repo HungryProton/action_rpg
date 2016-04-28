@@ -12,7 +12,7 @@ namespace game{
 			static void SaveToFile();
 
 		private:
-			EntityGenerator entity_generator_;
+			static EntityGenerator entity_generator_;
 	};
 }
 

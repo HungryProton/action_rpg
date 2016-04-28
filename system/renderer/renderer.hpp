@@ -9,6 +9,7 @@
 #include "context_controller.hpp"
 #include "shader_controller.hpp"
 #include "drawable_builder.hpp"
+#include "camera_controller.hpp"
 
 namespace game{
 
@@ -40,7 +41,7 @@ namespace game{
 			ContextController context_controller_;
 			ShaderController shader_controller_;
 			DrawableBuilder drawable_builder_;
-			unsigned long camera_;
+			CameraController camera_controller_;
 	};
 }
 #endif //GAME_SYSTEM_RENDERER_HPP

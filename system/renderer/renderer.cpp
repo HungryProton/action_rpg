@@ -14,7 +14,7 @@ namespace game{
 	}
 
 	void Renderer::BeforeUpdate(){
-		UpdateCamera();
+		camera_controller_.Update();
 		context_controller_.SwapBuffers();
 		shader_controller_.Enable(Program::G_BUFFER);
 	}
@@ -31,15 +31,6 @@ namespace game{
 		shader_controller_.RenderToScreen();
 	}
 
-	void Renderer::UpdateCamera(){
-		Transform* transform = Entity::GetComponent<Transform>(camera_);
-		Camera* camera = Entity::GetComponent<Camera>(camera_);
-		if(!transform || !camera){ return; }
-
-		camera->view = glm::lookAt(transform->position,
-															 camera->target,
-															 camera->up );
-	}
 
 	void Renderer::Draw(Drawable* drawable){
 		glBindVertexArray(drawable->vao);

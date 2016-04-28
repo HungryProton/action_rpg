@@ -8,6 +8,9 @@ namespace game{
 			EntityGenerator();
 			~EntityGenerator();
 
+			unsigned long SpawnPlayer();
+			unsigned long SpawnCamera();
+
 		private:
 
 	};

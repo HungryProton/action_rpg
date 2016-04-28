@@ -20,6 +20,12 @@ namespace game{
 		delete_map_.erase(pair);
 	}
 
+	unsigned long Entity::Clone(unsigned long id){
+		unsigned int new_entity = Entity::Create();
+
+		return new_entity;
+	}
+
 	void Entity::ClearMemory(){
 		unsigned long id = builder_.Create();
 

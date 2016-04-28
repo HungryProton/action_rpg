@@ -11,6 +11,7 @@ namespace game{
 		friend Game;
 		public:
 			static unsigned long Create();
+			static unsigned long Clone(unsigned long);
 			static void Destroy(unsigned long);
 
 			template<class T>

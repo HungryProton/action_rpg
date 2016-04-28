@@ -19,6 +19,7 @@ namespace game{
 
 		// ----- Helper methods -----
 		Camera();
+		virtual ~Camera();
 		Camera(unsigned long);
 		Camera(Camera*);
 		virtual Camera* Clone();

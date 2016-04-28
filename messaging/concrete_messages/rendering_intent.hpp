@@ -6,14 +6,13 @@
 
 namespace game{
 
-	enum Action{
-		RI_NONE,
-		RI_RENDER_DRAWABLE,
-		RI_ACTIVE_CAMERA
+	enum class RIntent{
+		NONE,
+		SET_ACTIVE_CAMERA
 	};
 
 	struct RenderingIntent : public Message{
-		Action action;
+		RIntent action;
 	};
 }
 #endif //GAME_CORE_MESSAGING_RENDERING_INTENT_HPP
