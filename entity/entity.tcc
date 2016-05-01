@@ -20,5 +20,14 @@ namespace game{
 		} else {
 			pair->second.push_back(ComponentRegister<T>::RemoveComponent);
 		}
+
+		auto pair2 = clone_map_.find(id);
+		if(pair2 == clone_map_.end()){
+			std::vector<void(*)(unsigned long, unsigned long)> functions;
+			functions.push_back(ComponentRegister<T>::CloneFromTo);
+			clone_map_.insert(std::make_pair(id, functions));
+		} else {
+			pair2->second.push_back(ComponentRegister<T>::CloneFromTo);
+		}
 	}
 }

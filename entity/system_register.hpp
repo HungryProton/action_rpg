@@ -21,6 +21,7 @@ namespace game{
 			static void DissociateEntityFrom(unsigned long);
 
 			static void DissociateEntityFromAll(unsigned long);
+			static void CloneAssociationOfInto(unsigned long, unsigned long);
 
 		private:
 			static void Initialize();

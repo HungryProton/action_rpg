@@ -23,6 +23,14 @@ namespace game{
 	unsigned long Entity::Clone(unsigned long id){
 		unsigned int new_entity = Entity::Create();
 
+		auto pair = clone_map_.find(id);
+		if(pair == clone_map_.end()){ return new_entity; }
+
+		for(auto clone_function : pair->second){
+			clone_function(pair->first, id);
+		}
+		SystemRegister::CloneAssociationOfInto(id, new_entity);
+
 		return new_entity;
 	}
 
@@ -37,4 +45,5 @@ namespace game{
 
 	EntityBuilder Entity::builder_;
 	std::map<unsigned long, std::vector<void(*)(unsigned long)>> Entity::delete_map_;
+	std::map<unsigned long, std::vector<void(*)(unsigned long, unsigned long)>> Entity::clone_map_;
 }

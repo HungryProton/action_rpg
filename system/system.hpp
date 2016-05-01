@@ -12,6 +12,7 @@ namespace game{
 			virtual void Update() final;
 			virtual void AssociateEntity(unsigned long) final;
 			virtual void DissociateEntity(unsigned long) final;
+			virtual bool IsAssociatedWith(unsigned long) final;
 			virtual float GetExecutionTime() final;
 
 		protected:

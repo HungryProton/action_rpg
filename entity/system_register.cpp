@@ -32,6 +32,14 @@ namespace game{
 		}
 	}
 
+	void SystemRegister::CloneAssociationOfInto(unsigned long original, unsigned long clone){
+		for(auto pair : systems_){
+			if(pair.second->IsAssociatedWith(original)){
+				pair.second->AssociateEntity(clone);
+			}
+		}
+	}
+
 	void SystemRegister::ClearMemory(){
 		for(auto pair : systems_){
 			delete pair.second;

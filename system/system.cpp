@@ -44,6 +44,15 @@ namespace game{
 		}
 	}
 
+	bool System::IsAssociatedWith(unsigned long id){
+		for(unsigned long stored_id : this->associated_entities_){
+			if(stored_id == id){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	float System::GetExecutionTime(){
 		return this->last_execution_time_;
 	}

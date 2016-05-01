@@ -1,5 +1,6 @@
 #include "component_register.hpp"
 #include "common/logger.hpp"
+#include "entity/entity.hpp"
 
 namespace game{
 
@@ -27,6 +28,12 @@ namespace game{
 		if(pair == components_.end()){ return; }
 		delete pair->second;
 		components_.erase(pair);
+	}
+
+	template<class T>
+	void ComponentRegister<T>::CloneFromTo(unsigned long from, unsigned long to){
+		T* clone = GetComponent(from)->Clone();
+		Entity::AttachComponent<T>(to, clone);
 	}
 
 	template<class T>

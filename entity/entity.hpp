@@ -20,10 +20,13 @@ namespace game{
 			template<class T>
 			static T* GetComponent(unsigned long);
 
-		private:
+		protected:
 			static void ClearMemory();
+
+		private:
 			static EntityBuilder builder_;
 			static std::map<unsigned long, std::vector<void(*)(unsigned long)>> delete_map_;
+			static std::map<unsigned long, std::vector<void(*)(unsigned long, unsigned long)>> clone_map_;
 	};
 }
 

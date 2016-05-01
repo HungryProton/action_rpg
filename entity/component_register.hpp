@@ -11,6 +11,7 @@ namespace game{
 			static void AttachComponent(unsigned long, T*);
 			static T* GetComponent(unsigned long);
 			static void RemoveComponent(unsigned long);
+			static void CloneFromTo(unsigned long, unsigned long);
 
 		private:
 			static std::map<unsigned long, T*> components_;
