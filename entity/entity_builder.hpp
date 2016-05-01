@@ -1,7 +1,7 @@
 #ifndef GAME_ENTITY_ENTITY_BUILDER_HPP
 #define GAME_ENTITY_ENTITY_BUILDER_HPP
 
-#include <queue>
+#include <vector>
 
 namespace game{
 
@@ -14,7 +14,7 @@ namespace game{
 
 		private:
 			unsigned long last_generated_id_;
-			std::queue<unsigned long> unused_id_list_;
+			std::vector<unsigned long> unused_id_list_;
 	};
 }
 

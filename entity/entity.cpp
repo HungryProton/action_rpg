@@ -27,7 +27,7 @@ namespace game{
 		if(pair == clone_map_.end()){ return new_entity; }
 
 		for(auto clone_function : pair->second){
-			clone_function(pair->first, id);
+			clone_function(id, new_entity);
 		}
 		SystemRegister::CloneAssociationOfInto(id, new_entity);
 

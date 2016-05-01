@@ -5,14 +5,15 @@
 namespace game{
 
 	template<class T>
-	void ComponentRegister<T>::AttachComponent(unsigned long id, T* component){
+	int ComponentRegister<T>::AttachComponent(unsigned long id, T* component){
 		for(auto pair : components_){
 			if(pair.first == id){
-				return;
+				return 1;
 			}
 		}
 		components_.insert(std::make_pair(id, component));
 		component->parent = id;
+		return 0;
 	}
 
 	template<class T>

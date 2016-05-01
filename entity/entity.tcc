@@ -11,7 +11,9 @@ namespace game{
 	template<class T>
 	void Entity::AttachComponent(unsigned long id, T* component){
 		if(id == 0){ return; }
-		ComponentRegister<T>::AttachComponent(id, component);
+		int err = ComponentRegister<T>::AttachComponent(id, component);
+		if(err){ return; }
+
 		auto pair = delete_map_.find(id);
 		if(pair == delete_map_.end()){
 			std::vector<void(*)(unsigned long)> functions;

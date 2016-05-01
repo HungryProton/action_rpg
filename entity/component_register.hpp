@@ -8,7 +8,7 @@ namespace game{
 	template<class T>
 	class ComponentRegister{
 		public:
-			static void AttachComponent(unsigned long, T*);
+			static int AttachComponent(unsigned long, T*);
 			static T* GetComponent(unsigned long);
 			static void RemoveComponent(unsigned long);
 			static void CloneFromTo(unsigned long, unsigned long);

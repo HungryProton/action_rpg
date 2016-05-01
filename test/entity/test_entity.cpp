@@ -20,6 +20,7 @@ namespace game{
 					THEN("entity id should be stricly greater than zero"){
 						EXPECT(id != 0);
 					}
+					Entity::Destroy(id);
 				}
 				WHEN("an entity is destroyed and a new one is requested"){
 					unsigned long id = Entity::Create();
@@ -30,6 +31,7 @@ namespace game{
 					THEN("it should reuse the unused id"){
 						EXPECT(id == expected_id);
 					}
+					Entity::Destroy(id);
 				}
 			}
 		},
@@ -47,6 +49,7 @@ namespace game{
 						EXPECT(retrieved == transform);
 					}
 				}
+				Entity::Destroy(id);
 			}
 		},
 		SCENARIO("It should destroy every component associated with id"){
@@ -64,6 +67,31 @@ namespace game{
 						EXPECT(Entity::GetComponent<Box>(entity) == nullptr);
 					}
 				}
+				Entity::Destroy(entity);
+			}
+		},
+		SCENARIO("It should clone an entity with all its component"){
+
+			GIVEN("a registered entity with two components attached"){
+				unsigned long entity = Entity::Create();
+				Transform* original_t = new Transform(entity);
+				Box* original_b = new Box(entity);
+
+				WHEN("the entity is cloned"){
+					unsigned long cloned_entity = Entity::Clone(entity);
+
+					THEN("it should have cloned components and attached them to the new entity"){
+						Transform* cloned_t = Entity::GetComponent<Transform>(cloned_entity);
+						Box* cloned_b = Entity::GetComponent<Box>(cloned_entity);
+
+						EXPECT(cloned_t != nullptr);
+						EXPECT(cloned_b != nullptr);
+						EXPECT(cloned_t != original_t);
+						EXPECT(cloned_b != original_b);
+					}
+					Entity::Destroy(cloned_entity);
+				}
+				Entity::Destroy(entity);
 			}
 		}
 	};
