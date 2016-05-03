@@ -1,6 +1,8 @@
 #include "entity_factory.hpp"
 #include "entity/entity.hpp"
 #include "component/transform.hpp"
+#include "component/texture.hpp"
+#include "component/camera.hpp"
 
 namespace game{
 
@@ -17,6 +19,7 @@ namespace game{
 	void EntityFactory::LoadInitialPresets(){
 		GeneratePlayerPreset();
 		GenerateRockPreset();
+		GenerateCameraPreset();
 	}
 
 	void EntityFactory::RegisterPreset(std::string preset_name, unsigned long entity){
@@ -26,12 +29,14 @@ namespace game{
 				<< "Request ignored" << std::endl;
 			return;
 		}
+		LOG(DEBUG) << "Creating preset " << preset_name << std::endl;
 		presets_.insert(std::make_pair(preset_name, entity));
 	}
 
 	void EntityFactory::GeneratePlayerPreset(){
 		unsigned long player = Entity::Create();
 		new Transform(player);
+		new Texture("../data/characters/female/single.png", player);
 		RegisterPreset("player", player);
 	}
 
@@ -39,6 +44,13 @@ namespace game{
 		unsigned long rock = Entity::Create();
 		new Transform(rock);
 		RegisterPreset("rock", rock);
+	}
+
+	void EntityFactory::GenerateCameraPreset(){
+		unsigned long camera = Entity::Create();
+		new Transform(camera);
+		new Camera(camera);
+		RegisterPreset("camera", camera);
 	}
 
 	std::map<std::string, unsigned long> EntityFactory::presets_;
