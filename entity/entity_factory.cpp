@@ -1,5 +1,6 @@
 #include "entity_factory.hpp"
 #include "entity/entity.hpp"
+#include "component/transform.hpp"
 
 namespace game{
 
@@ -14,7 +15,8 @@ namespace game{
 	}
 
 	void EntityFactory::LoadInitialPresets(){
-	
+		GeneratePlayerPreset();
+		GenerateRockPreset();
 	}
 
 	void EntityFactory::RegisterPreset(std::string preset_name, unsigned long entity){
@@ -25,6 +27,18 @@ namespace game{
 			return;
 		}
 		presets_.insert(std::make_pair(preset_name, entity));
+	}
+
+	void EntityFactory::GeneratePlayerPreset(){
+		unsigned long player = Entity::Create();
+		new Transform(player);
+		RegisterPreset("player", player);
+	}
+
+	void EntityFactory::GenerateRockPreset(){
+		unsigned long rock = Entity::Create();
+		new Transform(rock);
+		RegisterPreset("rock", rock);
 	}
 
 	std::map<std::string, unsigned long> EntityFactory::presets_;

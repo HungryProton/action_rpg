@@ -67,7 +67,6 @@ namespace game{
 						EXPECT(Entity::GetComponent<Box>(entity) == nullptr);
 					}
 				}
-				Entity::Destroy(entity);
 			}
 		},
 		SCENARIO("It should clone an entity with all its component"){

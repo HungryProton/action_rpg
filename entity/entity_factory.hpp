@@ -14,6 +14,8 @@ namespace game{
 
 		private:
 			static std::map<std::string, unsigned long> presets_;
+			static void GeneratePlayerPreset();
+			static void GenerateRockPreset();
 	};
 }
 #endif //GAME_ENTITY_FACTORY_HPP_

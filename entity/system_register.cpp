@@ -3,6 +3,7 @@
 #include "system/input/input.hpp"
 #include "system/physic/physic.hpp"
 #include "system/renderer/renderer.hpp"
+#include "system/gui/gui.hpp"
 
 namespace game{
 
@@ -12,6 +13,7 @@ namespace game{
 	void SystemRegister::Initialize(){
 		CreateSystem<Input>();
 		CreateSystem<Physic>();
+		CreateSystem<Gui>();
 		CreateSystem<Renderer>();
 
 		Input* input = Get<Input>();
