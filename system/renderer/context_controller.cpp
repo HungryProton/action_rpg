@@ -60,6 +60,12 @@ namespace game{
 		return window_;
 	}
 
+	glm::ivec2 ContextController::GetWindowSize(){
+		glm::ivec2 size;
+		glfwGetWindowSize(this->window_, &size.x, &size.y);
+		return size;
+	}
+
 	bool ContextController::IsContextValid(){
 		return context_validity_;
 	}

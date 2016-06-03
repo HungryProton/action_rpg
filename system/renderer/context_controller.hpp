@@ -12,6 +12,7 @@ namespace game{
 
 			void Initialize();
 			GLFWwindow* GetWindow();
+			glm::ivec2 GetWindowSize();
 			void SwapBuffers();
 			bool IsContextValid();
 

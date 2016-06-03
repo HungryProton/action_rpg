@@ -6,11 +6,12 @@
 
 namespace game{
 
-	CameraController::CameraController(){ }
+	CameraController::CameraController() : MessageHandler<RenderingIntent>(){ }
 
 	CameraController::~CameraController(){ }
 
 	void CameraController::Update(){
+		this->MessageHandler<RenderingIntent>::UpdateMessages();
 		Transform* transform = Entity::GetComponent<Transform>(camera_);
 		Camera* camera = Entity::GetComponent<Camera>(camera_);
 		if(!transform || !camera){ return; }
@@ -18,10 +19,20 @@ namespace game{
 		camera->view = glm::lookAt(transform->position,
 															 camera->target,
 															 camera->up );
+		view_ = camera->view;
+		projection_ = camera->projection;
 	}
 
 	void CameraController::SetActiveCamera(unsigned long new_camera){
 		camera_ = new_camera;
+	}
+
+	glm::mat4 CameraController::GetView(){
+		return view_;
+	}
+
+	glm::mat4 CameraController::GetProjection(){
+		return projection_;
 	}
 
 	void CameraController::OnMessage(RenderingIntent msg){

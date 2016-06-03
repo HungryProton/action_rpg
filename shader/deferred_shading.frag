@@ -28,7 +28,7 @@ void main(){
 	//if(gl_FragCoord.x < 1366.f/2.f){ FragColor = Bloom; return; }
 
 	//Diffuse = mix(Diffuse, vec4(0.90f), 0.9);
-	Diffuse = mix(color, color * SSAO, 1.0);
+	//Diffuse = mix(color, color * SSAO, 1.0);
 	//Diffuse *= SSAO;
 
 	FragColor = mix( Diffuse, Diffuse * GetVignetteFactor(), 0.5f);

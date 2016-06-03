@@ -1,8 +1,11 @@
 #include "entity_factory.hpp"
 #include "entity/entity.hpp"
+#include "entity/system_register.hpp"
 #include "component/transform.hpp"
 #include "component/texture.hpp"
 #include "component/camera.hpp"
+#include "component/drawable.hpp"
+#include "system/renderer/renderer.hpp"
 
 namespace game{
 
@@ -37,6 +40,9 @@ namespace game{
 		unsigned long player = Entity::Create();
 		new Transform(player);
 		new Texture("../data/characters/female/single.png", player);
+		Drawable* d = new Drawable(player);
+		d->type = DrawableType::SPRITE;
+		SystemRegister::AssociateEntityTo<Renderer>(player);
 		RegisterPreset("player", player);
 	}
 

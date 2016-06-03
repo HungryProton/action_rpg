@@ -12,6 +12,8 @@ namespace game{
 			~CameraController();
 
 			unsigned long GetCamera();
+			glm::mat4 GetView();
+			glm::mat4 GetProjection();
 			void Update();
 
 		protected:
@@ -20,6 +22,8 @@ namespace game{
 
 		private:
 			unsigned long camera_;
+			glm::mat4 view_;
+			glm::mat4 projection_;
 	};
 }
 
