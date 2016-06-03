@@ -30,7 +30,7 @@ namespace game{
 	int DrawableBuilder::UpdateSpriteDrawable(Drawable* drawable,
 																						unsigned long entity){
 		Texture* texture = Entity::GetComponent<Texture>(entity);
-		if (texture){ return EXIT_FAILURE; }	// Fail if no texture found
+		if(!texture){ return EXIT_FAILURE; }	// Fail if no texture found
 
 		GeometryHelper* geometry_helper = Service::Get<GeometryHelper>();
 		geometry_helper->MakeDrawableUseBoxBuffer(drawable);

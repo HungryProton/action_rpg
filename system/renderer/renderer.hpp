@@ -35,6 +35,7 @@ namespace game{
 
 		private:
 			RenderComponent GetComponentsFor(unsigned long);
+			glm::mat4 GetModelMatrixFor(Transform*, glm::vec3);
 			void UpdateCamera();
 			void Draw(Drawable* drawable);
 
