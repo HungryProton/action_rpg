@@ -10,6 +10,7 @@ namespace game{
 
 			unsigned long SpawnPlayer();
 			unsigned long SpawnCamera();
+			unsigned long SpawnRandom();
 
 		private:
 
