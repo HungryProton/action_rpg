@@ -58,19 +58,19 @@ namespace game{
 	void Physic::ApplyForce(glm::vec3 force, unsigned long object){
 		PhysicComponents* c = this->GetComponentsFor(object);
 		if(c == nullptr){ return; }
-		c->transform->target_velocity += force
+		c->collider->target_velocity += force
 			* c->collider->inv_mass
 			* Time::GetPreviousDeltaTime()
 			* 0.5f;
 	}
 
 	void Physic::UpdatePositions(PhysicComponents* c){
-		c->transform->position += c->transform->target_velocity*Time::GetPreviousDeltaTime();
+		c->transform->position += c->collider->target_velocity*Time::GetPreviousDeltaTime();
 		float friction_modifier = 0.1; // Retrieve that from material when possible
-		glm::vec3 friction_vector = glm::normalize(c->transform->target_velocity)
+		glm::vec3 friction_vector = glm::normalize(c->collider->target_velocity)
 			* friction_modifier
 			* Time::GetPreviousDeltaTime();
-		c->transform->target_velocity -= friction_vector;
+		c->collider->target_velocity -= friction_vector;
 	}
 
 	void Physic::ResolveCollisions(unsigned long id, PhysicComponents* ca){
@@ -297,10 +297,10 @@ namespace game{
 
 		float mass_sum = m.collider_a->mass + m.collider_b->mass;
 		float ratio = m.collider_a->mass / mass_sum;
-		m.transform_a->target_velocity -= ratio * impulse;
+		m.collider_a->target_velocity -= ratio * impulse;
 
 		ratio = m.collider_b->mass / mass_sum;
-		m.transform_b->target_velocity += ratio * impulse;
+		m.collider_b->target_velocity += ratio * impulse;
 	}
 
 	void Physic::ApplyFriction(PhysicManifold m){
@@ -315,8 +315,8 @@ namespace game{
 
 		glm::vec3 friction = jt * tangent;
 
-		m.transform_a->target_velocity -= m.collider_a->inv_mass * friction;
-		m.transform_b->target_velocity += m.collider_b->inv_mass * friction;
+		m.collider_a->target_velocity -= m.collider_a->inv_mass * friction;
+		m.collider_b->target_velocity += m.collider_b->inv_mass * friction;
 	}
 
 	void Physic::PositionalCorrection(PhysicManifold m){

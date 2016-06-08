@@ -13,7 +13,6 @@ namespace game{
 		this->rotation = glm::vec3(0.f, 0.f, 0.f);
 		this->scale = glm::vec3(1.f, 1.f, 1.f);
 		this->velocity = glm::vec3(0.f, 0.f, 0.f);
-		this->target_velocity = glm::vec3(0.f, 0.f, 0.f);
 		this->previous_position = glm::vec3(0.f, 0.f, 0.f);
 	}
 
@@ -26,7 +25,6 @@ namespace game{
 		this->rotation = transform->rotation;
 		this->scale = transform->scale;
 		this->velocity = transform->velocity;
-		this->target_velocity = transform->target_velocity;
 		this->previous_position = transform->previous_position;
 	}
 
@@ -37,6 +35,9 @@ namespace game{
 	void Transform::dbg_display(){
 		std::cout << "x: " << this->position.x <<
 					" y: " << this->position.y <<
-					" z: " << this->position.z << std::endl;
+					" z: " << this->position.z <<
+					" vx: " << this->velocity.x <<
+					" vy: " << this->velocity.y <<
+					" vz: " << this->velocity.z << std::endl;
 	}
 }

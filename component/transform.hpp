@@ -21,7 +21,6 @@ namespace game{
 		glm::vec3 rotation;
 		glm::vec3 scale;
 		glm::vec3 velocity;
-		glm::vec3 target_velocity;
 
 		// ---- Helper Methods ----
 		Transform();

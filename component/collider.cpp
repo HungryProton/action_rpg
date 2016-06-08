@@ -13,6 +13,7 @@ namespace game{
 		this->sleeping = false;
 		this->SetMass(1.f);
 		this->restitution_factor = 0.8f;
+		this->target_velocity = glm::vec3(0.f, 0.f, 0.f);
 	}
 
 	Collider::~Collider(){ }
@@ -27,6 +28,7 @@ namespace game{
 		this->restitution_factor = collider->restitution_factor;
 		this->SetMass(collider->mass);
 		this->shape_type = collider->shape_type;
+		this->target_velocity = collider->target_velocity;
 	}
 
 	// TODO : Use the shape to determine object's volume and multiply by

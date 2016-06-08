@@ -3,6 +3,7 @@
 
 #include <typeindex>
 #include "component.hpp"
+#include "common/glm.hpp"
 
 // @TODO : Mass calcultations based on volume and material density
 
@@ -19,10 +20,10 @@ namespace game{
 		float inv_mass;
 		float weight;
 		float restitution_factor;
-
 		float gravity;
 
 		Shape shape_type;
+		glm::vec3 target_velocity;
 
 		// Helper methods
 		Collider();
