@@ -16,7 +16,7 @@ namespace game{
 	}
 
   void DummyHandler::Process(){
-		this->MessageHandler<Message>::UpdateMessages();
+		this->MessageHandler<Message>::PollMessages();
   }
 
 	void DummyHandler::OnMessage(Message msg){

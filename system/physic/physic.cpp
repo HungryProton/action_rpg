@@ -16,7 +16,7 @@ namespace game{
 	Physic::~Physic(){}
 
 	void Physic::BeforeUpdate(){
-		this->MessageHandler<PhysicIntent>::UpdateMessages();
+		this->MessageHandler<PhysicIntent>::PollMessages();
 	}
 
 	void Physic::OnUpdate(unsigned long entity){

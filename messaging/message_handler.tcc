@@ -20,7 +20,7 @@ namespace game{
 	}
 
 	template<class T>
-	void MessageHandler<T>::UpdateMessages(){
+	void MessageHandler<T>::PollMessages(){
 		for(T message : this->messages_){
 			OnMessage(message);
 		}

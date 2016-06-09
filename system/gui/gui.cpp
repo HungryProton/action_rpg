@@ -7,7 +7,7 @@ namespace game{
 	Gui::~Gui(){ }
 
 	void Gui::BeforeUpdate(){
-		this->MessageHandler<InputMessage>::UpdateMessages();
+		this->MessageHandler<InputMessage>::PollMessages();
 	}
 
 	void Gui::OnMessage(InputMessage msg){

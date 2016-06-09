@@ -11,7 +11,7 @@ namespace game{
 	CameraController::~CameraController(){ }
 
 	void CameraController::Update(){
-		this->MessageHandler<RenderingIntent>::UpdateMessages();
+		this->MessageHandler<RenderingIntent>::PollMessages();
 		Transform* transform = Entity::GetComponent<Transform>(camera_);
 		Camera* camera = Entity::GetComponent<Camera>(camera_);
 		if(!transform || !camera){ return; }

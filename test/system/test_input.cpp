@@ -24,7 +24,7 @@ namespace game{
 
 	class InputListener : public MessageHandler<InputMessage>{
 		public:
-			void Update(){ this->MessageHandler<InputMessage>::UpdateMessages(); }
+			void Update(){ this->MessageHandler<InputMessage>::PollMessages(); }
 			void OnMessage(InputMessage){}
 	};
 
