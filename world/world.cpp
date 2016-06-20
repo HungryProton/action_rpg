@@ -16,7 +16,6 @@ namespace game{
 
 		for(int i = 0; i < 32; i++){
 			entity_generator_.SpawnRandom();
-			LOG(DEBUG) << i << std::endl;
 		}
 	}
 
