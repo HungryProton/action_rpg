@@ -851,7 +851,7 @@ inline bool select( text name, texts include )
 
 inline int indefinite( int repeat ) { return repeat == -1; }
 
-using seed_t = Entity;
+using seed_t = unsigned long;
 
 struct options
 {

@@ -5265,7 +5265,7 @@ namespace fakeit {
 #ifdef _MSC_VER
 namespace fakeit {
 
-    typedef Entity DWORD;
+    typedef unsigned long DWORD;
 
     struct TypeDescriptor {
         TypeDescriptor() :
@@ -6037,7 +6037,7 @@ namespace fakeit {
         void checkMultipleInheritance() {
             C *ptr = (C *) (unsigned int) 1;
             BaseClass *basePtr = ptr;
-            int delta = (Entity) basePtr - (Entity) ptr;
+            int delta = (unsigned long) basePtr - (unsigned long) ptr;
             if (delta > 0) {
 
 
@@ -6923,14 +6923,14 @@ namespace fakeit {
     inline QuantifierFunctor operator
     ""
 
-    _Times(Entity long n) {
+    _Times(unsigned long long n) {
         return QuantifierFunctor((int) n);
     }
 
     inline QuantifierFunctor operator
     ""
 
-    _Time(Entity long n) {
+    _Time(unsigned long long n) {
         if (n != 1)
             throw std::invalid_argument("Only 1_Time is supported. Use X_Times (with s) if X is bigger than 1");
         return QuantifierFunctor((int) n);
