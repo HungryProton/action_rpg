@@ -1,7 +1,7 @@
 #include "drawable.hpp"
 #include "messaging/message_bus.hpp"
 #include "messaging/concrete_messages/rendering_intent.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 
 namespace game{
 

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 #include "mesh.hpp"
 #include "texture.hpp"
 

@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include <iostream>
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 #include "transform.hpp"
 #include "common/time.hpp"
 

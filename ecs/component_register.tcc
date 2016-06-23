@@ -1,6 +1,6 @@
 #include "component_register.hpp"
 #include "common/logger.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 
 namespace game{
 

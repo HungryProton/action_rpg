@@ -1,5 +1,5 @@
 #include "movement.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 
 namespace game{
 

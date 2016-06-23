@@ -1,5 +1,5 @@
 #include "camera_controller.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 #include "component/camera.hpp"
 #include "component/transform.hpp"
 #include "messaging/concrete_messages/rendering_intent.hpp"

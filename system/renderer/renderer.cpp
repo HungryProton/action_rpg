@@ -1,5 +1,5 @@
 #include "renderer.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 #include "component/camera.hpp"
 
 namespace game{

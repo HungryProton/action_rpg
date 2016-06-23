@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/norm.hpp>
 #include "physic.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 #include "component/transform.hpp"
 #include "component/collider.hpp"
 #include "component/shapes/box.hpp"

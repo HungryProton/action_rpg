@@ -1,6 +1,6 @@
 #include <iostream>
 #include "circle.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 
 namespace game{
 

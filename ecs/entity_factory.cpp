@@ -1,6 +1,6 @@
 #include "entity_factory.hpp"
-#include "entity/entity.hpp"
-#include "entity/system_register.hpp"
+#include "ecs/entity.hpp"
+#include "ecs/system_register.hpp"
 #include "component/transform.hpp"
 #include "component/texture.hpp"
 #include "component/camera.hpp"

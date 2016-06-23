@@ -2,7 +2,7 @@
 #include <iostream>
 #include <typeinfo>
 #include "collider.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 #include "messaging/concrete_messages/physic_intent.hpp"
 #include "messaging/message_bus.hpp"
 

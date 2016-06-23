@@ -1,7 +1,7 @@
 #include "world.hpp"
 
-#include "entity/entity.hpp"
-#include "entity/entity_factory.hpp"
+#include "ecs/entity.hpp"
+#include "ecs/entity_factory.hpp"
 #include "component/transform.hpp"
 
 namespace game{
@@ -14,7 +14,7 @@ namespace game{
 		Transform* t = Entity::GetComponent<Transform>(camera);
 		t->position = glm::vec3(0, -8, 7);
 
-		for(int i = 0; i < 32; i++){
+		for(int i = 0; i < 500; i++){
 			entity_generator_.SpawnRandom();
 		}
 	}

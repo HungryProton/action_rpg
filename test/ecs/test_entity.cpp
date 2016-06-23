@@ -2,7 +2,7 @@
 #include <fstream>
 #include "deps/lest.hpp"
 #include "deps/lest-module.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 #include "common/logger.hpp"
 #include "component/transform.hpp"
 #include "component/shapes/box.hpp"

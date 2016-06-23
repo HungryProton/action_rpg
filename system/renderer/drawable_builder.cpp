@@ -1,5 +1,5 @@
 #include "drawable_builder.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 #include "service/geometry_helper.hpp"
 #include "service/service.hpp"
 #include "component/texture.hpp"

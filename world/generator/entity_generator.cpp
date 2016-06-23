@@ -1,13 +1,13 @@
 #include "entity_generator.hpp"
-#include "entity/entity_factory.hpp"
+#include "ecs/entity_factory.hpp"
 #include "messaging/concrete_messages/rendering_intent.hpp"
 #include "messaging/message_bus.hpp"
 #include "component/transform.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 #include "common/random.hpp"
 #include "component/texture.hpp"
 #include "system/renderer/renderer.hpp"
-#include "entity/system_register.hpp"
+#include "ecs/system_register.hpp"
 
 namespace game{
 

@@ -3,8 +3,8 @@
 #include <thread>
 #include "common/logger.hpp"
 #include "common/time.hpp"
-#include "entity/system_register.hpp"
-#include "entity/entity.hpp"
+#include "ecs/system_register.hpp"
+#include "ecs/entity.hpp"
 #include "service/service.hpp"
 #include "world/world.hpp"
 
@@ -32,7 +32,7 @@ namespace game{
 			Time::NotifyFrameStart();
 			SystemRegister::Update();
 			AdjustFrameRate();
-			//LOG(INFO) << "FPS : " << 1.f/Time::GetDeltaTime() << std::endl;
+			//LOG(INFO) << "FPS : " << 1.f/Time::GetPreviousDeltaTime() << std::endl;
 		}
 		ClearMemory();
 	}
@@ -42,11 +42,11 @@ namespace game{
 	}
 
 	void Game::AdjustFrameRate(){
-		long delay = (frame_rate_target_ - Time::GetCurrentFrameAdvance())*1000;
+		long delay = (frame_duration_target_ - Time::GetCurrentFrameAdvance())*1000;
 		if(delay <= 2){ return; }
 		std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 	}
 
 	State Game::state_ = UNINITIALIZED;
-	float Game::frame_rate_target_ = 1.f/30.f;
+	float Game::frame_duration_target_ = 1.f/60.f;
 }

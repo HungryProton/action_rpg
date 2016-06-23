@@ -1,6 +1,6 @@
 #include <glm/glm.hpp>
 #include "box.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 
 namespace game{
 

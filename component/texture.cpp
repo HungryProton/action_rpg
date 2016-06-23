@@ -3,7 +3,7 @@
 #include <string>
 #include "texture.hpp"
 #include "common/logger.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 #include "service/service.hpp"
 #include "service/image_loader.hpp"
 

@@ -4,7 +4,7 @@
 #include "deps/lest-module.hpp"
 #include "messaging/message_handler.hpp"
 #include "test/context_util.hpp"
-#include "entity/entity.hpp"
+#include "ecs/entity.hpp"
 #include "component/texture.hpp"
 #include "component/drawable.hpp"
 #include "system/renderer/drawable_builder.hpp"

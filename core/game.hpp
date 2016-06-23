@@ -20,7 +20,7 @@ namespace game{
 			static void AdjustFrameRate();
 
 			static State state_;
-			static float frame_rate_target_;
+			static float frame_duration_target_;
 	};
 }
 
