@@ -16,7 +16,7 @@ namespace game{
 		SCENARIO("DrawableBuilder should process empty drawables when requested"){
 
 			GIVEN("a newly created sprite entity with a drawable component"){
-				unsigned long sprite = Entity::Create();
+				Entity sprite = Entity::Create();
 				new Texture("test/data/1.png", sprite);
 				Drawable* d = new Drawable(sprite);
 				d->type = DrawableType::SPRITE;

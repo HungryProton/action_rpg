@@ -22,23 +22,23 @@ namespace game{
 
 		protected:
 			virtual void BeforeUpdate();
-			virtual void OnUpdate(unsigned long);
+			virtual void OnUpdate(Entity);
 			virtual void OnMessage(PhysicIntent);
 
 		private:
-			void ApplyForce(glm::vec3 force, unsigned long);
+			void ApplyForce(glm::vec3 force, Entity);
 
 			void UpdatePositions(PhysicComponents*);
-			void ResolveCollisions(unsigned long, PhysicComponents*);
+			void ResolveCollisions(Entity, PhysicComponents*);
 			void BoxvsBox(PhysicComponents*, PhysicComponents*);
 			void CirclevsCircle(PhysicComponents*, PhysicComponents*);
 			void BoxvsCircle(PhysicComponents*, PhysicComponents*);
 			void ApplyImpulse(PhysicManifold);
 			void ApplyFriction(PhysicManifold);
 			void PositionalCorrection(PhysicManifold);
-			PhysicComponents* GetComponentsFor(unsigned long);
+			PhysicComponents* GetComponentsFor(Entity);
 
-			std::map<unsigned long, PhysicComponents> entities_;
+			std::map<Entity, PhysicComponents> entities_;
 	};
 
 	struct PhysicComponents{

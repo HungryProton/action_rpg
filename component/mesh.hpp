@@ -30,8 +30,8 @@ namespace game{
 
 		Mesh();
 		virtual ~Mesh();
-		Mesh(unsigned long);
-		Mesh(std::string, unsigned long);
+		Mesh(Entity);
+		Mesh(std::string, Entity);
 		Mesh(std::string);
 		Mesh(Mesh*);
 		void LoadFromFile(std::string);

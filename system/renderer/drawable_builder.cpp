@@ -11,7 +11,7 @@ namespace game{
 
 	DrawableBuilder::~DrawableBuilder(){ }
 
-	int DrawableBuilder::UpdateDrawableOf(unsigned long entity){
+	int DrawableBuilder::UpdateDrawableOf(Entity entity){
 		Drawable* drawable = Entity::GetComponent<Drawable>(entity);
 		if(drawable == nullptr){ return 1; }
 
@@ -28,7 +28,7 @@ namespace game{
 	}
 
 	int DrawableBuilder::UpdateSpriteDrawable(Drawable* drawable,
-																						unsigned long entity){
+																						Entity entity){
 		Texture* texture = Entity::GetComponent<Texture>(entity);
 		if(!texture){ return EXIT_FAILURE; }	// Fail if no texture found
 
@@ -38,7 +38,7 @@ namespace game{
 	}
 
 	int DrawableBuilder::UpdateMeshDrawable(Drawable* drawable,
-																					unsigned long entity){
+																					Entity entity){
 		Mesh* mesh = Entity::GetComponent<Mesh>(entity);
 		if(!mesh){ return EXIT_FAILURE; }	 // Fail if no mesh found
 

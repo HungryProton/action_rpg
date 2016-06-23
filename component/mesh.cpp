@@ -9,11 +9,11 @@ namespace game{
 
 	Mesh::~Mesh(){ }
 
-	Mesh::Mesh(unsigned long parent) : Mesh() {
+	Mesh::Mesh(Entity parent) : Mesh() {
 		Entity::AttachComponent<Mesh>(parent, this);
 	}
 
-	Mesh::Mesh(std::string path, unsigned long p) : Mesh(p){
+	Mesh::Mesh(std::string path, Entity p) : Mesh(p){
 		this->LoadFromFile(path);
 	}
 

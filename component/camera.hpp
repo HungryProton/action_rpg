@@ -20,7 +20,7 @@ namespace game{
 		// ----- Helper methods -----
 		Camera();
 		virtual ~Camera();
-		Camera(unsigned long);
+		Camera(Entity);
 		Camera(Camera*);
 		virtual Camera* Clone();
 		void SetActive();

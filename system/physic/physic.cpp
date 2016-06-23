@@ -19,7 +19,7 @@ namespace game{
 		this->MessageHandler<PhysicIntent>::PollMessages();
 	}
 
-	void Physic::OnUpdate(unsigned long entity){
+	void Physic::OnUpdate(Entity entity){
 		PhysicComponents* components = this->GetComponentsFor(entity);
 		if(components != nullptr){
 			this->UpdatePositions(components);
@@ -27,7 +27,7 @@ namespace game{
 		}
 	}
 
-	PhysicComponents* Physic::GetComponentsFor(unsigned long id){
+	PhysicComponents* Physic::GetComponentsFor(Entity id){
 		auto pair = this->entities_.find(id);
 		if(pair == this->entities_.end()){
 			PhysicComponents c;
@@ -55,7 +55,7 @@ namespace game{
 		}
 	}
 
-	void Physic::ApplyForce(glm::vec3 force, unsigned long object){
+	void Physic::ApplyForce(glm::vec3 force, Entity object){
 		PhysicComponents* c = this->GetComponentsFor(object);
 		if(c == nullptr){ return; }
 		c->collider->target_velocity += force
@@ -73,7 +73,7 @@ namespace game{
 		c->collider->target_velocity -= friction_vector;
 	}
 
-	void Physic::ResolveCollisions(unsigned long id, PhysicComponents* ca){
+	void Physic::ResolveCollisions(Entity id, PhysicComponents* ca){
 		Collider* collider_a = ca->collider;
 
 		for(auto pair : this->entities_){

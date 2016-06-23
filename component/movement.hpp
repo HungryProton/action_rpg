@@ -13,7 +13,7 @@ namespace game{
 		glm::vec3 max_force;
 
 		Movement();
-		Movement(unsigned long);
+		Movement(Entity);
 		Movement(Movement*);
 		virtual ~Movement();
 		virtual Movement* Clone();

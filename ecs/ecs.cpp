@@ -3,11 +3,11 @@
 
 namespace game{
 
-	unsigned long Entity::Create(){
+	Entity Entity::Create(){
 		return builder_.Create();
 	}
 
-	void Entity::Destroy(unsigned long id){
+	void Entity::Destroy(Entity id){
 		builder_.NotifyDelete(id);
 		SystemRegister::DissociateEntityFromAll(id);
 
@@ -20,7 +20,7 @@ namespace game{
 		delete_map_.erase(pair);
 	}
 
-	unsigned long Entity::Clone(unsigned long id){
+	Entity Entity::Clone(Entity id){
 		unsigned int new_entity = Entity::Create();
 
 		auto pair = clone_map_.find(id);
@@ -35,7 +35,7 @@ namespace game{
 	}
 
 	void Entity::ClearMemory(){
-		unsigned long id = builder_.Create();
+		Entity id = builder_.Create();
 
 		while(id > 0){
 			Destroy(id);
@@ -44,6 +44,6 @@ namespace game{
 	}
 
 	EntityBuilder Entity::builder_;
-	std::map<unsigned long, std::vector<void(*)(unsigned long)>> Entity::delete_map_;
-	std::map<unsigned long, std::vector<void(*)(unsigned long, unsigned long)>> Entity::clone_map_;
+	std::map<Entity, std::vector<void(*)(Entity)>> Entity::delete_map_;
+	std::map<Entity, std::vector<void(*)(Entity, Entity)>> Entity::clone_map_;
 }

@@ -27,7 +27,7 @@ namespace game{
 
 		// Helper methods
 		Collider();
-		Collider(unsigned long);
+		Collider(Entity);
 		Collider(Collider*);
 		virtual Collider* Clone();
 		virtual ~Collider();

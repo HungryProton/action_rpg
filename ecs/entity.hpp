@@ -1,35 +1,10 @@
-#ifndef GAME_ENTITY_ENTITY_HPP
-#define GAME_ENTITY_ENTITY_HPP
-
-#include <map>
-#include "entity_builder.hpp"
-#include "core/game.hpp"
+#ifndef GAME_ECS_ENTITY_HPP_
+#define GAME_ECS_ENTITY_HPP_
 
 namespace game{
 
-	class Entity{
-		friend Game;
-		public:
-			static unsigned long Create();
-			static unsigned long Clone(unsigned long);
-			static void Destroy(unsigned long);
-
-			template<class T>
-			static void AttachComponent(unsigned long, T*);
-
-			template<class T>
-			static T* GetComponent(unsigned long);
-
-		protected:
-			static void ClearMemory();
-
-		private:
-			static EntityBuilder builder_;
-			static std::map<unsigned long, std::vector<void(*)(unsigned long)>> delete_map_;
-			static std::map<unsigned long, std::vector<void(*)(unsigned long, unsigned long)>> clone_map_;
+	struct Entity{
+		unsigned long uid;
 	};
 }
-
-#include "entity.tcc"
-
-#endif //GAME_ENTITY_ENTITY_HPP
+#endif //GAME_ECS_ENTITY_HPP_

@@ -13,7 +13,7 @@ namespace game{
 	void System::Update(){
 		start_time_ = Time::GetCurrentTime();
 		BeforeUpdate();
-		for(unsigned long entity : associated_entities_){
+		for(Entity entity : associated_entities_){
 			OnUpdate(entity);
 		}
 		AfterUpdate();
@@ -22,18 +22,18 @@ namespace game{
 
 	void System::BeforeUpdate(){}
 
-	void System::OnUpdate(unsigned long){}
+	void System::OnUpdate(Entity){}
 
 	void System::AfterUpdate(){}
 
-	void System::AssociateEntity(unsigned long new_id){
-		for(unsigned long stored_id : this->associated_entities_){
+	void System::AssociateEntity(Entity new_id){
+		for(Entity stored_id : this->associated_entities_){
 			if(stored_id == new_id){ return; }
 		}
 		this->associated_entities_.push_back(new_id);
 	}
 
-	void System::DissociateEntity(unsigned long id){
+	void System::DissociateEntity(Entity id){
 		for(auto it = this->associated_entities_.begin();
 				it != this->associated_entities_.end();
 				it++){
@@ -44,8 +44,8 @@ namespace game{
 		}
 	}
 
-	bool System::IsAssociatedWith(unsigned long id){
-		for(unsigned long stored_id : this->associated_entities_){
+	bool System::IsAssociatedWith(Entity id){
+		for(Entity stored_id : this->associated_entities_){
 			if(stored_id == id){
 				return true;
 			}

@@ -5,7 +5,7 @@ namespace game{
 
 	struct Component{
 		virtual Component* Clone() = 0;
-		unsigned long parent;
+		Entity parent;
 	};
 }
 

@@ -18,7 +18,7 @@ namespace game{
 
 	Collider::~Collider(){ }
 
-	Collider::Collider(unsigned long id) : Collider(){
+	Collider::Collider(Entity id) : Collider(){
 		Entity::AttachComponent<Collider>(id, this);
 	}
 

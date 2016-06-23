@@ -17,7 +17,7 @@ namespace game{
 
 	Drawable::~Drawable(){ }
 
-	Drawable::Drawable(unsigned long entity) : Drawable(){
+	Drawable::Drawable(Entity entity) : Drawable(){
 		Entity::AttachComponent<Drawable>(entity, this);
 	}
 

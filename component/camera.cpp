@@ -18,7 +18,7 @@ namespace game{
 
 	Camera::~Camera(){}
 
-	Camera::Camera(unsigned long entity) : Camera(){
+	Camera::Camera(Entity entity) : Camera(){
 		Entity::AttachComponent<Camera>(entity, this);
 	}
 

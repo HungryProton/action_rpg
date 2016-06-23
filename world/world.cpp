@@ -10,7 +10,7 @@ namespace game{
 		EntityFactory::LoadInitialPresets();
 		entity_generator_.SpawnPlayer();
 		//EntityFactory::CreateFromPreset("rock");
-		unsigned long camera = entity_generator_.SpawnCamera();
+		Entity camera = entity_generator_.SpawnCamera();
 		Transform* t = Entity::GetComponent<Transform>(camera);
 		t->position = glm::vec3(0, -8, 7);
 

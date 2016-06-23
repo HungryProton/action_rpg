@@ -30,11 +30,11 @@ namespace game{
 
 		protected:
 			void BeforeUpdate();
-			void OnUpdate(unsigned long);
+			void OnUpdate(Entity);
 			void AfterUpdate();
 
 		private:
-			RenderComponent GetComponentsFor(unsigned long);
+			RenderComponent GetComponentsFor(Entity);
 			glm::mat4 GetModelMatrixFor(Transform*, glm::vec3);
 			void UpdateCamera();
 			void Draw(Drawable* drawable);

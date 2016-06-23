@@ -17,8 +17,8 @@ namespace game{
 
 		// ---- Helper methods ---- //
 		Texture();
-		Texture(unsigned long);
-		Texture(std::string, unsigned long p=0);
+		Texture(Entity);
+		Texture(std::string, Entity p=0);
 		Texture(Texture*);
 		virtual ~Texture(){}
 		virtual Texture* Clone();

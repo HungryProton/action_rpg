@@ -10,7 +10,7 @@ namespace game{
 		max_force = glm::vec3(0.f, 0.f, 0.f);
 	}
 
-	Movement::Movement(unsigned long parent) : Movement(){
+	Movement::Movement(Entity parent) : Movement(){
 		Entity::AttachComponent<Movement>(parent, this);
 	}
 

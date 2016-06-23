@@ -15,7 +15,7 @@ namespace game{
 			GIVEN("an available entity facade"){
 
 				WHEN("an entity is requested"){
-					unsigned long id = Entity::Create();
+					Entity id = Entity::Create();
 
 					THEN("entity id should be stricly greater than zero"){
 						EXPECT(id != 0);
@@ -23,8 +23,8 @@ namespace game{
 					Entity::Destroy(id);
 				}
 				WHEN("an entity is destroyed and a new one is requested"){
-					unsigned long id = Entity::Create();
-					unsigned long expected_id = id;
+					Entity id = Entity::Create();
+					Entity expected_id = id;
 					Entity::Destroy(id);
 					id = Entity::Create();
 
@@ -38,7 +38,7 @@ namespace game{
 		SCENARIO("It should register and retrieve components associated with id"){
 
 			GIVEN("a valid and empty entity"){
-				unsigned long id = Entity::Create();
+				Entity id = Entity::Create();
 
 				WHEN("a component is added to the entity"){
 					Transform *transform = new Transform();
@@ -55,7 +55,7 @@ namespace game{
 		SCENARIO("It should destroy every component associated with id"){
 
 			GIVEN("a registered entity with a few components"){
-				unsigned long entity = Entity::Create();
+				Entity entity = Entity::Create();
 				new Transform(entity);
 				new Box(entity);
 
@@ -72,12 +72,12 @@ namespace game{
 		SCENARIO("It should clone an entity with all its component"){
 
 			GIVEN("a registered entity with two components attached"){
-				unsigned long entity = Entity::Create();
+				Entity entity = Entity::Create();
 				Transform* original_t = new Transform(entity);
 				Box* original_b = new Box(entity);
 
 				WHEN("the entity is cloned"){
-					unsigned long cloned_entity = Entity::Clone(entity);
+					Entity cloned_entity = Entity::Clone(entity);
 
 					THEN("it should have cloned components and attached them to the new entity"){
 						Transform* cloned_t = Entity::GetComponent<Transform>(cloned_entity);

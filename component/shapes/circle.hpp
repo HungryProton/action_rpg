@@ -12,9 +12,9 @@ namespace game{
 
 		// ----- Helper methods -----
 		Circle();
-		Circle(unsigned long);
-		Circle(float, unsigned long);
-		Circle(float, int, unsigned long);
+		Circle(Entity);
+		Circle(float, Entity);
+		Circle(float, int, Entity);
 		Circle(Circle*);
 		virtual Circle* Clone();
 	};

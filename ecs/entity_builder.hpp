@@ -9,12 +9,12 @@ namespace game{
 		public:
 			EntityBuilder();
 			~EntityBuilder();
-			unsigned long Create();
-			void NotifyDelete(unsigned long);
+			Entity Create();
+			void NotifyDelete(Entity);
 
 		private:
-			unsigned long last_generated_id_;
-			std::vector<unsigned long> unused_id_list_;
+			Entity last_generated_id_;
+			std::vector<Entity> unused_id_list_;
 	};
 }
 

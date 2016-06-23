@@ -9,11 +9,11 @@ namespace game{
 		this->height = -1;
 	}
 
-	Box::Box(unsigned long id) : Box(){
+	Box::Box(Entity id) : Box(){
 		Entity::AttachComponent<Box>(id, this);
 	}
 
-	Box::Box(float w, float h, unsigned long id) : Box(id){
+	Box::Box(float w, float h, Entity id) : Box(id){
 		this->SetDimensions(w,h);
 	}
 

@@ -11,7 +11,7 @@ namespace game{
 			~Movement();
 
 		protected:
-			void OnUpdate(unsigned long);
+			void OnUpdate(Entity);
 	};
 }
 

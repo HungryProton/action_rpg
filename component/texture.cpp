@@ -17,7 +17,7 @@ namespace game{
 		this->local_scale = glm::vec3(1.f, 1.f, 1.f);
 	}
 
-	Texture::Texture(unsigned long parent) : Texture(){
+	Texture::Texture(Entity parent) : Texture(){
 		Entity::AttachComponent<Texture>(parent, this);
 	}
 
@@ -29,7 +29,7 @@ namespace game{
 		this->local_scale = texture->local_scale;
 	}
 
-	Texture::Texture(std::string file_path, unsigned long parent) : Texture(parent){
+	Texture::Texture(std::string file_path, Entity parent) : Texture(parent){
 
 		// Get the image helper that actually load images
 		ImageLoader* image_loader = Service::Get<ImageLoader>();

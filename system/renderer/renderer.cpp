@@ -24,7 +24,7 @@ namespace game{
 		shader_controller_.UniformMatrix4fv("Projection", camera_controller_.GetProjection());
 	}
 
-	void Renderer::OnUpdate(unsigned long entity){
+	void Renderer::OnUpdate(Entity entity){
 		RenderComponent node = GetComponentsFor(entity);
 		if(!node.is_valid){ return; }
 
@@ -65,7 +65,7 @@ namespace game{
 		return rotation_xyz * scale;
 	}
 
-	RenderComponent Renderer::GetComponentsFor(unsigned long entity){
+	RenderComponent Renderer::GetComponentsFor(Entity entity){
 		RenderComponent node;
 		node.is_valid = false;
 		node.drawable = Entity::GetComponent<Drawable>(entity);

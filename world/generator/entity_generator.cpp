@@ -15,14 +15,14 @@ namespace game{
 
 	EntityGenerator::~EntityGenerator(){}
 
-	unsigned long EntityGenerator::SpawnPlayer(){
-		unsigned long player = EntityFactory::CreateFromPreset("player");
+	Entity EntityGenerator::SpawnPlayer(){
+		Entity player = EntityFactory::CreateFromPreset("player");
 		// Apply some rules on player here (positionning, weapons etc)
 		return player;
 	}
 
-	unsigned long EntityGenerator::SpawnRandom(){
-		unsigned long e = Entity::Create();
+	Entity EntityGenerator::SpawnRandom(){
+		Entity e = Entity::Create();
 		Transform* t = new Transform(e);
 		new Texture("../data/characters/female/single.png", e);
 		Drawable* d = new Drawable(e);
@@ -34,8 +34,8 @@ namespace game{
 		return e;
 	}
 
-	unsigned long EntityGenerator::SpawnCamera(){
-		unsigned long camera = EntityFactory::CreateFromPreset("camera");
+	Entity EntityGenerator::SpawnCamera(){
+		Entity camera = EntityFactory::CreateFromPreset("camera");
 		RenderingIntent msg;
 		msg.from_id = camera;
 		msg.action = RIntent::SET_ACTIVE_CAMERA;

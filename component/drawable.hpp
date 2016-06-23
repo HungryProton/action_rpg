@@ -19,7 +19,7 @@ namespace game{
 
 		Drawable();
 		virtual ~Drawable();
-		Drawable(unsigned long);
+		Drawable(Entity);
 		Drawable(Drawable*);
 		Drawable* Clone();
 	};

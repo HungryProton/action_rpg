@@ -10,16 +10,16 @@ namespace game{
 			System();
 			virtual ~System() = 0;
 			virtual void Update() final;
-			virtual void AssociateEntity(unsigned long) final;
-			virtual void DissociateEntity(unsigned long) final;
-			virtual bool IsAssociatedWith(unsigned long) final;
+			virtual void AssociateEntity(Entity) final;
+			virtual void DissociateEntity(Entity) final;
+			virtual bool IsAssociatedWith(Entity) final;
 			virtual float GetExecutionTime() final;
 
 		protected:
-			virtual void OnUpdate(unsigned long);
+			virtual void OnUpdate(Entity);
 			virtual void BeforeUpdate();
 			virtual void AfterUpdate();
-			std::vector<unsigned long> associated_entities_;
+			std::vector<Entity> associated_entities_;
 
 		private:
 			float start_time_;

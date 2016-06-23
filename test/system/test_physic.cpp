@@ -17,8 +17,8 @@ namespace game{
 
 			GIVEN("two intersecting colliders with a circle shape"){
 				Physic physic_system;
-				unsigned long circle1 = Entity::Create();
-				unsigned long circle2 = Entity::Create();
+				Entity circle1 = Entity::Create();
+				Entity circle2 = Entity::Create();
 
 				Transform* t1 = new Transform(circle1);
 				Transform* t2 = new Transform(circle2);
@@ -49,8 +49,8 @@ namespace game{
 			}
 			GIVEN("two intersecting colliders with a box shape"){
 				Physic physic_system;
-				unsigned long box1 = Entity::Create();
-				unsigned long box2 = Entity::Create();
+				Entity box1 = Entity::Create();
+				Entity box2 = Entity::Create();
 
 				Transform* t1 = new Transform(box1);
 				Transform* t2 = new Transform(box2);
@@ -89,8 +89,8 @@ namespace game{
 			}
 			GIVEN("two intersecting colliders with a box and a circle shape"){
 				Physic physic_system;
-				unsigned long box = Entity::Create();
-				unsigned long circle = Entity::Create();
+				Entity box = Entity::Create();
+				Entity circle = Entity::Create();
 
 				Transform* t1 = new Transform(box);
 				Transform* t2 = new Transform(circle);
@@ -147,7 +147,7 @@ namespace game{
 
 			GIVEN("a physical object alone"){
 				Physic physic_system;
-				unsigned long box = Entity::Create();
+				Entity box = Entity::Create();
 
 				Transform* t = new Transform(box);
 				new Box(2.f, 2.f, box);

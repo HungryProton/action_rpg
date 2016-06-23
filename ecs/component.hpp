@@ -8,13 +8,13 @@ namespace game{
 	template<class T>
 	class ComponentRegister{
 		public:
-			static int AttachComponent(unsigned long, T*);
-			static T* GetComponent(unsigned long);
-			static void RemoveComponent(unsigned long);
-			static void CloneFromTo(unsigned long, unsigned long);
+			static int AttachComponent(Entity, T*);
+			static T* GetComponent(Entity);
+			static void RemoveComponent(Entity);
+			static void CloneFromTo(Entity, Entity);
 
 		private:
-			static std::map<unsigned long, T*> components_;
+			static std::map<Entity, T*> components_;
 	};
 }
 

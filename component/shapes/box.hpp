@@ -17,8 +17,8 @@ namespace game{
 		// define an automatic size according to texture size.
 		// 256 pixels = 1 meter
 		Box();
-		Box(unsigned long);
-		Box(float, float, unsigned long);
+		Box(Entity);
+		Box(float, float, Entity);
 		Box(Box*);
 		virtual Box* Clone();
 		void SetDimensions(glm::vec2);

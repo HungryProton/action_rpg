@@ -3,16 +3,16 @@
 #include <thread>
 #include "common/logger.hpp"
 #include "common/time.hpp"
-#include "ecs/system_register.hpp"
-#include "ecs/entity.hpp"
+#include "ecs/ecs.hpp"
 #include "service/service.hpp"
 #include "world/world.hpp"
+#include "ecs/system_register.hpp"
 
 namespace game{
 
 	void Game::Initialize(){
-		SystemRegister::Initialize();
 		World::GenerateNew();
+		SystemRegister::Initialize();
 	}
 
 	void Game::Stop(){
@@ -20,8 +20,7 @@ namespace game{
 	}
 
 	void Game::ClearMemory(){
-		SystemRegister::ClearMemory();
-		Entity::ClearMemory();
+		ECS::ClearMemory();
 		Service::ClearMemory();
 	}
 

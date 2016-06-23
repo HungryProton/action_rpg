@@ -11,17 +11,17 @@ namespace game{
 			CameraController();
 			~CameraController();
 
-			unsigned long GetCamera();
+			Entity GetCamera();
 			glm::mat4 GetView();
 			glm::mat4 GetProjection();
 			void Update();
 
 		protected:
 			void OnMessage(RenderingIntent);
-			void SetActiveCamera(unsigned long);
+			void SetActiveCamera(Entity);
 
 		private:
-			unsigned long camera_;
+			Entity camera_;
 			glm::mat4 view_;
 			glm::mat4 projection_;
 	};

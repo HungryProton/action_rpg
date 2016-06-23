@@ -9,15 +9,15 @@ namespace game{
 		this->vertex_amount = 10;
 	}
 
-	Circle::Circle(unsigned long id): Circle(){
+	Circle::Circle(Entity id): Circle(){
 		Entity::AttachComponent<Circle>(id, this);
 	}
 
-	Circle::Circle(float radius, unsigned long p) : Circle(p){
+	Circle::Circle(float radius, Entity p) : Circle(p){
 		this->radius = radius;
 	}
 
-	Circle::Circle(float radius, int res, unsigned long p) : Circle(radius, p){
+	Circle::Circle(float radius, int res, Entity p) : Circle(radius, p){
 		this->vertex_amount = res;
 	}
 

@@ -23,7 +23,7 @@ namespace game{
 		projection_ = camera->projection;
 	}
 
-	void CameraController::SetActiveCamera(unsigned long new_camera){
+	void CameraController::SetActiveCamera(Entity new_camera){
 		camera_ = new_camera;
 	}
 

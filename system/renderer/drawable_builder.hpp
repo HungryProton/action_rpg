@@ -9,11 +9,11 @@ namespace game{
 		public:
 			DrawableBuilder();
 			~DrawableBuilder();
-			int UpdateDrawableOf(unsigned long);
+			int UpdateDrawableOf(Entity);
 
 		private:
-			int UpdateSpriteDrawable(Drawable*, unsigned long);
-			int UpdateMeshDrawable(Drawable*, unsigned long);
+			int UpdateSpriteDrawable(Drawable*, Entity);
+			int UpdateMeshDrawable(Drawable*, Entity);
 	};
 }
 
