@@ -8,7 +8,7 @@ SRC_EXT = cpp
 # Path to the source directory, relative to the makefile
 SRC_PATH = .
 # General compiler flags
-COMPILE_FLAGS = -std=c++11 -Wall -Wextra -Wuninitialized -g
+COMPILE_FLAGS = -std=c++14 -Wall -Wextra -Wuninitialized -g
 # Additional flags for code coverage
 COV_COMPILE_FLAGS = -fprofile-arcs -ftest-coverage
 # Additional release-specific flags
@@ -164,7 +164,7 @@ test: dirs
 	@$(MAKE) all --no-print-directory
 	@echo -n "Total build time: "
 	@$(END_TIME)
-	@./$(BIN_NAME) -p	
+	@./$(BIN_NAME) -s
 
 # Create the directories used in the build
 .PHONY: dirs
