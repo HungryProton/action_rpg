@@ -18,6 +18,7 @@ namespace game{
 			static void CreateSignature();
 			template<class ...>
 			static std::vector<Entity> GetEntitiesWithComponents();
+
 			static void NotifyEntityHasChanged(Entity);
 			static void NotifyEntityWasDeleted(Entity);
 
@@ -29,7 +30,8 @@ namespace game{
 			static void ClearMemory();
 
 		private:
-			static std::vector<BaseNode*> nodes_;
+			static std::vector<void(*)(Entity)> node_update_fcn_;
+			static std::vector<void(*)(Entity)> node_delete_fcn_;
 			static std::vector<void(*)()> component_registers_clear_fcn_;
 			static EntityBuilder entity_builder_;
 	};

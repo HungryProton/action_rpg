@@ -31,6 +31,7 @@ namespace game{
 						REQUIRE(current_advance > 0);
 					}
 				}
+				Time::NotifyFrameStart();
 				WHEN("previous delta time is requested"){
 					float previous_time = Time::GetPreviousDeltaTime();
 
@@ -40,7 +41,6 @@ namespace game{
 					}
 				}
 			}
-
 			ContextUtil::DestroyOpenGLContext();
 		}
 	}

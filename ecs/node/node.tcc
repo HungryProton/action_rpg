@@ -2,24 +2,18 @@
 
 namespace game{
 
-	template<class... Types>
-	Node<Types...>::Node(){ }
-
-	template<class... Types>
-	Node<Types...>::~Node(){ }
-
-	template<class... Types>
-	std::vector<Entity> Node<Types...>::GetEntityList(){
+	template<class... Components>
+	std::vector<Entity> Node<Components...>::GetEntityList(){
 		return entities_;
 	}
 
-	template<class... Types>
-	void Node<Types...>::UpdateListWith(Entity){
+	template<class... Components>
+	void Node<Components...>::UpdateListWith(Entity){
 
 	}
 
-	template<class... Types>
-	void Node<Types...>::DeleteEntityFromList(Entity entity_to_remove){
+	template<class... Components>
+	void Node<Components...>::DeleteEntityFromList(Entity entity_to_remove){
 		auto it = entities_.begin();
 		do{
 			if(it->uid == entity_to_remove.uid){
@@ -29,4 +23,7 @@ namespace game{
 			it++;
 		}while(it != entities_.end());
 	}
+
+	template<class... Components>
+	std::vector<Entity> Node<Components...>::entities_;
 }

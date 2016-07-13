@@ -6,25 +6,15 @@
 
 namespace game{
 
-	class BaseNode{
-		public:
-			BaseNode(){};
-			virtual void UpdateListWith(Entity) = 0;
-			virtual void DeleteEntityFromList(Entity) = 0;
-	};
-
 	template<class ...>
-	class Node : public BaseNode{
+	class Node{
 		public:
-			Node();
-			~Node();
-
-			std::vector<Entity> GetEntityList();
-			void UpdateListWith(Entity);
-			void DeleteEntityFromList(Entity);
+			static std::vector<Entity> GetEntityList();
+			static void UpdateListWith(Entity);
+			static void DeleteEntityFromList(Entity);
 
 		private:
-			std::vector<Entity> entities_;
+			static std::vector<Entity> entities_;
 	};
 }
 

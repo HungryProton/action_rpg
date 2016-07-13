@@ -106,7 +106,7 @@ START_TIME = date '+%s' > $(TIME_FILE)
 END_TIME = read st < $(TIME_FILE) ; \
 	$(RM) $(TIME_FILE) ; \
 	st=$$((`date '+%s'` - $$st - 86400)) ; \
-	echo `date -u -d @$$st '+%H:%M:%S'` 
+	echo `date -u -d @$$st '+%H:%M:%S'`
 
 # Version macros
 # Comment/remove this section to remove versioning
@@ -164,7 +164,7 @@ test: dirs
 	@$(MAKE) all --no-print-directory
 	@echo -n "Total build time: "
 	@$(END_TIME)
-	@./$(BIN_NAME) -s
+	@./$(BIN_NAME)
 
 # Create the directories used in the build
 .PHONY: dirs

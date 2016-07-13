@@ -2,6 +2,7 @@
 #include <fstream>
 #include "deps/catch.hpp"
 #include "ecs/ecs.hpp"
+#include "common/logger.hpp"
 
 namespace game{
 
@@ -28,13 +29,12 @@ namespace game{
 
 				THEN("Entity list matching AB signature should contain the entity"){
 					auto list = ecs::GetEntitiesWithComponents<A,B>();
+					LOG(DEBUG) << list.size() << std::endl;
 					REQUIRE_FALSE(list.empty());
 				}
 			}
-		}
-		GIVEN("A valid AB signature and an entity matching it"){
-
-			WHEN("The A component is removed"){
+			AND_WHEN("The A component is removed"){
+				ecs::RemoveComponentFromEntity<A>(e);
 
 				THEN("It should no longer appear in the entity list for the AB signature"){
 					auto list = ecs::GetEntitiesWithComponents<A,B>();

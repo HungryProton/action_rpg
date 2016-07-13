@@ -1,14 +1,9 @@
 #include "ecs.hpp"
 #include "ecs/node/node.hpp"
 #include "ecs/component/component_register.hpp"
+#include "common/logger.hpp"
 
 namespace game{
-
-	template<class... components>
-	void ecs::CreateSignature(){
-		Node<components...>* node = new Node<components...>();
-		nodes_.push_back(node);
-	}
 
 	template<class T>
 	T* ecs::CreateComponentForEntity(Entity e){
@@ -18,12 +13,26 @@ namespace game{
 			component_registers_clear_fcn_.push_back(ComponentRegister<T>::ClearMemory);
 			ComponentRegister<T>::stored_ = true;
 		}
-
-		return ComponentRegister<T>::CreateForEntity(e);
+		T* newly_created_component = ComponentRegister<T>::CreateForEntity(e);
+		ecs::NotifyEntityHasChanged(e);
+		return newly_created_component;
 	}
 
-	template<class... Types>
-	std::vector<Entity> ecs::GetEntitiesWithComponents(){
+	template<class T>
+	void ecs::RemoveComponentFromEntity(Entity e){
+		ComponentRegister<T>::DeleteFromEntity(e);
+		ecs::NotifyEntityHasChanged(e);
+	}
 
+	template<class... Components>
+	void ecs::CreateSignature(){
+		LOG(DEBUG) << "New signature created " << std::endl;
+		node_update_fcn_.push_back(Node<Components...>::UpdateListWith);
+		node_delete_fcn_.push_back(Node<Components...>::DeleteEntityFromList);
+	}
+
+	template<class... Components>
+	std::vector<Entity> ecs::GetEntitiesWithComponents(){
+		return Node<Components...>::GetEntityList();
 	}
 }

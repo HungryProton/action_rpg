@@ -1,4 +1,5 @@
 #include "ecs.hpp"
+#include "common/logger.hpp"
 
 namespace game{
 
@@ -7,14 +8,15 @@ namespace game{
 	}
 
 	void ecs::NotifyEntityHasChanged(Entity e){
-		for(auto node : nodes_){
-			node->UpdateListWith(e);
+		for(auto update_fcn : node_update_fcn_){
+			LOG(DEBUG) << "Called update" << std::endl;
+			update_fcn(e);
 		}
 	}
 
 	void ecs::NotifyEntityWasDeleted(Entity e){
-		for(auto node : nodes_){
-			node->DeleteEntityFromList(e);
+		for(auto delete_fcn : node_delete_fcn_){
+			delete_fcn(e);
 		}
 	}
 
@@ -24,7 +26,8 @@ namespace game{
 		}
 	}
 
-	std::vector<BaseNode*> ecs::nodes_;
+	std::vector<void(*)(Entity)> ecs::node_update_fcn_;
+	std::vector<void(*)(Entity)> ecs::node_delete_fcn_;
 	std::vector<void(*)()> ecs::component_registers_clear_fcn_;
 	EntityBuilder ecs::entity_builder_;
 }
