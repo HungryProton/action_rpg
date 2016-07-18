@@ -5,7 +5,6 @@
 #include "component/component_register.hpp"
 #include "entity/entity.hpp"
 #include "entity/entity_builder.hpp"
-#include "node/node.hpp"
 
 namespace game{
 
@@ -26,6 +25,8 @@ namespace game{
 			static T* CreateComponentForEntity(Entity);
 			template<class T>
 			static void RemoveComponentFromEntity(Entity);
+			template<class T>
+			static T* GetComponentFromEntity(Entity);
 
 			static void ClearMemory();
 

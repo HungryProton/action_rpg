@@ -24,6 +24,11 @@ namespace game{
 		ecs::NotifyEntityHasChanged(e);
 	}
 
+	template<class T>
+	T* ecs::GetComponentFromEntity(Entity e){
+		return ComponentRegister<T>::GetFromEntity(e);
+	}
+
 	template<class... Components>
 	void ecs::CreateSignature(){
 		LOG(DEBUG) << "New signature created " << std::endl;
