@@ -1,4 +1,7 @@
 #include "node.hpp"
+#include "ecs/ecs.hpp"
+#include "common/logger.hpp"
+#include "signature_validator.hpp"
 
 namespace game{
 
@@ -8,8 +11,10 @@ namespace game{
 	}
 
 	template<class... Components>
-	void Node<Components...>::UpdateListWith(Entity){
-
+	void Node<Components...>::UpdateListWith(Entity e){
+		if(SignatureValidator::Validate<Components...>(e)){
+			entities_.push_back(e); // Replace with a function that check if the entity is already in the list or not
+		}
 	}
 
 	template<class... Components>

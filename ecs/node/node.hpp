@@ -2,11 +2,11 @@
 #define GAME_ECS_NODE_HPP_
 
 #include <vector>
-#include "../entity/entity.hpp"
+#include "ecs/entity/entity.hpp"
 
 namespace game{
 
-	template<class ...>
+	template<class...>
 	class Node{
 		public:
 			static std::vector<Entity> GetEntityList();
