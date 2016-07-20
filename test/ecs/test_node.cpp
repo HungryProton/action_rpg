@@ -8,8 +8,9 @@ namespace game{
 
 	struct A{};
 	struct B{};
+	struct C{};
 
-	SCENARIO("ECS should allow creating complete entities automatically recognized by the systems"){
+	SCENARIO("Nodes should keep track of entities matching their signature"){
 
 		GIVEN("A valid signature AB and an entity with a component A attached"){
 			ecs::CreateSignature<A,B>();
@@ -31,7 +32,16 @@ namespace game{
 					REQUIRE_FALSE(list.empty());
 					REQUIRE(list[0].uid == e.uid);
 				}
-				AND_WHEN("Component A is removed from the entity"){
+				WHEN("Component C is added to the entity"){
+					int list_size = ecs::GetEntitiesWithComponents<A,B>().size();
+					ecs::CreateComponentForEntity<C>(e);
+
+					THEN("The list shouldn't have changed"){
+						int new_list_size = ecs::GetEntitiesWithComponents<A,B>().size();
+						REQUIRE(new_list_size == list_size);
+					}
+				}
+				WHEN("Component A is removed from the entity"){
 					ecs::RemoveComponentFromEntity<A>(e);
 
 					THEN("It should no longer appear in the entity list for the AB signature"){
