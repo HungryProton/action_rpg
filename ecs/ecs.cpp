@@ -9,7 +9,6 @@ namespace game{
 
 	void ecs::NotifyEntityHasChanged(Entity e){
 		for(auto update_fcn : node_update_fcn_){
-			LOG(DEBUG) << "Called update" << std::endl;
 			update_fcn(e);
 		}
 	}
@@ -24,10 +23,18 @@ namespace game{
 		for(auto clear_fcn : component_registers_clear_fcn_){
 			clear_fcn();
 		}
+		for(auto clear_fcn : nodes_clear_fcn_){
+			clear_fcn();
+		}
+		node_delete_fcn_.clear();
+		node_update_fcn_.clear();
+		nodes_clear_fcn_.clear();
+		component_registers_clear_fcn_.clear();
 	}
 
 	std::vector<void(*)(Entity)> ecs::node_update_fcn_;
 	std::vector<void(*)(Entity)> ecs::node_delete_fcn_;
+	std::vector<void(*)()> ecs::nodes_clear_fcn_;
 	std::vector<void(*)()> ecs::component_registers_clear_fcn_;
 	EntityBuilder ecs::entity_builder_;
 }

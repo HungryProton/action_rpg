@@ -33,6 +33,7 @@ namespace game{
 		private:
 			static std::vector<void(*)(Entity)> node_update_fcn_;
 			static std::vector<void(*)(Entity)> node_delete_fcn_;
+			static std::vector<void(*)()> nodes_clear_fcn_;
 			static std::vector<void(*)()> component_registers_clear_fcn_;
 			static EntityBuilder entity_builder_;
 	};

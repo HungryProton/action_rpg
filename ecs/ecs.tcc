@@ -31,9 +31,9 @@ namespace game{
 
 	template<class... Components>
 	void ecs::CreateSignature(){
-		LOG(DEBUG) << "New signature created " << std::endl;
 		node_update_fcn_.push_back(Node<Components...>::UpdateListWith);
 		node_delete_fcn_.push_back(Node<Components...>::DeleteEntityFromList);
+		nodes_clear_fcn_.push_back(Node<Components...>::ClearMemory);
 	}
 
 	template<class... Components>

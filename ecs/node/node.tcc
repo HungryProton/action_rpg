@@ -6,6 +6,20 @@
 namespace game{
 
 	template<class... Components>
+	bool Node<Components...>::IsEntityInList(Entity e){
+		for(auto entity : entities_){
+			if(e.uid == entity.uid){ return true; }
+		}
+		return false;
+	}
+
+	template<class... Components>
+	void Node<Components...>::InsertEntity(Entity e){
+		if(IsEntityInList(e)){ return; }
+		entities_.push_back(e);
+	}
+
+	template<class... Components>
 	std::vector<Entity> Node<Components...>::GetEntityList(){
 		return entities_;
 	}
@@ -13,20 +27,27 @@ namespace game{
 	template<class... Components>
 	void Node<Components...>::UpdateListWith(Entity e){
 		if(SignatureValidator::Validate<Components...>(e)){
-			entities_.push_back(e); // Replace with a function that check if the entity is already in the list or not
+			InsertEntity(e);
+		} else {
+			DeleteEntityFromList(e);
 		}
 	}
 
 	template<class... Components>
 	void Node<Components...>::DeleteEntityFromList(Entity entity_to_remove){
 		auto it = entities_.begin();
-		do{
+		while(it != entities_.end()){
 			if(it->uid == entity_to_remove.uid){
 				entities_.erase(it);
 				return;
 			}
 			it++;
-		}while(it != entities_.end());
+		}
+	}
+
+	template<class... Components>
+	void Node<Components...>::ClearMemory(){
+		entities_.clear();
 	}
 
 	template<class... Components>

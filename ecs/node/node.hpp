@@ -12,6 +12,11 @@ namespace game{
 			static std::vector<Entity> GetEntityList();
 			static void UpdateListWith(Entity);
 			static void DeleteEntityFromList(Entity);
+			static void ClearMemory();
+
+		protected:
+			static bool IsEntityInList(Entity);
+			static void InsertEntity(Entity);
 
 		private:
 			static std::vector<Entity> entities_;
