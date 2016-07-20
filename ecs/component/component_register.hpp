@@ -17,6 +17,7 @@ namespace game{
 			static T* CreateForEntity(Entity);
 			static T* GetFromEntity(Entity);
 			static void DeleteFromEntity(Entity);
+			static Entity GetParent(T*);
 			static void ClearMemory();
 
 			static std::unordered_map<unsigned long, T*> components_;

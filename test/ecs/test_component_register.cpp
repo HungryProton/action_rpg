@@ -21,7 +21,6 @@ namespace game{
 					REQUIRE_FALSE(component2 == nullptr);
 					REQUIRE(component == component2);
 				}
-
 				AND_WHEN("we try to attach another component of same type to the entity"){
 					A* component3 = ecs::CreateComponentForEntity<A>(e);
 
@@ -29,6 +28,15 @@ namespace game{
 						REQUIRE_FALSE(component3 == nullptr);
 						REQUIRE(component3 == component);
 					}
+				}
+			}
+			WHEN("a component request to know the parent entity"){
+				A* component = ecs::CreateComponentForEntity<A>(e);
+				Entity e2 = ecs::GetParentOfComponent(component);
+
+				THEN("it should return the parent entity"){
+					REQUIRE_FALSE(e.uid == 0);
+					REQUIRE(e.uid == e2.uid);
 				}
 			}
 		}

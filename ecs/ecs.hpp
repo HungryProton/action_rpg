@@ -27,6 +27,8 @@ namespace game{
 			static void RemoveComponentFromEntity(Entity);
 			template<class T>
 			static T* GetComponentFromEntity(Entity);
+			template<class T>
+			static Entity GetParentOfComponent(T*);
 
 			static void ClearMemory();
 

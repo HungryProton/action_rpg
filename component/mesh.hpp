@@ -6,6 +6,7 @@
 #include "common/opengl.hpp"
 #include "common/glm.hpp"
 #include "deps/tiny_obj_loader.hpp"
+#include "ecs/entity/entity.hpp"
 
 namespace game{
 
@@ -24,6 +25,8 @@ namespace game{
 		GLenum draw_type;
 		std::string file_path;
 		std::string base_path;
+
+		Entity parent;
 
 		// ---- Helper methods ----
 

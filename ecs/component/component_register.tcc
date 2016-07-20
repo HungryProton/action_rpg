@@ -1,5 +1,6 @@
 #include "component_register.hpp"
 #include "ecs/entity/entity.hpp"
+#include "common/logger.hpp"
 
 namespace game{
 
@@ -27,6 +28,18 @@ namespace game{
 		if(pair == components_.end()){ return; }
 		delete pair->second;
 		components_.erase(pair);
+	}
+
+	template<class T>
+	Entity ComponentRegister<T>::GetParent(T* component){
+		Entity e = Entity();
+		for(auto pair : components_){
+			if(pair.second == component){
+				e.uid = pair.first;
+				break;
+			}
+		}
+		return e;
 	}
 
 	template<class T>

@@ -2,6 +2,7 @@
 #define GAME_CORE_ENTITY_COMPONENT_CAMERA_HPP
 
 #include "common/glm.hpp"
+#include "ecs/entity/entity.hpp"
 
 namespace game{
 
@@ -15,6 +16,8 @@ namespace game{
 		glm::vec3 target;
 		glm::vec3 up;
 		bool active;
+
+		Entity parent;
 
 		// ----- Helper methods -----
 		Camera();

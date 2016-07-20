@@ -7,6 +7,7 @@
 namespace game{
 
 	Mesh::Mesh(std::string path){
+		this->parent = ecs::GetParentOfComponent(this);
 		this->LoadFromFile(path);
 	}
 
@@ -28,8 +29,7 @@ namespace game{
 	}
 
 	void Mesh::LoadTextureFromMaterial(){
-		//Entity parent = ecs::GetParentOfComponent<this>();
 		std::string texture_path = this->base_path + this->materials[0].diffuse_texname.c_str();
-		//Texture* tex = ecs::CreateComponentForEntity<Texture>(parent);
+		Texture* tex = ecs::CreateComponentForEntity<Texture>(parent);
 	}
 }

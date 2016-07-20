@@ -30,6 +30,11 @@ namespace game{
 		return ComponentRegister<T>::GetFromEntity(e);
 	}
 
+	template<class T>
+	Entity ecs::GetParentOfComponent(T* component){
+		return ComponentRegister<T>::GetParent(component);
+	}
+
 	template<class... Components>
 	void ecs::CreateSignature(){
 		node_update_fcn_.push_back(Node<Components...>::UpdateListWith);
