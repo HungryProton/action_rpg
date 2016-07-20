@@ -11,6 +11,7 @@ namespace game{
 		// the end of the program.
 		if(!ComponentRegister<T>::stored_){
 			component_registers_clear_fcn_.push_back(ComponentRegister<T>::ClearMemory);
+			component_registers_delete_fcn_.push_back(ComponentRegister<T>::DeleteFromEntity);
 			ComponentRegister<T>::stored_ = true;
 		}
 		T* newly_created_component = ComponentRegister<T>::CreateForEntity(e);

@@ -11,7 +11,7 @@ namespace game{
 	class ecs{
 		public:
 			static Entity CreateEntity();
-			static void DestroyEntity();
+			static void DestroyEntity(Entity);
 
 			template<class ...>
 			static void CreateSignature();
@@ -35,6 +35,7 @@ namespace game{
 			static std::vector<void(*)(Entity)> node_delete_fcn_;
 			static std::vector<void(*)()> nodes_clear_fcn_;
 			static std::vector<void(*)()> component_registers_clear_fcn_;
+			static std::vector<void(*)(Entity)> component_registers_delete_fcn_;
 			static EntityBuilder entity_builder_;
 	};
 }

@@ -39,6 +39,13 @@ namespace game{
 						REQUIRE(list.empty());
 					}
 				}
+				WHEN("Entity is deleted"){
+					ecs::DestroyEntity(e);
+					THEN("It should no longer appear in the entity list for the AB signature"){
+						auto list = ecs::GetEntitiesWithComponents<A,B>();
+						REQUIRE(list.empty());
+					}
+				}
 			}
 			ecs::ClearMemory();
 		}
