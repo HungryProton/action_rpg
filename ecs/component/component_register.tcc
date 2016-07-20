@@ -5,12 +5,13 @@
 namespace game{
 
 	template<class T>
-	T* ComponentRegister<T>::CreateForEntity(Entity e){
+	template<class... Args>
+	T* ComponentRegister<T>::CreateForEntity(Entity e, Args... args){
 		auto pair = components_.find(e.uid);
 		if(pair != components_.end()){
 			return pair->second;
 		}
-		T* component = new T();
+		T* component = new T(args...);
 		components_.insert(std::make_pair(e.uid, component));
 		return component;
 	}

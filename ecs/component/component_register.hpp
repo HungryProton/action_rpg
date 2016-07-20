@@ -14,7 +14,9 @@ namespace game{
 	class ComponentRegister : public BaseComponentRegister{
 		friend class ecs;
 		private:
-			static T* CreateForEntity(Entity);
+			template<class...Args>
+			static T* CreateForEntity(Entity, Args...);
+
 			static T* GetFromEntity(Entity);
 			static void DeleteFromEntity(Entity);
 			static Entity GetParent(T*);

@@ -5,8 +5,8 @@
 
 namespace game{
 
-	template<class T>
-	T* ecs::CreateComponentForEntity(Entity e){
+	template<class T, class...Args>
+	T* ecs::CreateComponentForEntity(Entity e, Args... args){
 		// Store a pointer to the register clearMemory function to call it at
 		// the end of the program.
 		if(!ComponentRegister<T>::stored_){
@@ -14,7 +14,7 @@ namespace game{
 			component_registers_delete_fcn_.push_back(ComponentRegister<T>::DeleteFromEntity);
 			ComponentRegister<T>::stored_ = true;
 		}
-		T* newly_created_component = ComponentRegister<T>::CreateForEntity(e);
+		T* newly_created_component = ComponentRegister<T>::CreateForEntity(e, args...);
 		ecs::NotifyEntityHasChanged(e);
 		return newly_created_component;
 	}

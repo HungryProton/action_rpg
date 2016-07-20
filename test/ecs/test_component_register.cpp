@@ -4,7 +4,16 @@
 
 namespace game{
 
+	// An empty component and a component with specialized constructor
 	struct A{};
+	struct B{
+		int width = 0;
+		int height = 0;
+		B(int w, int h){
+			width = w;
+			height = h;
+		}
+	};
 
 	SCENARIO("The registers should handle components operations on entities"){
 
@@ -37,6 +46,14 @@ namespace game{
 				THEN("it should return the parent entity"){
 					REQUIRE_FALSE(e.uid == 0);
 					REQUIRE(e.uid == e2.uid);
+				}
+			}
+			WHEN("a component is created with additional parameters"){
+				B* b = ecs::CreateComponentForEntity<B>(e, 10, 25);
+				THEN("they should be passed to the component constructor"){
+					REQUIRE_FALSE(b == nullptr);
+					REQUIRE(b->width == 10);
+					REQUIRE(b->height == 25);
 				}
 			}
 		}

@@ -30,6 +30,6 @@ namespace game{
 
 	void Mesh::LoadTextureFromMaterial(){
 		std::string texture_path = this->base_path + this->materials[0].diffuse_texname.c_str();
-		Texture* tex = ecs::CreateComponentForEntity<Texture>(parent);
+		Texture* tex = ecs::CreateComponentForEntity<Texture>(parent, texture_path);
 	}
 }

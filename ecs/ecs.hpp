@@ -21,8 +21,9 @@ namespace game{
 			static void NotifyEntityHasChanged(Entity);
 			static void NotifyEntityWasDeleted(Entity);
 
-			template<class T>
-			static T* CreateComponentForEntity(Entity);
+			template<class T, class...Args>
+			static T* CreateComponentForEntity(Entity, Args...);
+
 			template<class T>
 			static void RemoveComponentFromEntity(Entity);
 			template<class T>
