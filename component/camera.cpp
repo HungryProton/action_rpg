@@ -14,7 +14,7 @@ namespace game{
 		this->ratio = 1366.f/768.f;
 		this->fovy = 0.520f;
 		this->projection = glm::perspective(fovy, ratio, znear, zfar);
-		this->parent = ecs::GetParentOfComponent(this);
+		this->parent = ecs::GetParentOf(this);
 	}
 
 	void Camera::SetActive(){

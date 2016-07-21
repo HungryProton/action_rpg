@@ -15,7 +15,7 @@ namespace game{
 		GIVEN("A valid signature AB and an entity with a component A attached"){
 			ecs::CreateSignature<A,B>();
 			Entity e = ecs::CreateEntity();
-			ecs::CreateComponentForEntity<A>(e);
+			ecs::CreateComponent<A>(e);
 
 			WHEN("The entity only has a A component"){
 
@@ -25,7 +25,7 @@ namespace game{
 				}
 			}
 			WHEN("Component B is attached to the entity"){
-				ecs::CreateComponentForEntity<B>(e);
+				ecs::CreateComponent<B>(e);
 
 				THEN("Entity list matching AB signature should contain the entity"){
 					auto list = ecs::GetEntitiesWithComponents<A,B>();
@@ -34,7 +34,7 @@ namespace game{
 				}
 				WHEN("Component C is added to the entity"){
 					int list_size = ecs::GetEntitiesWithComponents<A,B>().size();
-					ecs::CreateComponentForEntity<C>(e);
+					ecs::CreateComponent<C>(e);
 
 					THEN("The list shouldn't have changed"){
 						int new_list_size = ecs::GetEntitiesWithComponents<A,B>().size();
@@ -42,7 +42,7 @@ namespace game{
 					}
 				}
 				WHEN("Component A is removed from the entity"){
-					ecs::RemoveComponentFromEntity<A>(e);
+					ecs::RemoveComponent<A>(e);
 
 					THEN("It should no longer appear in the entity list for the AB signature"){
 						auto list = ecs::GetEntitiesWithComponents<A,B>();

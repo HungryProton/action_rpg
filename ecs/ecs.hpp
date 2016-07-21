@@ -22,14 +22,14 @@ namespace game{
 			static void NotifyEntityWasDeleted(Entity);
 
 			template<class T, class...Args>
-			static T* CreateComponentForEntity(Entity, Args...);
+			static T* CreateComponent(Entity, Args...);
 
 			template<class T>
-			static void RemoveComponentFromEntity(Entity);
+			static void RemoveComponent(Entity);
 			template<class T>
-			static T* GetComponentFromEntity(Entity);
+			static T* GetComponent(Entity);
 			template<class T>
-			static Entity GetParentOfComponent(T*);
+			static Entity GetParentOf(T*);
 
 			static void ClearMemory();
 

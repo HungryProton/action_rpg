@@ -6,7 +6,7 @@
 namespace game{
 
 	template<class T, class...Args>
-	T* ecs::CreateComponentForEntity(Entity e, Args... args){
+	T* ecs::CreateComponent(Entity e, Args... args){
 		// Store a pointer to the register clearMemory function to call it at
 		// the end of the program.
 		if(!ComponentRegister<T>::stored_){
@@ -20,18 +20,18 @@ namespace game{
 	}
 
 	template<class T>
-	void ecs::RemoveComponentFromEntity(Entity e){
+	void ecs::RemoveComponent(Entity e){
 		ComponentRegister<T>::DeleteFromEntity(e);
 		ecs::NotifyEntityHasChanged(e);
 	}
 
 	template<class T>
-	T* ecs::GetComponentFromEntity(Entity e){
+	T* ecs::GetComponent(Entity e){
 		return ComponentRegister<T>::GetFromEntity(e);
 	}
 
 	template<class T>
-	Entity ecs::GetParentOfComponent(T* component){
+	Entity ecs::GetParentOf(T* component){
 		return ComponentRegister<T>::GetParent(component);
 	}
 

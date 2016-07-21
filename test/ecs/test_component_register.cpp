@@ -22,16 +22,16 @@ namespace game{
 
 			WHEN("a component is attached to the entity"){
 				// Create a component A and attach it to the entity
-				A* component = ecs::CreateComponentForEntity<A>(e);
+				A* component = ecs::CreateComponent<A>(e);
 
 				THEN("it should be possible to retrieve the component"){
 					// Get component of type A from entity e
-					A* component2 = ecs::GetComponentFromEntity<A>(e);
+					A* component2 = ecs::GetComponent<A>(e);
 					REQUIRE_FALSE(component2 == nullptr);
 					REQUIRE(component == component2);
 				}
 				AND_WHEN("we try to attach another component of same type to the entity"){
-					A* component3 = ecs::CreateComponentForEntity<A>(e);
+					A* component3 = ecs::CreateComponent<A>(e);
 
 					THEN("it should not create a component but return the previously created one"){
 						REQUIRE_FALSE(component3 == nullptr);
@@ -40,8 +40,8 @@ namespace game{
 				}
 			}
 			WHEN("a component request to know the parent entity"){
-				A* component = ecs::CreateComponentForEntity<A>(e);
-				Entity e2 = ecs::GetParentOfComponent(component);
+				A* component = ecs::CreateComponent<A>(e);
+				Entity e2 = ecs::GetParentOf(component);
 
 				THEN("it should return the parent entity"){
 					REQUIRE_FALSE(e.uid == 0);
@@ -49,8 +49,9 @@ namespace game{
 				}
 			}
 			WHEN("a component is created with additional parameters"){
-				B* b = ecs::CreateComponentForEntity<B>(e, 10, 25);
-				THEN("they should be passed to the component constructor"){
+				B* b = ecs::CreateComponent<B>(e, 10, 25);
+
+				THEN("these parameters should be passed to the component constructor"){
 					REQUIRE_FALSE(b == nullptr);
 					REQUIRE(b->width == 10);
 					REQUIRE(b->height == 25);
