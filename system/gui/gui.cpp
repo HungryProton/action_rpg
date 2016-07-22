@@ -1,4 +1,5 @@
 #include "gui.hpp"
+#include "core/game.hpp"
 
 namespace game{
 
@@ -11,7 +12,7 @@ namespace game{
 
 	void Gui::OnMessage(InputMessage msg){
 		if(msg.command == Command::RETURN){
-			//Game::Stop();
+			Game::Stop();
 		}
 	}
 }
