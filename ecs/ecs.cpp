@@ -1,4 +1,5 @@
 #include "ecs.hpp"
+#include "system/system_register.hpp"
 #include "common/logger.hpp"
 
 namespace game{

@@ -6,12 +6,12 @@
 #include "ecs/ecs.hpp"
 #include "ecs/system/system_register.hpp"
 #include "service/service.hpp"
-//#include "world/world.hpp"
+#include "world/world.hpp"
 
 namespace game{
 
 	void Game::Initialize(){
-		//World::GenerateNew();
+		World::GenerateNew();
 		SystemRegister::Initialize();
 	}
 

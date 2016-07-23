@@ -1,6 +1,6 @@
 #include "system_register.hpp"
 #include "system/input/input.hpp"
-//#include "system/physic/physic.hpp"
+#include "system/physic/physic.hpp"
 #include "system/renderer/renderer.hpp"
 #include "system/gui/gui.hpp"
 
@@ -11,7 +11,7 @@ namespace game{
 	// will go through and ask systems to update in this particular order
 	void SystemRegister::Initialize(){
 		CreateSystem<Input>();
-		//CreateSystem<Physic>();
+		CreateSystem<Physic>();
 		CreateSystem<Gui>();
 		CreateSystem<Renderer>();
 

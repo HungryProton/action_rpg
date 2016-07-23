@@ -12,6 +12,7 @@
 namespace game{
 
 	SCENARIO("DrawableBuilder should process empty drawables when requested"){
+		ContextUtil::CreateOpenGLContext();
 
 		GIVEN("a newly created sprite entity with a drawable component"){
 			Entity sprite = ecs::CreateEntity();
@@ -29,5 +30,6 @@ namespace game{
 			ecs::ClearMemory();
 			Service::ClearMemory();
 		}
+		ContextUtil::DestroyOpenGLContext();
 	}
 }

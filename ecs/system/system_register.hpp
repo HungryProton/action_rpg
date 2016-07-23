@@ -12,15 +12,16 @@ namespace game{
 		friend Game;
 		public:
 			template<class T>
+			static T* CreateSystem();
+
+			template<class T>
 			static T* Get();
 
-		private:
+		protected:
 			static void Initialize();
 			static void Update();
 			static void ClearMemory();
 
-			template<class T>
-			static T* CreateSystem();
 
 			static std::map<std::type_index, System*> systems_;
 	};
