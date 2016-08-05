@@ -11,8 +11,9 @@
 namespace game{
 
 	void Game::Initialize(){
-		World::GenerateNew();
 		SystemRegister::Initialize();
+		World::Initialize(10);
+		World::GenerateNew();
 	}
 
 	void Game::Stop(){

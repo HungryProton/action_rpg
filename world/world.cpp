@@ -2,8 +2,32 @@
 
 #include "ecs/ecs.hpp"
 #include "component/transform.hpp"
+#include "component/camera.hpp"
+#include "component/texture.hpp"
+#include "component/drawable.hpp"
+
+#include "messaging/concrete_messages/rendering_intent.hpp"
+#include "messaging/message_bus.hpp"
 
 namespace game{
+
+	void SpawnBasicEntities_tmp(){
+		Entity camera = ecs::CreateEntity();
+		Transform* t = ecs::CreateComponent<Transform>(camera);
+		ecs::CreateComponent<Camera>(camera);
+		t->position = glm::vec3(0, -10, 6);
+
+		RenderingIntent msg;
+		msg.id = 1;
+		msg.from = camera;
+		msg.action = RIntent::SET_ACTIVE_CAMERA;
+		MessageBus::Push(msg);
+
+		Entity sprite = ecs::CreateEntity();
+		ecs::CreateComponent<Transform>(sprite);
+		ecs::CreateComponent<Texture>(sprite, "../data/characters/female/single_idle.png");
+		ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
+	}
 
 	void World::Initialize(double seed){
 		seed_ = seed;
@@ -14,6 +38,8 @@ namespace game{
 		// Fill the map with objects, people, ennemies and so on
 		// Add story-related stuff and procedural narrative
 		// Spawn the player somewhere
+
+		SpawnBasicEntities_tmp();
 	}
 
 	void World::GenerateNew(){
