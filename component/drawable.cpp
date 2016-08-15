@@ -13,4 +13,8 @@ namespace game{
 		this->alpha = 1.0;
 		this->type = DrawableType::NONE;
 	}
+
+	Drawable::Drawable(DrawableType type) : Drawable(){
+		this->type = type;
+	}
 }

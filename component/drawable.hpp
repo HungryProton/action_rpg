@@ -17,6 +17,7 @@ namespace game{
 		float alpha;
 
 		Drawable();
+		Drawable(DrawableType);
 	};
 }
 

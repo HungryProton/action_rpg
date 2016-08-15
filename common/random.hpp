@@ -5,6 +5,21 @@
 
 namespace game{
 
+	// TODO : Make these class templated
+	struct RealGenerator{
+		std::mt19937 engine;
+		float Next(float);
+		float Next(float, float);
+		RealGenerator(double);
+	};
+
+	struct IntGenerator{
+		std::mt19937 engine;
+		int Next(int);
+		int Next(int, int);
+		IntGenerator(double);
+	};
+
 	class Random{
 		public:
 			static int NextInt(int count=100);
