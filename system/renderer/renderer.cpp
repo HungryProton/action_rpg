@@ -58,11 +58,11 @@ namespace game{
 	glm::mat4 Renderer::GetModelMatrixFor(Transform* transform, glm::vec3 local_scale){
 		glm::mat4 translation = glm::translate(glm::mat4(1.0f),
 																					 glm::vec3(transform->position));
-		glm::mat4 rotation_x = glm::rotate(translation, transform->rotation.x,
+		glm::mat4 rotation_x = glm::rotate(translation, transform->rotation.x*0.0174532925199433f,
 																			 glm::vec3(1.0f, 0.0f, 0.0f));
-		glm::mat4 rotation_xy = glm::rotate(rotation_x, transform->rotation.y,
+		glm::mat4 rotation_xy = glm::rotate(rotation_x, transform->rotation.y*0.0174532925199433f,
 																				glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::mat4 rotation_xyz = glm::rotate(rotation_xy, transform->rotation.z,
+		glm::mat4 rotation_xyz = glm::rotate(rotation_xy, transform->rotation.z*0.0174532925199433f,
 																				glm::vec3(0.0f, 0.0f, 1.0f));
 		glm::mat4 scale = glm::scale(transform->scale * local_scale);
 		return rotation_xyz * scale;

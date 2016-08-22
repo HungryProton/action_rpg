@@ -5,9 +5,11 @@
 #include "component/camera.hpp"
 #include "component/texture.hpp"
 #include "component/drawable.hpp"
+#include "component/mesh.hpp"
 
 #include "messaging/concrete_messages/rendering_intent.hpp"
 #include "messaging/message_bus.hpp"
+#include "module/architecture/architecture_module.hpp"
 
 namespace game{
 
@@ -27,6 +29,18 @@ namespace game{
 		ecs::CreateComponent<Transform>(sprite);
 		ecs::CreateComponent<Texture>(sprite, "../data/characters/female/single_idle.png");
 		ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
+
+
+		/*Entity scorpio = ecs::CreateEntity();
+		ecs::CreateComponent<Transform>(scorpio)->rotation.z = 45;
+		ecs::CreateComponent<Mesh>(scorpio)->LoadFromFile("../data/test.obj");
+		ecs::CreateComponent<Drawable>(scorpio, DrawableType::MESH);
+		*/
+	}
+
+	void SpawnBuildings(double seed){
+		ArchitectureModule module;
+		module.Generate(seed);
 	}
 
 	void World::Initialize(double seed){
@@ -40,6 +54,7 @@ namespace game{
 		// Spawn the player somewhere
 
 		SpawnBasicEntities_tmp();
+		SpawnBuildings(seed);
 	}
 
 	void World::GenerateNew(){

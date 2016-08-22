@@ -1,4 +1,5 @@
 #include <iostream>
+#include "common/string.hpp"
 #include "ecs/ecs.hpp"
 #include "ecs/entity/entity.hpp"
 #include "mesh.hpp"
@@ -6,12 +7,8 @@
 
 namespace game{
 
-	Mesh::Mesh(std::string path){
-		this->parent = ecs::GetParentOf(this);
-		this->LoadFromFile(path);
-	}
-
 	void Mesh::LoadFromFile(std::string path){
+		this->parent = ecs::GetParentOf(this);
 		// Save base path
 		this->file_path = path;
 		auto found = path.find_last_of("/\\");
@@ -29,7 +26,7 @@ namespace game{
 	}
 
 	void Mesh::LoadTextureFromMaterial(){
-		std::string texture_path = this->base_path + this->materials[0].diffuse_texname.c_str();
+		std::string texture_path = this->base_path + StringUtil::Trim(this->materials[0].diffuse_texname.c_str());
 		ecs::CreateComponent<Texture>(parent, texture_path);
 	}
 }

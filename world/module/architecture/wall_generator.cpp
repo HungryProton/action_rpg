@@ -92,7 +92,7 @@ namespace game{
 			name += "outer_corner_A1.obj";
 		}
 
-		ecs::CreateComponent<Mesh>(wall.entity, name);
+		ecs::CreateComponent<Mesh>(wall.entity)->LoadFromFile(name);
 		ecs::CreateComponent<Drawable>(wall.entity, DrawableType::MESH);
 
 		return wall;

@@ -30,7 +30,6 @@ namespace game{
 
 		// ---- Helper methods ----
 
-		Mesh(std::string);
 		void LoadFromFile(std::string);
 		void LoadTextureFromMaterial();
 	};
