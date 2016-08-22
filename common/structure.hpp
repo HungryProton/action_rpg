@@ -10,6 +10,9 @@ namespace game{
 		public:
 			template<class T>
 			static void Fill2DVector(std::vector<std::vector<T>>*, int, int, T);
+
+			template<class T>
+			static void Display2DVector(std::vector<std::vector<T>>*);
 	};
 }
 

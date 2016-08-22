@@ -1,4 +1,5 @@
 #include "structure.hpp"
+#include "common/logger.hpp"
 
 namespace game{
 
@@ -11,6 +12,16 @@ namespace game{
 				column.push_back(value);
 			}
 			vector->push_back(column);
+		}
+	}
+
+	template<class T>
+	void Structure::Display2DVector(std::vector<std::vector<T>> *vector){
+		for(auto first_dimension : *vector){
+			for(auto element : first_dimension){
+				std::cout << element << " ";
+			}
+			std::cout << std::endl;
 		}
 	}
 }

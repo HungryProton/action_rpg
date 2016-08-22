@@ -40,8 +40,8 @@ namespace game{
 			void GenerateFoundationsLayout();
 			std::vector<Wall> PlaceWalls();
 
-			Wall GetCorner(int, int, int, bool);
-			Wall GetFlat(int, int, int, bool);
+			Wall GetWall(int, int, int, bool);
+			Wall GetWall(int, int, int, bool, bool);
 
 			void AddSquare(int, int, unsigned int, unsigned int);
 			void SubstractSquare(int, int, unsigned int, unsigned int);
