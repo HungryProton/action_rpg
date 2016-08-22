@@ -36,6 +36,9 @@ namespace game{
 		}
 
 		glm::vec3 local_scale = glm::vec3(1.f, 1.f, 1.f);
+		if(node.drawable->type == DrawableType::SPRITE){
+			local_scale = node.texture->local_scale;
+		}
 
 		shader_controller_.Uniform2f("TexRatio", -1, -1);
 		shader_controller_.UniformMatrix4fv("Model", GetModelMatrixFor(node.transform, local_scale));

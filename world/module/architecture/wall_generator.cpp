@@ -53,8 +53,8 @@ namespace game{
 			for(unsigned int j = 0; j < height; j++){
 				int wall_id = foundations_[i][j];
 				if(wall_id == 0){ continue; }
-				//walls.push_back(GetWall(n, true));
 				walls.push_back(GetWall(wall_id, i - (width/2), j - (height/2), false));
+				walls.push_back(GetWall(wall_id, i - (width/2), j - (height/2), true));
 			}
 		}
 		return walls;

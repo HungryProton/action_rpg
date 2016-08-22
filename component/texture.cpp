@@ -7,6 +7,8 @@
 #include "service/service.hpp"
 #include "service/image_loader.hpp"
 
+#define TEX_RATIO 64.f
+
 namespace game{
 
 	Texture::Texture(){
@@ -30,7 +32,7 @@ namespace game{
 		this->width = img->width;
 		this->height = img->height;
 		this->transparent = false;
-		this->local_scale = glm::vec3(this->width/32.f, this->height/32.f, this->height/32.f);
+		this->local_scale = glm::vec3(this->width/TEX_RATIO, this->height/TEX_RATIO, this->height/TEX_RATIO);
 	}
 
 	void Texture::Bind(GLenum active_texture = GL_TEXTURE0){
