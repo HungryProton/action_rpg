@@ -26,9 +26,9 @@ void main(){
 	float exposure = 1.0;
 	//vec4 color = Albedo + Bloom * Bloom + (Flare*2);
 
-	vec3 lightPos = vec3(0, 5, 0);
-	float linear = 0.001;
-	float quadratic = 0.000;
+	vec3 lightPos = vec3(0, 0, -5);
+	float linear = 0;
+	float quadratic = 0;
 
 	// Then calculate lighting as usual
 	vec3 lighting = Albedo * 0.1; // hard-coded ambient component
@@ -38,8 +38,12 @@ void main(){
 	vec3 lightDir = normalize(lightPos - FragPos);
 	vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Albedo; // * lights[i].Color;
 	float dist= length(lightPos - FragPos);
-	float attenuation = 1.0/(1.0+linear*dist + quadratic*dist*dist);
-	lighting += diffuse*attenuation;
+	if(dist <= 9){
+		float attenuation = 1.0/(1.0+linear*dist + quadratic*dist*dist);
+		lighting += diffuse*attenuation;
+	}else{
+		lighting *= 0;
+	}
 
 	FragColor = vec4(mix(lighting, lighting * GetVignetteFactor(), 0.5f), 1.0);
 

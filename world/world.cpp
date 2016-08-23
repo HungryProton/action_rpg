@@ -17,7 +17,7 @@ namespace game{
 		Entity camera = ecs::CreateEntity();
 		Transform* t = ecs::CreateComponent<Transform>(camera);
 		ecs::CreateComponent<Camera>(camera);
-		t->position = glm::vec3(0, -10, 6);
+		t->position = glm::vec3(0, -10, 8);
 
 		RenderingIntent msg;
 		msg.id = 1;
@@ -31,11 +31,10 @@ namespace game{
 		ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
 
 
-		/*Entity scorpio = ecs::CreateEntity();
-		ecs::CreateComponent<Transform>(scorpio)->rotation.z = 45;
-		ecs::CreateComponent<Mesh>(scorpio)->LoadFromFile("../data/test.obj");
-		ecs::CreateComponent<Drawable>(scorpio, DrawableType::MESH);
-		*/
+		Entity plate = ecs::CreateEntity();
+		ecs::CreateComponent<Transform>(plate);
+		ecs::CreateComponent<Mesh>(plate)->LoadFromFile("../data/floor.obj");
+		ecs::CreateComponent<Drawable>(plate, DrawableType::MESH);
 	}
 
 	void SpawnBuildings(double seed){
