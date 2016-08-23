@@ -47,7 +47,14 @@ namespace game{
 	}
 
 	void Renderer::AfterUpdate(){
+		shader_controller_.Enable(Program::SSAO);
+		shader_controller_.RenderToScreen();
+
+		shader_controller_.Enable(Program::BLOOM);
+		shader_controller_.RenderToScreen();
+
 		shader_controller_.Enable(Program::LIGHTING);
+		shader_controller_.Uniform3f("viewPos", camera_controller_.GetPosition());
 		shader_controller_.RenderToScreen();
 	}
 

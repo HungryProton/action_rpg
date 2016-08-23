@@ -21,6 +21,7 @@ namespace game{
 															 camera->up );
 		view_ = camera->view;
 		projection_ = camera->projection;
+		position_ = transform->position;
 	}
 
 	void CameraController::SetActiveCamera(Entity new_camera){
@@ -33,6 +34,10 @@ namespace game{
 
 	glm::mat4 CameraController::GetProjection(){
 		return projection_;
+	}
+
+	glm::vec3 CameraController::GetPosition(){
+		return position_;
 	}
 
 	void CameraController::OnMessage(RenderingIntent msg){

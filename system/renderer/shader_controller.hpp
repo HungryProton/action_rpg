@@ -25,6 +25,7 @@ namespace game{
 			GLuint GetUniformLocation(std::string);
 			void UniformMatrix4fv(std::string, glm::mat4);
 			void Uniform2f(std::string, float, float);
+			void Uniform3f(std::string, glm::vec3);
 
 		private:
 			Drawable* screen_quad_;

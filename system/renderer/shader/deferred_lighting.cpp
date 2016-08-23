@@ -29,9 +29,9 @@ namespace game{
 			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_2D, Framebuffer::g_albedo_spec_);
 			glActiveTexture(GL_TEXTURE3);
-			glBindTexture(GL_TEXTURE_2D, Framebuffer::ssao_blur_color_buffer_);
+			glBindTexture(GL_TEXTURE_2D, Framebuffer::ssao_color_buffer_);
 			glActiveTexture(GL_TEXTURE4);
-			glBindTexture(GL_TEXTURE_2D, Framebuffer::bloom_blur_color_buffer_);
+			glBindTexture(GL_TEXTURE_2D, Framebuffer::bloom_color_buffer_);
 			glActiveTexture(GL_TEXTURE5);
 			glBindTexture(GL_TEXTURE_2D, Framebuffer::light_flare_color_buffer_);
 	}

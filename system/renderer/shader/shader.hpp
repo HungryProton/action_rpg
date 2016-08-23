@@ -8,7 +8,7 @@ namespace game{
 	class Shader{
 		public:
 			Shader(int, int);
-			~Shader();
+			virtual ~Shader();
 			virtual GLuint GetProgram() final;
 			virtual void Bind() = 0;
 

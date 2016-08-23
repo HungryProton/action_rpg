@@ -10,8 +10,8 @@ namespace game{
 			static GLuint g_position_depth_;
 			static GLuint g_normal_;
 			static GLuint g_albedo_spec_;
-			static GLuint ssao_blur_color_buffer_;
-			static GLuint bloom_blur_color_buffer_;
+			static GLuint ssao_color_buffer_;
+			static GLuint bloom_color_buffer_;
 			static GLuint light_flare_color_buffer_;
 	};
 }

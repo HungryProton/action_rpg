@@ -4,6 +4,7 @@
 #include "service/geometry_helper.hpp"
 #include "shader/gbuffer.hpp"
 #include "shader/deferred_lighting.hpp"
+#include "shader/ssao.hpp"
 
 namespace game{
 
@@ -13,6 +14,10 @@ namespace game{
 
 	ShaderController::~ShaderController(){
 		delete screen_quad_;
+		for(auto shader : shaders_){
+			delete shader.second;
+		}
+		shaders_.clear();
 	}
 
 	void ShaderController::Initialize(int w, int h){
@@ -24,9 +29,11 @@ namespace game{
 
 		GBuffer* g_buffer = new GBuffer(width_, height_);
 		DeferredLighting* d_lighting = new DeferredLighting(width_, height_);
+		SSAO* ssao = new SSAO(width_, height_);
 
 		shaders_.insert(std::make_pair(Program::G_BUFFER, g_buffer));
 		shaders_.insert(std::make_pair(Program::LIGHTING, d_lighting));
+		shaders_.insert(std::make_pair(Program::SSAO, ssao));
 	}
 
 	void ShaderController::Enable(Program program){
@@ -47,6 +54,10 @@ namespace game{
 
 	void ShaderController::Uniform2f(std::string uname, float x, float y){
 		glUniform2f(GetUniformLocation(uname), x, y);
+	}
+
+	void ShaderController::Uniform3f(std::string name, glm::vec3 val){
+		glUniform3f(GetUniformLocation(name), val.x, val.y, val.z);
 	}
 
 	void ShaderController::RenderToScreen(){
