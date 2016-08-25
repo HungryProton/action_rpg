@@ -58,6 +58,17 @@ namespace game{
 	}
 
 	void ConstraintSolver::SolveKeepOffset(Constraint* c){
-		*(c->value) = *(c->target_value) + c->offset;
+		if(!c->soft_resolve){
+			*(c->value) = *(c->target_value) + c->offset;
+			return;
+		}
+
+		glm::vec3 diff = *(c->target_value) + c->offset - *(c->value);
+		if(dot(diff, diff) <= c->coefficient*Time::GetPreviousDeltaTime()){
+			*(c->value) = *(c->target_value) + c->offset;
+			return;
+		}
+
+		*(c->value) += diff*c->coefficient*Time::GetPreviousDeltaTime();
 	}
 }

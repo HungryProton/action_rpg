@@ -41,6 +41,7 @@ namespace game{
 		Constraint* c = ecs::CreateComponent<Constraint>(camera);
 		c->type = ConstraintType::KEEP_OFFSET;
 		c->SetOffset(&(cam_t->position), &(sprite_t->position));
+		c->soft_resolve = true;
 
 		Constraint* c2 = ecs::CreateComponent<Constraint>(camera);
 		c2->type = ConstraintType::COPY;
