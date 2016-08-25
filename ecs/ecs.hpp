@@ -25,9 +25,15 @@ namespace game{
 			static T* CreateComponent(Entity, Args...);
 
 			template<class T>
-			static void RemoveComponent(Entity);
+			static void RemoveAllComponent(Entity);
 			template<class T>
-			static T* GetComponent(Entity);
+			static void RemoveComponent(Entity, T*);
+
+			template<class T>
+			static T* GetLastComponent(Entity);
+			template<class T>
+			static std::vector<T*> GetAllComponents(Entity);
+
 			template<class T>
 			static Entity GetParentOf(T*);
 

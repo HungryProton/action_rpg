@@ -3,14 +3,15 @@
 
 namespace game{
 
+	// Check if the given entity has at least one component of type T
 	template<class T>
 	bool SignatureValidator::ValidateHelper(Entity e){
-		return ecs::GetComponent<T>(e) != nullptr;
+		return !ecs::GetAllComponents<T>(e).empty();
 	}
 
 	template<class T, class T2, class... Components>
 	bool SignatureValidator::ValidateHelper(Entity e){
-		if(ecs::GetComponent<T>(e) == nullptr){ return false; }
+		if(!ValidateHelper<T>(e)){ return false; }
 		return ValidateHelper<T2, Components...>(e);
 	}
 

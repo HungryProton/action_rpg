@@ -6,6 +6,7 @@
 #include "system/action/controllable.hpp"
 #include "system/action/simple_motion.hpp"
 #include "system/ai/random.hpp"
+#include "system/constraint_solver.hpp"
 #include "system/debug/stats.hpp"
 
 namespace game{
@@ -20,6 +21,7 @@ namespace game{
 		CreateSystem<SimpleMotionSystem>();
 		CreateSystem<Physic>();
 		CreateSystem<Gui>();
+		CreateSystem<ConstraintSolver>();
 		CreateSystem<Renderer>();
 		CreateSystem<DebugStats>();
 

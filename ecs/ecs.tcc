@@ -11,7 +11,7 @@ namespace game{
 		// the end of the program.
 		if(!ComponentRegister<T>::stored_){
 			component_registers_clear_fcn_.push_back(ComponentRegister<T>::ClearMemory);
-			component_registers_delete_fcn_.push_back(ComponentRegister<T>::DeleteFromEntity);
+			component_registers_delete_fcn_.push_back(ComponentRegister<T>::DeleteAllFromEntity);
 			ComponentRegister<T>::stored_ = true;
 		}
 		T* newly_created_component = ComponentRegister<T>::CreateForEntity(e, args...);
@@ -20,14 +20,19 @@ namespace game{
 	}
 
 	template<class T>
-	void ecs::RemoveComponent(Entity e){
-		ComponentRegister<T>::DeleteFromEntity(e);
+	void ecs::RemoveAllComponent(Entity e){
+		ComponentRegister<T>::DeleteAllFromEntity(e);
 		ecs::NotifyEntityHasChanged(e);
 	}
 
 	template<class T>
-	T* ecs::GetComponent(Entity e){
-		return ComponentRegister<T>::GetFromEntity(e);
+	std::vector<T*> ecs::GetAllComponents(Entity e){
+		return ComponentRegister<T>::GetAllFromEntity(e);
+	}
+
+	template<class T>
+	T* ecs::GetLastComponent(Entity e){
+		return ComponentRegister<T>::GetLastFromEntity(e);
 	}
 
 	template<class T>

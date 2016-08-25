@@ -9,6 +9,6 @@ namespace game{
 	DebugStats::~DebugStats(){}
 
 	void DebugStats::BeforeUpdate(){
-		LOG(INFO) << "FPS : " << 1.f/Time::GetPreviousDeltaTime() << std::endl;
+		//LOG(INFO) << "FPS : " << 1.f/Time::GetPreviousDeltaTime() << std::endl;
 	}
 }

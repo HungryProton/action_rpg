@@ -10,6 +10,7 @@
 #include "component/action/player_controllable.hpp"
 #include "component/action/simple_motion.hpp"
 #include "component/ai/random.hpp"
+#include "component/constraint.hpp"
 
 #include "messaging/concrete_messages/rendering_intent.hpp"
 #include "messaging/message_bus.hpp"
@@ -19,11 +20,9 @@ namespace game{
 
 	void SpawnBasicEntities_tmp(){
 		Entity camera = ecs::CreateEntity();
-		Transform* t = ecs::CreateComponent<Transform>(camera);
-		ecs::CreateComponent<Camera>(camera);
-		//ecs::CreateComponent<PlayerControllable>(camera);
-		//ecs::CreateComponent<SimpleMotion>(camera)->speed = 10.f;
-		t->position = glm::vec3(0, -10, 8);
+		Transform* cam_t = ecs::CreateComponent<Transform>(camera);
+		Camera* cam = ecs::CreateComponent<Camera>(camera);
+		cam_t->position = glm::vec3(0, -10, 8);
 
 		RenderingIntent msg;
 		msg.id = 1;
@@ -32,12 +31,21 @@ namespace game{
 		MessageBus::Push(msg);
 
 		Entity sprite = ecs::CreateEntity();
-		ecs::CreateComponent<Transform>(sprite)->position.z = 0.1;
+		Transform* sprite_t = ecs::CreateComponent<Transform>(sprite);
 		ecs::CreateComponent<Texture>(sprite, "../data/characters/female/single_idle.png");
 		ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
 		ecs::CreateComponent<PointLight>(sprite);
 		ecs::CreateComponent<PlayerControllable>(sprite);
 		ecs::CreateComponent<SimpleMotion>(sprite)->speed = 10.f;
+
+		Constraint* c = ecs::CreateComponent<Constraint>(camera);
+		c->type = ConstraintType::KEEP_OFFSET;
+		c->SetOffset(&(cam_t->position), &(sprite_t->position));
+
+		Constraint* c2 = ecs::CreateComponent<Constraint>(camera);
+		c2->type = ConstraintType::COPY;
+		c2->value = &(cam->target);
+		c2->target_value = &(sprite_t->position);
 
 		Entity pnj = ecs::CreateEntity();
 		ecs::CreateComponent<Transform>(pnj)->position.x = -5;

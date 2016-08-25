@@ -12,8 +12,8 @@ namespace game{
 
 	void CameraController::Update(){
 		this->MessageHandler<RenderingIntent>::PollMessages();
-		Transform* transform = ecs::GetComponent<Transform>(camera_);
-		Camera* camera = ecs::GetComponent<Camera>(camera_);
+		Transform* transform = ecs::GetLastComponent<Transform>(camera_);
+		Camera* camera = ecs::GetLastComponent<Camera>(camera_);
 		if(!transform || !camera){ return; }
 
 		camera->view = glm::lookAt(transform->position,

@@ -2,6 +2,7 @@
 #define GAME_ECS_COMPONENT_HPP_
 
 #include <unordered_map>
+#include <vector>
 #include "../entity/entity.hpp"
 
 namespace game{
@@ -17,12 +18,16 @@ namespace game{
 			template<class...Args>
 			static T* CreateForEntity(Entity, Args...);
 
-			static T* GetFromEntity(Entity);
-			static void DeleteFromEntity(Entity);
+			static T* GetLastFromEntity(Entity);
+			static std::vector<T*> GetAllFromEntity(Entity);
+
+			static void DeleteAllFromEntity(Entity);
+			static void DeleteFromEntity(Entity, T*);
+
 			static Entity GetParent(T*);
 			static void ClearMemory();
 
-			static std::unordered_map<unsigned long, T*> components_;
+			static std::unordered_map<unsigned long, std::vector<T*>> components_;
 			static bool stored_;
 	};
 }

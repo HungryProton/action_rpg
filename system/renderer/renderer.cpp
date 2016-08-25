@@ -83,9 +83,9 @@ namespace game{
 
 	void Renderer::ProcessLightIfAny(Entity entity){
 		if(lights_.size() >= max_lights){ return; }
-		PointLight* pl = ecs::GetComponent<PointLight>(entity);
+		PointLight* pl = ecs::GetLastComponent<PointLight>(entity);
 		if(pl == nullptr){ return; }
-		Transform* t = ecs::GetComponent<Transform>(entity);
+		Transform* t = ecs::GetLastComponent<Transform>(entity);
 
 		glLight light;
 		light.intensity = pl->power;
@@ -116,16 +116,16 @@ namespace game{
 	RenderComponent Renderer::GetComponentsFor(Entity entity){
 		RenderComponent node;
 		node.is_valid = false;
-		node.drawable = ecs::GetComponent<Drawable>(entity);
+		node.drawable = ecs::GetLastComponent<Drawable>(entity);
 
 		if(!node.drawable){ return node; }
 		if(node.drawable->vao == 0){
 			int err = drawable_builder_.UpdateDrawableOf(entity);
 			if(err){ return node; }
 		}
-		node.transform = ecs::GetComponent<Transform>(entity);
-		node.texture = ecs::GetComponent<Texture>(entity);
-		node.mesh = ecs::GetComponent<Mesh>(entity);
+		node.transform = ecs::GetLastComponent<Transform>(entity);
+		node.texture = ecs::GetLastComponent<Texture>(entity);
+		node.mesh = ecs::GetLastComponent<Mesh>(entity);
 		node.is_valid = true;
 		return node;
 	}

@@ -7,37 +7,64 @@ namespace game{
 	template<class T>
 	template<class... Args>
 	T* ComponentRegister<T>::CreateForEntity(Entity e, Args... args){
-		auto pair = components_.find(e.uid);
-		if(pair != components_.end()){
-			return pair->second;
-		}
 		T* component = new T(args...);
-		components_.insert(std::make_pair(e.uid, component));
+
+		auto pair = components_.find(e.uid);
+		if(pair != components_.end()){	// If entity already have components, add the new one to the list
+			pair->second.push_back(component);
+		} else {		// Otherwise, create the list
+			std::vector<T*> vector;
+			vector.push_back(component);
+			components_.insert(std::make_pair(e.uid, vector));
+		}
 		return component;
 	}
 
 	template<class T>
-	T* ComponentRegister<T>::GetFromEntity(Entity e){
+	T* ComponentRegister<T>::GetLastFromEntity(Entity e){
+		auto list = GetAllFromEntity(e);
+		if(list.empty()){ return nullptr; }
+		return list.back();
+	}
+
+	template<class T>
+	std::vector<T*> ComponentRegister<T>::GetAllFromEntity(Entity e){
 		auto pair = components_.find(e.uid);
-		if(pair == components_.end()){ return nullptr; }
+		if(pair == components_.end()){ return std::vector<T*>(); }
 		return pair->second;
 	}
 
 	template<class T>
-	void ComponentRegister<T>::DeleteFromEntity(Entity e){
+	void ComponentRegister<T>::DeleteAllFromEntity(Entity e){
 		auto pair = components_.find(e.uid);
 		if(pair == components_.end()){ return; }
-		delete pair->second;
+		for(T* component : pair->second){
+			delete component;
+		}
 		components_.erase(pair);
+	}
+
+	template<class T>
+	void ComponentRegister<T>::DeleteFromEntity(Entity e, T* component){
+		auto pair = components_.find(e.uid);
+		if(pair == components_.end()){ return; }
+		for(unsigned int i = 0; i < pair->second.size(); i++){
+			if(pair->second[i] == component){
+				pair->second.erase(pair->second.begin() + i);
+				return;
+			}
+		}
 	}
 
 	template<class T>
 	Entity ComponentRegister<T>::GetParent(T* component){
 		Entity e = Entity();
 		for(auto pair : components_){
-			if(pair.second == component){
-				e.uid = pair.first;
-				break;
+			for(T* c: pair.second){
+				if(c == component){
+					e.uid = pair.first;
+					break;
+				}
 			}
 		}
 		return e;
@@ -46,13 +73,15 @@ namespace game{
 	template<class T>
 	void ComponentRegister<T>::ClearMemory(){
 		for(auto pair : components_){
-			delete pair.second;
+			for(T* component : pair.second){
+				delete component;
+			}
 		}
 		components_.clear();
 	}
 
 	template<class T>
-	std::unordered_map<unsigned long, T*> ComponentRegister<T>::components_;
+	std::unordered_map<unsigned long, std::vector<T*>> ComponentRegister<T>::components_;
 
 	template<class T>
 	bool ComponentRegister<T>::stored_ = false;
