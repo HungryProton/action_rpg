@@ -4,6 +4,7 @@
 #include "system/system.hpp"
 #include "messaging/message_handler.hpp"
 #include "messaging/concrete_messages/input_message.hpp"
+#include "messaging/concrete_messages/intent_message.hpp"
 
 namespace game{
 
@@ -16,7 +17,10 @@ namespace game{
 		protected:
 			void BeforeUpdate();
 			void OnUpdate(Entity);
+			void AfterUpdate();
 			void OnMessage(InputMessage);
+
+			std::vector<IntentMessage> intent_buffer_;
 	};
 }
 

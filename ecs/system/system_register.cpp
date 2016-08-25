@@ -3,6 +3,8 @@
 #include "system/physic/physic.hpp"
 #include "system/renderer/renderer.hpp"
 #include "system/gui/gui.hpp"
+#include "system/action/controllable.hpp"
+#include "system/action/simple_motion.hpp"
 
 namespace game{
 
@@ -11,6 +13,8 @@ namespace game{
 	// will go through and ask systems to update in this particular order
 	void SystemRegister::Initialize(){
 		CreateSystem<Input>();
+		CreateSystem<Controllable>();
+		CreateSystem<SimpleMotionSystem>();
 		CreateSystem<Physic>();
 		CreateSystem<Gui>();
 		CreateSystem<Renderer>();

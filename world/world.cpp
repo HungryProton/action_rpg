@@ -6,6 +6,9 @@
 #include "component/texture.hpp"
 #include "component/drawable.hpp"
 #include "component/mesh.hpp"
+#include "component/light/point.hpp"
+#include "component/action/player_controllable.hpp"
+#include "component/action/simple_motion.hpp"
 
 #include "messaging/concrete_messages/rendering_intent.hpp"
 #include "messaging/message_bus.hpp"
@@ -29,6 +32,9 @@ namespace game{
 		ecs::CreateComponent<Transform>(sprite);
 		ecs::CreateComponent<Texture>(sprite, "../data/characters/female/single_idle.png");
 		ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
+		ecs::CreateComponent<PointLight>(sprite);
+		ecs::CreateComponent<PlayerControllable>(sprite);
+		ecs::CreateComponent<SimpleMotion>(sprite)->speed = 10.f;
 
 
 		Entity plate = ecs::CreateEntity();

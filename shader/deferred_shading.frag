@@ -34,7 +34,7 @@ void main(){
 	float quadratic = 0;
 
 	// Then calculate lighting as usual
-	vec3 lighting = Albedo * 0.1; // hard-coded ambient component
+	vec3 lighting = Albedo * 0.15; // hard-coded ambient component
 	vec3 viewDir = normalize(viewPos - FragPos);
 
 	for(int i = 0; i < NB_LIGHTS; i++){
@@ -47,7 +47,7 @@ void main(){
 			float attenuation = 1.0/(1.0+linear*dist + quadratic*dist*dist);
 			lighting += diffuse*attenuation*lightsIntensity[i];
 		}else{
-			lighting *= 0;
+			lighting += 0;
 		}
 	}
 
