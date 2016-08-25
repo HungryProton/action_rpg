@@ -20,6 +20,8 @@ namespace game{
 		Entity camera = ecs::CreateEntity();
 		Transform* t = ecs::CreateComponent<Transform>(camera);
 		ecs::CreateComponent<Camera>(camera);
+		//ecs::CreateComponent<PlayerControllable>(camera);
+		//ecs::CreateComponent<SimpleMotion>(camera)->speed = 10.f;
 		t->position = glm::vec3(0, -10, 8);
 
 		RenderingIntent msg;
@@ -29,7 +31,7 @@ namespace game{
 		MessageBus::Push(msg);
 
 		Entity sprite = ecs::CreateEntity();
-		ecs::CreateComponent<Transform>(sprite);
+		ecs::CreateComponent<Transform>(sprite)->position.z = 0.1;
 		ecs::CreateComponent<Texture>(sprite, "../data/characters/female/single_idle.png");
 		ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
 		ecs::CreateComponent<PointLight>(sprite);

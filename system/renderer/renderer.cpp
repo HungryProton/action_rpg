@@ -49,10 +49,12 @@ namespace game{
 
 	void Renderer::AfterUpdate(){
 		shader_controller_.Enable(Program::SSAO);
-		shader_controller_.RenderToScreen();
+		shader_controller_.UniformMatrix4fv("projection", camera_controller_.GetProjection());
+		shader_controller_.Uniform1i("kernelSize", 1);
+		//shader_controller_.RenderToScreen();
 
 		shader_controller_.Enable(Program::BLOOM);
-		shader_controller_.RenderToScreen();
+		//shader_controller_.RenderToScreen();
 
 		shader_controller_.Enable(Program::LIGHTING);
 		shader_controller_.Uniform3f("viewPos", camera_controller_.GetPosition());

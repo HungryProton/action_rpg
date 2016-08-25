@@ -20,11 +20,25 @@ namespace game{
 		glBindFramebuffer(GL_FRAMEBUFFER, buffer_);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(program_);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, Framebuffer::g_position_depth_);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, Framebuffer::g_normal_);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, noise_);
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_1D, kernel_);
 	}
 
 	void SSAO::InitializeShader(){
 		program_ = Service::Get<ShaderLoader>()->GetShader("shader/ssao.vs",
 				"shader/ssao.frag");
+
+		glUseProgram(program_);
+		glUniform1i(glGetUniformLocation(program_, "gPositionDepth"), 0);
+		glUniform1i(glGetUniformLocation(program_, "gNormal"), 1);
+		glUniform1i(glGetUniformLocation(program_, "texNoise"), 2);
+		glUniform1i(glGetUniformLocation(program_, "samples"), 3);
 	}
 
 	void SSAO::GenerateHemisphereKernel(unsigned int kernel_size){

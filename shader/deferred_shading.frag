@@ -25,15 +25,17 @@ void main(){
 	vec3 Normal = texture(gNormal, TexCoords).rgb;
 	vec3 Albedo = texture(gAlbedoSpec, TexCoords).rgb;
 	float SSAO = texture(ssao, TexCoords).r;
+	//FragColor = vec4(vec3(SSAO), 1.0);
+	//return;
 	vec4 Bloom = texture(bloom, TexCoords).rgba;
 	vec4 Flare = texture(flare, TexCoords).rgba;
 	float exposure = 1.0;
 	//vec4 color = Albedo + Bloom * Bloom + (Flare*2);
 
-	float linear = 0;
-	float quadratic = 0;
+	float linear = 0.5;
+	float quadratic = 1.8;
 
-	vec3 lighting = Albedo * 0.15; // hard-coded ambient component
+	vec3 lighting = Albedo * 0.15 * SSAO; // hard-coded ambient component
 	vec3 viewDir = normalize(FragPos);
 
 	for(int i = 0; i < NB_LIGHTS; i++){

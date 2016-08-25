@@ -32,7 +32,6 @@ namespace game{
 			Time::NotifyFrameStart();
 			SystemRegister::Update();
 			AdjustFrameRate();
-			//LOG(INFO) << "FPS : " << 1.f/Time::GetPreviousDeltaTime() << std::endl;
 		}
 		ClearMemory();
 	}

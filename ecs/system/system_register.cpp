@@ -5,6 +5,7 @@
 #include "system/gui/gui.hpp"
 #include "system/action/controllable.hpp"
 #include "system/action/simple_motion.hpp"
+#include "system/debug/stats.hpp"
 
 namespace game{
 
@@ -18,6 +19,7 @@ namespace game{
 		CreateSystem<Physic>();
 		CreateSystem<Gui>();
 		CreateSystem<Renderer>();
+		CreateSystem<DebugStats>();
 
 		Input* input = Get<Input>();
 		Renderer* renderer = Get<Renderer>();
