@@ -99,7 +99,7 @@ namespace game{
 
 		for(glLight light : lights_){
 			power.push_back(light.intensity);
-			pos.push_back(light.position);
+			pos.push_back(glm::vec3(camera_controller_.GetView() * glm::vec4(light.position, 1.0)));
 		}
 
 		shader_controller_.Uniform1fv("lightsIntensity", power.size(), &power[0]);

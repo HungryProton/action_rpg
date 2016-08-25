@@ -19,7 +19,6 @@ namespace game{
 	void SimpleMotionSystem::OnMessage(IntentMessage message){
 		Entity e = message.dest;
 
-		// Process motion here
 		if(message.intent == Intent::WALK || message.intent == Intent::RUN){
 			Transform* t = ecs::GetComponent<Transform>(e);
 			SimpleMotion* s = ecs::GetComponent<SimpleMotion>(e);

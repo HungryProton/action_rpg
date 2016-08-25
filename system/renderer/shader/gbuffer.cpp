@@ -32,6 +32,7 @@ namespace game{
 	void GBuffer::CreatePositionBuffer(){
 		GenerateAndBindTexture(&g_position_depth_);
 		Framebuffer::g_position_depth_ = g_position_depth_;
+		glBindTexture(GL_TEXTURE_2D, g_position_depth_);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width_, height_, 0, GL_RGBA,
 		GL_FLOAT, NULL);
 

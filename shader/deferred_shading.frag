@@ -33,9 +33,8 @@ void main(){
 	float linear = 0;
 	float quadratic = 0;
 
-	// Then calculate lighting as usual
 	vec3 lighting = Albedo * 0.15; // hard-coded ambient component
-	vec3 viewDir = normalize(viewPos - FragPos);
+	vec3 viewDir = normalize(FragPos);
 
 	for(int i = 0; i < NB_LIGHTS; i++){
 		if(lightsIntensity[i] == 0){ continue; }
