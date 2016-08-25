@@ -22,9 +22,9 @@ namespace game{
 
 	template<class T>
 	T* ComponentRegister<T>::GetLastFromEntity(Entity e){
-		auto list = GetAllFromEntity(e);
-		if(list.empty()){ return nullptr; }
-		return list.back();
+		auto pair = components_.find(e.uid);
+		if(pair == components_.end()){ return nullptr; }
+		return pair->second.back();
 	}
 
 	template<class T>
