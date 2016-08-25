@@ -60,6 +60,18 @@ namespace game{
 		glUniform3f(GetUniformLocation(name), val.x, val.y, val.z);
 	}
 
+	void ShaderController::Uniform1i(std::string name, int value){
+		glUniform1i(GetUniformLocation(name), value);
+	}
+
+	void ShaderController::Uniform1fv(std::string name, int count, float* array){
+		glUniform1fv(GetUniformLocation(name), count, array);
+	}
+
+	void ShaderController::Uniform3fv(std::string name, int count, float* array){
+		glUniform3fv(GetUniformLocation(name), count, array);
+	}
+
 	void ShaderController::RenderToScreen(){
 		glBindVertexArray(screen_quad_->vao);
 		glDrawElements(screen_quad_->draw_type, screen_quad_->vertex_amount,

@@ -26,6 +26,9 @@ namespace game{
 			void UniformMatrix4fv(std::string, glm::mat4);
 			void Uniform2f(std::string, float, float);
 			void Uniform3f(std::string, glm::vec3);
+			void Uniform1i(std::string, int);
+			void Uniform1fv(std::string, int, float*);
+			void Uniform3fv(std::string, int, float*);
 
 		private:
 			Drawable* screen_quad_;

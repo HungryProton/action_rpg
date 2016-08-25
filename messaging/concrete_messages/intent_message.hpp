@@ -2,7 +2,7 @@
 #define GAME_CORE_MESSAGING_CONCRETE_COMMAND_HPP
 
 #include "../message.hpp"
-#include "tools/glm.hpp"
+#include "common/glm.hpp"
 
 namespace game{
 

@@ -3,6 +3,7 @@
 #include "component/camera.hpp"
 #include "component/transform.hpp"
 #include "component/drawable.hpp"
+#include "component/light/point.hpp"
 
 namespace game{
 
@@ -11,11 +12,10 @@ namespace game{
 		glm::ivec2 size = context_controller_.GetWindowSize();
 		shader_controller_.Initialize(size.x, size.y);
 		Require<Transform, Drawable>();
+		max_lights = 12;
 	}
 
-	Renderer::~Renderer(){
-
-	}
+	Renderer::~Renderer(){}
 
 	void Renderer::BeforeUpdate(){
 		camera_controller_.Update();
@@ -28,6 +28,7 @@ namespace game{
 	}
 
 	void Renderer::OnUpdate(Entity entity){
+		ProcessLightIfAny(entity);
 		RenderComponent node = GetComponentsFor(entity);
 		if(!node.is_valid){ return; }
 
@@ -55,9 +56,9 @@ namespace game{
 
 		shader_controller_.Enable(Program::LIGHTING);
 		shader_controller_.Uniform3f("viewPos", camera_controller_.GetPosition());
+		SendLightsToShader();
 		shader_controller_.RenderToScreen();
 	}
-
 
 	void Renderer::Draw(Drawable* drawable){
 		glBindVertexArray(drawable->vao);
@@ -76,6 +77,35 @@ namespace game{
 																				glm::vec3(0.0f, 0.0f, 1.0f));
 		glm::mat4 scale = glm::scale(transform->scale * local_scale);
 		return rotation_xyz * scale;
+	}
+
+	void Renderer::ProcessLightIfAny(Entity entity){
+		if(lights_.size() >= max_lights){ return; }
+		PointLight* pl = ecs::GetComponent<PointLight>(entity);
+		if(pl == nullptr){ return; }
+		Transform* t = ecs::GetComponent<Transform>(entity);
+
+		glLight light;
+		light.intensity = pl->power;
+		light.position = t->position;
+		light.color = pl->color;
+
+		lights_.push_back(light);
+	}
+
+	void Renderer::SendLightsToShader(){
+		std::vector<float> power;
+		std::vector<glm::vec3> pos;
+
+		for(glLight light : lights_){
+			power.push_back(light.intensity);
+			pos.push_back(light.position);
+		}
+
+		shader_controller_.Uniform1fv("lightsIntensity", power.size(), &power[0]);
+		shader_controller_.Uniform3fv("lightsPos", pos.size(), &pos[0].x);
+
+		lights_.clear();
 	}
 
 	RenderComponent Renderer::GetComponentsFor(Entity entity){

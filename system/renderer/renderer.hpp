@@ -21,6 +21,12 @@ namespace game{
 		bool is_valid;
 	};
 
+	struct glLight{
+		glm::vec3 color;
+		float intensity;
+		glm::vec3 position;
+	};
+
 	class Renderer : public System{
 		public:
 			Renderer();
@@ -35,6 +41,8 @@ namespace game{
 
 		private:
 			RenderComponent GetComponentsFor(Entity);
+			void ProcessLightIfAny(Entity);
+			void SendLightsToShader();
 			glm::mat4 GetModelMatrixFor(Transform*, glm::vec3);
 			void UpdateCamera();
 			void Draw(Drawable* drawable);
@@ -43,6 +51,9 @@ namespace game{
 			ShaderController shader_controller_;
 			DrawableBuilder drawable_builder_;
 			CameraController camera_controller_;
+
+			unsigned int max_lights;
+			std::vector<glLight> lights_;
 	};
 }
 #endif //GAME_SYSTEM_RENDERER_HPP
