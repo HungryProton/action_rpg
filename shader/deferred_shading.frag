@@ -10,9 +10,10 @@ uniform sampler2D bloom;
 uniform sampler2D flare;
 uniform vec3 viewPos;
 
-const int NB_LIGHTS = 12;
+const int NB_LIGHTS = 4;
 uniform float[NB_LIGHTS] lightsIntensity;
 uniform vec3[NB_LIGHTS] lightsPos;
+uniform vec3[NB_LIGHTS] lightsCol;
 
 float GetVignetteFactor(){
 	vec2 position_from_center = gl_FragCoord.xy / vec2(1366.f, 768.f) - vec2(0.5f);
@@ -32,8 +33,8 @@ void main(){
 	float exposure = 1.0;
 	//vec4 color = Albedo + Bloom * Bloom + (Flare*2);
 
-	float linear = 0.5;
-	float quadratic = 1.8;
+	float linear = 0;
+	float quadratic = 1.2;
 
 	vec3 lighting = Albedo * 0.15 * SSAO; // hard-coded ambient component
 	vec3 viewDir = normalize(FragPos);
@@ -42,16 +43,13 @@ void main(){
 		if(lightsIntensity[i] == 0){ continue; }
 		// Diffuse
 		vec3 lightDir = normalize(lightsPos[i] - FragPos);
-		vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Albedo; // * lights[i].Color;
+		vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Albedo * lightsCol[i];
 		float dist= length(lightsPos[i] - FragPos);
-		if(dist <= 10){
-			float attenuation = 1.0/(1.0+linear*dist + quadratic*dist*dist);
-			lighting += diffuse*attenuation*lightsIntensity[i];
-		}else{
-			lighting += 0;
-		}
+		float attenuation = 1.0/(1.0+linear*dist + quadratic*dist*dist);
+		lighting += diffuse*attenuation*lightsIntensity[i];
 	}
 
+	//FragColor = vec4(lighting, 1.0);
 	FragColor = vec4(mix(lighting, lighting * GetVignetteFactor(), 0.5f), 1.0);
 
 

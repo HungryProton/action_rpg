@@ -9,6 +9,7 @@
 #include "component/light/point.hpp"
 #include "component/action/player_controllable.hpp"
 #include "component/action/simple_motion.hpp"
+#include "component/ai/random.hpp"
 
 #include "messaging/concrete_messages/rendering_intent.hpp"
 #include "messaging/message_bus.hpp"
@@ -37,6 +38,30 @@ namespace game{
 		ecs::CreateComponent<PointLight>(sprite);
 		ecs::CreateComponent<PlayerControllable>(sprite);
 		ecs::CreateComponent<SimpleMotion>(sprite)->speed = 10.f;
+
+		Entity pnj = ecs::CreateEntity();
+		ecs::CreateComponent<Transform>(pnj)->position.x = -5;
+		ecs::CreateComponent<Texture>(pnj, "../data/characters/female/single_idle.png");
+		ecs::CreateComponent<Drawable>(pnj)->type = DrawableType::SPRITE;
+		ecs::CreateComponent<SimpleMotion>(pnj)->speed = 1.f;
+		ecs::CreateComponent<RandomAI>(pnj);
+
+		for(int i = 0; i < 5; i++){
+			Entity light = ecs::CreateEntity();
+
+			Transform* t = ecs::CreateComponent<Transform>(light);
+			t->position.x = 4 - Random::NextFloat()*8;
+			t->position.y = 4 - Random::NextFloat()*8;
+			t->position.z = .5f + Random::NextFloat()*2;
+
+			PointLight* pl = ecs::CreateComponent<PointLight>(light);
+			pl->power = Random::NextFloat(3);
+			pl->color.x = Random::NextFloat();
+			pl->color.y = Random::NextFloat();
+			pl->color.z = Random::NextFloat();
+
+			ecs::CreateComponent<Drawable>(light);
+		}
 
 
 		Entity plate = ecs::CreateEntity();

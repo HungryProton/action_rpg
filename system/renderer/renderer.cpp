@@ -98,14 +98,17 @@ namespace game{
 	void Renderer::SendLightsToShader(){
 		std::vector<float> power;
 		std::vector<glm::vec3> pos;
+		std::vector<glm::vec3> col;
 
 		for(glLight light : lights_){
 			power.push_back(light.intensity);
 			pos.push_back(glm::vec3(camera_controller_.GetView() * glm::vec4(light.position, 1.0)));
+			col.push_back(light.color);
 		}
 
 		shader_controller_.Uniform1fv("lightsIntensity", power.size(), &power[0]);
 		shader_controller_.Uniform3fv("lightsPos", pos.size(), &pos[0].x);
+		shader_controller_.Uniform3fv("lightsCol", col.size(), &col[0].x);
 
 		lights_.clear();
 	}

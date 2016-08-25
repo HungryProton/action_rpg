@@ -40,6 +40,7 @@ namespace game{
 			modifier = 0;
 		}
 
+		intent.intent = Intent::RUN;
 		if(message.second_modifier_pressed){
 			intent.intent = Intent::WALK;
 		}

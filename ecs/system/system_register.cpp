@@ -5,6 +5,7 @@
 #include "system/gui/gui.hpp"
 #include "system/action/controllable.hpp"
 #include "system/action/simple_motion.hpp"
+#include "system/ai/random.hpp"
 #include "system/debug/stats.hpp"
 
 namespace game{
@@ -15,6 +16,7 @@ namespace game{
 	void SystemRegister::Initialize(){
 		CreateSystem<Input>();
 		CreateSystem<Controllable>();
+		CreateSystem<RandomAISystem>();
 		CreateSystem<SimpleMotionSystem>();
 		CreateSystem<Physic>();
 		CreateSystem<Gui>();
