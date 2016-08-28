@@ -12,6 +12,10 @@ namespace game{
 
 		protected:
 			void BeforeUpdate();
+
+			float min_;
+			float max_;
+			float avg_;
 	};
 }
 

@@ -3,7 +3,7 @@
 
 #include <string>
 #include "../message.hpp"
-#include "core/component/common.hpp"
+#include "component/common.hpp"
 
 namespace game{
 

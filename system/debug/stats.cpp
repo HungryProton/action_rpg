@@ -4,11 +4,27 @@
 
 namespace game{
 
-	DebugStats::DebugStats() : System(){}
+	DebugStats::DebugStats() : System(){
+		min_ = -1;
+		max_ = -1;
+		avg_ = -1;
+	}
 
-	DebugStats::~DebugStats(){}
+	DebugStats::~DebugStats(){
+		LOG(DEBUG) << "Min/Avg/Max : " << min_ << "/" << avg_ << "/" << max_ << std::endl;
+	}
 
 	void DebugStats::BeforeUpdate(){
-		//LOG(INFO) << "FPS : " << 1.f/Time::GetPreviousDeltaTime() << std::endl;
+		float current = 1.f/Time::GetPreviousDeltaTime();
+		if(min_ == -1){
+			min_ = current;
+			max_ = current;
+			avg_ = current;
+			return;
+		}
+		avg_ = avg_*0.9+current*0.1;
+		if(current > max_){max_ = current;}
+		if(current < min_){min_ = current;}
+		LOG(DEBUG) << current << std::endl;
 	}
 }

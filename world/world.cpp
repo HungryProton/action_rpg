@@ -1,5 +1,4 @@
 #include "world.hpp"
-
 #include "ecs/ecs.hpp"
 #include "component/transform.hpp"
 #include "component/camera.hpp"
@@ -41,21 +40,25 @@ namespace game{
 		Constraint* c = ecs::CreateComponent<Constraint>(camera);
 		c->type = ConstraintType::KEEP_OFFSET;
 		c->SetOffset(&(cam_t->position), &(sprite_t->position));
-		c->soft_resolve = true;
 
 		Constraint* c2 = ecs::CreateComponent<Constraint>(camera);
 		c2->type = ConstraintType::COPY;
 		c2->value = &(cam->target);
 		c2->target_value = &(sprite_t->position);
 
-		Entity pnj = ecs::CreateEntity();
-		ecs::CreateComponent<Transform>(pnj)->position.x = -5;
-		ecs::CreateComponent<Texture>(pnj, "../data/characters/female/single_idle.png");
-		ecs::CreateComponent<Drawable>(pnj)->type = DrawableType::SPRITE;
-		ecs::CreateComponent<SimpleMotion>(pnj)->speed = 1.f;
-		ecs::CreateComponent<RandomAI>(pnj);
+		for(int i = 0; i < 10; i++){
+			Entity pnj = ecs::CreateEntity();
+			Transform* pnj_t = ecs::CreateComponent<Transform>(pnj);
+			ecs::CreateComponent<Texture>(pnj, "../data/characters/female/single_idle.png");
+			ecs::CreateComponent<Drawable>(pnj)->type = DrawableType::SPRITE;
+			ecs::CreateComponent<SimpleMotion>(pnj)->speed = 1.f;
+			ecs::CreateComponent<RandomAI>(pnj);
 
-		for(int i = 0; i < 5; i++){
+			pnj_t->position.x = -Random::NextFloat(5);
+			pnj_t->position.y = 5 - Random::NextFloat(10);
+		}
+
+		for(int i = 0; i < 0; i++){
 			Entity light = ecs::CreateEntity();
 
 			Transform* t = ecs::CreateComponent<Transform>(light);
