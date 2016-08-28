@@ -4,6 +4,7 @@
 #include "system/system.hpp"
 #include "messaging/message_handler.hpp"
 #include "messaging/concrete_messages/animation_command.hpp"
+#include "component/atlas.hpp"
 
 namespace game{
 
@@ -14,8 +15,13 @@ namespace game{
 			~TextureAnimator();
 
 		protected:
+			void BeforeUpdate();
 			void OnUpdate(Entity);
 			void OnMessage(AnimationCommand);
+
+			void Play(Atlas*, std::string, Direction);
+			void Pause(Atlas*);
+			void Stop(Atlas*);
 	};
 }
 

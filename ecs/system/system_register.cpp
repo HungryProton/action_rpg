@@ -8,6 +8,7 @@
 #include "system/ai/random.hpp"
 #include "system/constraint_solver.hpp"
 #include "system/debug/stats.hpp"
+#include "system/graphics/texture_animator.hpp"
 
 namespace game{
 
@@ -20,6 +21,7 @@ namespace game{
 		CreateSystem<RandomAISystem>();
 		CreateSystem<SimpleMotionSystem>();
 		CreateSystem<Physic>();
+		CreateSystem<TextureAnimator>();
 		CreateSystem<Gui>();
 		CreateSystem<ConstraintSolver>();
 		CreateSystem<Renderer>();

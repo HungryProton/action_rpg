@@ -25,6 +25,6 @@ namespace game{
 		avg_ = avg_*0.9+current*0.1;
 		if(current > max_){max_ = current;}
 		if(current < min_){min_ = current;}
-		LOG(DEBUG) << current << std::endl;
+		//LOG(DEBUG) << current << std::endl;
 	}
 }

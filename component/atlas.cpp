@@ -1,10 +1,19 @@
 #include "atlas.hpp"
 #include <fstream>
 #include <sstream>
+#include "common/logger.hpp"
+#include "common/time.hpp"
+#include "texture.hpp"
 
 namespace game{
 
-	Atlas::Atlas(){ }
+	Atlas::Atlas(){
+		current_frame = 0;
+		start_time = Time::GetCurrentTime();
+		loop = true;
+		play = true;
+		current_direction = Direction::S;
+	}
 
 	Atlas::Atlas(std::string file_path) : Atlas(){
 		LoadFromFile(file_path);
@@ -24,7 +33,7 @@ namespace game{
 			}
 			file.close();
 		}
-		current_animation = animations_.begin()->second;
+		current_animation = animations.begin()->second;
 	}
 
 	void Atlas::LoadSpriteSheet(std::string name, std::string path, int priority){
@@ -81,7 +90,13 @@ namespace game{
 		}
 
 		animation.frame_count = current_positions->size();
-		animations_.insert(std::make_pair(name, animation));
+		animation.texture->ratio = glm::vec2( animation.frame_size.x / animation.texture->width,
+				animation.frame_size.y / animation.texture->height);
+		animation.texture->local_scale = glm::vec3(animation.frame_size.x / TEX_RATIO,
+				animation.frame_size.y / TEX_RATIO,
+				animation.frame_size.y / TEX_RATIO);
+		animations.insert(std::make_pair(name, animation));
+
 	}
 
 	Direction Atlas::GetDirectionFromAngle(int angle){

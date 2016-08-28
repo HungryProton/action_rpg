@@ -3,6 +3,7 @@
 #include "service/geometry_helper.hpp"
 #include "service/service.hpp"
 #include "component/texture.hpp"
+#include "component/atlas.hpp"
 #include "component/mesh.hpp"
 
 namespace game{
@@ -30,7 +31,8 @@ namespace game{
 	int DrawableBuilder::UpdateSpriteDrawable(Drawable* drawable,
 																						Entity entity){
 		Texture* texture = ecs::GetComponent<Texture>(entity);
-		if(!texture){ return EXIT_FAILURE; }	// Fail if no texture found
+		Atlas* atlas = ecs::GetComponent<Atlas>(entity);
+		if(!texture && !atlas){ return EXIT_FAILURE; }	// Fail if no texture found
 
 		GeometryHelper* geometry_helper = Service::Get<GeometryHelper>();
 		geometry_helper->MakeDrawableUseBoxBuffer(drawable);

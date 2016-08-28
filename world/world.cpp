@@ -10,6 +10,7 @@
 #include "component/action/simple_motion.hpp"
 #include "component/ai/random.hpp"
 #include "component/constraint.hpp"
+#include "component/atlas.hpp"
 
 #include "messaging/concrete_messages/rendering_intent.hpp"
 #include "messaging/message_bus.hpp"
@@ -31,11 +32,20 @@ namespace game{
 
 		Entity sprite = ecs::CreateEntity();
 		Transform* sprite_t = ecs::CreateComponent<Transform>(sprite);
-		ecs::CreateComponent<Texture>(sprite, "../data/characters/female/single_idle.png");
 		ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
-		ecs::CreateComponent<PointLight>(sprite);
+		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/animated/female_1.txt");
 		ecs::CreateComponent<PlayerControllable>(sprite);
 		ecs::CreateComponent<SimpleMotion>(sprite)->speed = 10.f;
+
+		Entity light = ecs::CreateEntity();
+		Transform* lt = ecs::CreateComponent<Transform>(light);
+		lt->position = glm::vec3(0.f, 0.5f, 10.f);
+		ecs::CreateComponent<PointLight>(light)->power = 100;
+		ecs::CreateComponent<Drawable>(light);
+
+		Constraint* lc = ecs::CreateComponent<Constraint>(light);
+		lc->type = ConstraintType::KEEP_OFFSET;
+		lc->SetOffset(&(lt->position), &(sprite_t->position));
 
 		Constraint* c = ecs::CreateComponent<Constraint>(camera);
 		c->type = ConstraintType::KEEP_OFFSET;

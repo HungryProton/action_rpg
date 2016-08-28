@@ -19,12 +19,14 @@ namespace game{
 	};
 
 	struct Atlas{
-		std::map<std::string, Animation> animations_;
+		std::map<std::string, Animation> animations;
 		std::string base_name;
 		Animation current_animation;
 		int current_frame;
 		float start_time;
 		bool loop;
+		bool play;
+		Direction current_direction;
 
 		Atlas();
 		Atlas(std::string);
@@ -33,8 +35,6 @@ namespace game{
 		protected:
 			void LoadSpriteSheet(std::string, std::string, int);
 			Direction GetDirectionFromAngle(int);
-
-
 	};
 }
 

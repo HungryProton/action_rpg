@@ -1,6 +1,8 @@
 #ifndef GAME_COMPONENT_TEXTURE_HPP
 #define GAME_COMPONENT_TEXTURE_HPP
 
+#define TEX_RATIO 64.f
+
 #include <string>
 #include "common/opengl.hpp"
 
