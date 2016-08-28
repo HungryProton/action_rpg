@@ -12,7 +12,7 @@ namespace game{
 	DrawableBuilder::~DrawableBuilder(){ }
 
 	int DrawableBuilder::UpdateDrawableOf(Entity entity){
-		Drawable* drawable = ecs::GetLastComponent<Drawable>(entity);
+		Drawable* drawable = ecs::GetComponent<Drawable>(entity);
 		if(drawable == nullptr){ return 1; }
 
 		switch(drawable->type){
@@ -29,7 +29,7 @@ namespace game{
 
 	int DrawableBuilder::UpdateSpriteDrawable(Drawable* drawable,
 																						Entity entity){
-		Texture* texture = ecs::GetLastComponent<Texture>(entity);
+		Texture* texture = ecs::GetComponent<Texture>(entity);
 		if(!texture){ return EXIT_FAILURE; }	// Fail if no texture found
 
 		GeometryHelper* geometry_helper = Service::Get<GeometryHelper>();
@@ -39,7 +39,7 @@ namespace game{
 
 	int DrawableBuilder::UpdateMeshDrawable(Drawable* drawable,
 																					Entity entity){
-		Mesh* mesh = ecs::GetLastComponent<Mesh>(entity);
+		Mesh* mesh = ecs::GetComponent<Mesh>(entity);
 		if(!mesh){ return EXIT_FAILURE; }	 // Fail if no mesh found
 
 		GeometryHelper* geometry_helper = Service::Get<GeometryHelper>();

@@ -12,6 +12,9 @@ namespace game{
 		int height;
 		bool transparent;
 		glm::vec3 local_scale;
+		// Used to display only a portion of the texture
+		glm::vec2 shift;
+		glm::vec2 ratio;
 
 		// ---- Helper methods ---- //
 		Texture();

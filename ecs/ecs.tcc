@@ -31,7 +31,7 @@ namespace game{
 	}
 
 	template<class T>
-	T* ecs::GetLastComponent(Entity e){
+	T* ecs::GetComponent(Entity e){
 		return ComponentRegister<T>::GetLastFromEntity(e);
 	}
 

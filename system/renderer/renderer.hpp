@@ -6,6 +6,7 @@
 #include "component/texture.hpp"
 #include "component/mesh.hpp"
 #include "component/transform.hpp"
+#include "component/atlas.hpp"
 #include "context_controller.hpp"
 #include "shader_controller.hpp"
 #include "drawable_builder.hpp"
@@ -16,6 +17,7 @@ namespace game{
 	struct RenderComponent{
 		Transform* transform;
 		Texture* texture;
+		Atlas* atlas;
 		Mesh* mesh;
 		Drawable* drawable;
 		bool is_valid;
@@ -43,6 +45,7 @@ namespace game{
 			RenderComponent GetComponentsFor(Entity);
 			void ProcessLightIfAny(Entity);
 			void SendLightsToShader();
+			void ProcessTextures(RenderComponent);
 			glm::mat4 GetModelMatrixFor(Transform*, glm::vec3);
 			void UpdateCamera();
 			void Draw(Drawable* drawable);

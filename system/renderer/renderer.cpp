@@ -29,21 +29,11 @@ namespace game{
 
 	void Renderer::OnUpdate(Entity entity){
 		ProcessLightIfAny(entity);
+
 		RenderComponent node = GetComponentsFor(entity);
 		if(!node.is_valid){ return; }
 
-		if(node.texture){
-			node.texture->Bind(GL_TEXTURE0);
-		}
-
-		glm::vec3 local_scale = glm::vec3(1.f, 1.f, 1.f);
-		if(node.drawable->type == DrawableType::SPRITE){
-			local_scale = node.texture->local_scale;
-		}
-
-		shader_controller_.Uniform2f("TexRatio", -1, -1);
-		shader_controller_.UniformMatrix4fv("Model", GetModelMatrixFor(node.transform, local_scale));
-
+		ProcessTextures(node);
 		Draw(node.drawable);
 	}
 
@@ -62,30 +52,11 @@ namespace game{
 		shader_controller_.RenderToScreen();
 	}
 
-	void Renderer::Draw(Drawable* drawable){
-		glBindVertexArray(drawable->vao);
-		glDrawElements(drawable->draw_type, drawable->vertex_amount,
-				GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
-	}
-
-	glm::mat4 Renderer::GetModelMatrixFor(Transform* transform, glm::vec3 local_scale){
-		glm::mat4 translation = glm::translate(glm::mat4(1.0f),
-																					 glm::vec3(transform->position));
-		glm::mat4 rotation_x = glm::rotate(translation, transform->rotation.x*0.0174532925199433f,
-																			 glm::vec3(1.0f, 0.0f, 0.0f));
-		glm::mat4 rotation_xy = glm::rotate(rotation_x, transform->rotation.y*0.0174532925199433f,
-																				glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::mat4 rotation_xyz = glm::rotate(rotation_xy, transform->rotation.z*0.0174532925199433f,
-																				glm::vec3(0.0f, 0.0f, 1.0f));
-		glm::mat4 scale = glm::scale(transform->scale * local_scale);
-		return rotation_xyz * scale;
-	}
-
 	void Renderer::ProcessLightIfAny(Entity entity){
 		if(lights_.size() >= max_lights){ return; }
-		PointLight* pl = ecs::GetLastComponent<PointLight>(entity);
+		PointLight* pl = ecs::GetComponent<PointLight>(entity);
 		if(pl == nullptr){ return; }
-		Transform* t = ecs::GetLastComponent<Transform>(entity);
+		Transform* t = ecs::GetComponent<Transform>(entity);
 
 		glLight light;
 		light.intensity = pl->power;
@@ -113,19 +84,69 @@ namespace game{
 		lights_.clear();
 	}
 
+	void Renderer::ProcessTextures(RenderComponent node){
+		glm::vec2 tex_ratio = glm::vec2(-1.f, -1.f);
+		glm::vec2 tex_shift = glm::vec2(0.f, 0.f);
+
+		Texture* texture = nullptr;
+		if(node.atlas){
+			texture = node.atlas->current_animation.texture;
+		} else if(node.texture){
+			texture = node.texture;
+		}
+
+		if(texture){
+			texture->Bind(GL_TEXTURE0);
+			tex_ratio = texture->ratio;
+			tex_shift = texture->shift;
+		} else {
+			glBindTexture(GL_TEXTURE0, 0);
+		}
+
+		glm::vec3 local_scale = glm::vec3(1.f, 1.f, 1.f);
+		if(node.drawable->type == DrawableType::SPRITE){
+			local_scale = texture->local_scale;
+		}
+
+		shader_controller_.Uniform2f("TexRatio", tex_ratio.x, tex_ratio.y);
+		shader_controller_.Uniform2f("TexShift", tex_shift.x, tex_shift.y);
+		shader_controller_.UniformMatrix4fv("Model", GetModelMatrixFor(node.transform, local_scale));
+	}
+
+
+	void Renderer::Draw(Drawable* drawable){
+		glBindVertexArray(drawable->vao);
+		glDrawElements(drawable->draw_type, drawable->vertex_amount,
+				GL_UNSIGNED_INT, BUFFER_OFFSET(drawable->offset));
+	}
+
+	glm::mat4 Renderer::GetModelMatrixFor(Transform* transform, glm::vec3 local_scale){
+		glm::mat4 translation = glm::translate(glm::mat4(1.0f),
+																					 glm::vec3(transform->position));
+		glm::mat4 rotation_x = glm::rotate(translation, transform->rotation.x*0.0174532925199433f,
+																			 glm::vec3(1.0f, 0.0f, 0.0f));
+		glm::mat4 rotation_xy = glm::rotate(rotation_x, transform->rotation.y*0.0174532925199433f,
+																				glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 rotation_xyz = glm::rotate(rotation_xy, transform->rotation.z*0.0174532925199433f,
+																				glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::mat4 scale = glm::scale(transform->scale * local_scale);
+		return rotation_xyz * scale;
+	}
+
 	RenderComponent Renderer::GetComponentsFor(Entity entity){
 		RenderComponent node;
 		node.is_valid = false;
-		node.drawable = ecs::GetLastComponent<Drawable>(entity);
+		node.drawable = ecs::GetComponent<Drawable>(entity);
 
 		if(!node.drawable){ return node; }
 		if(node.drawable->vao == 0){
 			int err = drawable_builder_.UpdateDrawableOf(entity);
 			if(err){ return node; }
 		}
-		node.transform = ecs::GetLastComponent<Transform>(entity);
-		node.texture = ecs::GetLastComponent<Texture>(entity);
-		node.mesh = ecs::GetLastComponent<Mesh>(entity);
+		node.transform = ecs::GetComponent<Transform>(entity);
+		node.texture = ecs::GetComponent<Texture>(entity);
+		node.mesh = ecs::GetComponent<Mesh>(entity);
+		node.atlas = ecs::GetComponent<Atlas>(entity);
 		node.is_valid = true;
 		return node;
 	}

@@ -17,6 +17,8 @@ namespace game{
 		this->height = 0;
 		this->transparent = false;
 		this->local_scale = glm::vec3(1.f, 1.f, 1.f);
+		ratio = glm::vec2(-1.f, -1.f);
+		shift = glm::vec2(0.f, 0.f);
 	}
 
 	Texture::Texture(std::string file_path){

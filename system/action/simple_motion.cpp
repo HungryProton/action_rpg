@@ -20,8 +20,8 @@ namespace game{
 		Entity e = message.dest;
 
 		if(message.intent == Intent::WALK || message.intent == Intent::RUN){
-			Transform* t = ecs::GetLastComponent<Transform>(e);
-			SimpleMotion* s = ecs::GetLastComponent<SimpleMotion>(e);
+			Transform* t = ecs::GetComponent<Transform>(e);
+			SimpleMotion* s = ecs::GetComponent<SimpleMotion>(e);
 			t->position += Time::GetPreviousDeltaTime() * s->speed * message.direction;
 		}
 	}

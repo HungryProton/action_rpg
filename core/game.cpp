@@ -21,6 +21,7 @@ namespace game{
 	}
 
 	void Game::ClearMemory(){
+		SystemRegister::ClearMemory();
 		ecs::ClearMemory();
 		Service::ClearMemory();
 	}

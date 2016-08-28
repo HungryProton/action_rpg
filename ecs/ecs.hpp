@@ -30,7 +30,7 @@ namespace game{
 			static void RemoveComponent(Entity, T*);
 
 			template<class T>
-			static T* GetLastComponent(Entity);
+			static T* GetComponent(Entity);
 			template<class T>
 			static std::vector<T*> GetAllComponents(Entity);
 

@@ -34,15 +34,15 @@ namespace game{
 		auto pair = this->entities_.find(entity.uid);
 		if(pair == this->entities_.end()){
 			PhysicComponents c;
-			c.transform = ecs::GetLastComponent<Transform>(entity);
-			c.collider = ecs::GetLastComponent<Collider>(entity);
+			c.transform = ecs::GetComponent<Transform>(entity);
+			c.collider = ecs::GetComponent<Collider>(entity);
 			if(c.transform == nullptr || c.collider == nullptr){ return nullptr; }
 			switch(c.collider->shape_type){
 				case Shape::BOX:
-					c.shape = ecs::GetLastComponent<Box>(entity);
+					c.shape = ecs::GetComponent<Box>(entity);
 					break;
 				case Shape::CIRCLE:
-					c.shape = ecs::GetLastComponent<Circle>(entity);
+					c.shape = ecs::GetComponent<Circle>(entity);
 			}
 			if(c.shape == nullptr){ return nullptr; }
 			this->entities_.insert(std::make_pair(entity.uid, c));
