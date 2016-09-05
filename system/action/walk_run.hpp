@@ -5,6 +5,7 @@
 #include "system/system.hpp"
 #include "messaging/concrete_messages/intent_message.hpp"
 #include "messaging/message_bus.hpp"
+#include "component/common.hpp"
 
 namespace game{
 
@@ -18,6 +19,7 @@ namespace game{
 			void BeforeUpdate();
 			void OnUpdate(Entity);
 			void OnMessage(IntentMessage);
+			Direction GetDirectionFromVector(glm::vec3);
 	};
 }
 

@@ -43,6 +43,7 @@ namespace game{
 		Animation animation;
 		animation.texture = new Texture(path + ".png");
 		animation.priority = priority;
+		animation.name = name;
 
 		std::string line;
 		int current_angle = -1;

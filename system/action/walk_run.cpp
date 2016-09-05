@@ -30,6 +30,8 @@ namespace game{
 		AnimationCommand cmd;
 		cmd.dest = e;
 		cmd.action = AnimationAction::PLAY;
+		cmd.loop = true;
+		cmd.direction = GetDirectionFromVector(msg.direction);
 		m->direction = msg.direction;
 
 		if(msg.intent == Intent::WALK){
@@ -41,5 +43,17 @@ namespace game{
 		}
 
 		MessageBus::Push(cmd);
+	}
+
+	Direction WalkRunSystem::GetDirectionFromVector(glm::vec3 vec){
+		if(vec.x == 0 && vec.y > 0){ return Direction::N; }
+		if(vec.x == 0 && vec.y < 0){ return Direction::S; }
+		if(vec.x > 0 && vec.y == 0){ return Direction::E; }
+		if(vec.x < 0 && vec.y == 0){ return Direction::W; }
+		if(vec.x > 0 && vec.y > 0){ return Direction::NE; }
+		if(vec.x < 0 && vec.y > 0){ return Direction::NW; }
+		if(vec.x > 0 && vec.y < 0){ return Direction::SE; }
+		if(vec.x < 0 && vec.y < 0){ return Direction::SW; }
+		return Direction::LAST;
 	}
 }
