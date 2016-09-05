@@ -8,6 +8,8 @@
 
 namespace game{
 
+	// Accumulate all Input messages for a frame, and generate the appropriate
+	// intent from the input received
 	class Controllable : public System,
 											 public MessageHandler<InputMessage>{
 		public:
@@ -20,7 +22,7 @@ namespace game{
 			void AfterUpdate();
 			void OnMessage(InputMessage);
 
-			std::vector<IntentMessage> intent_buffer_;
+			IntentMessage intent_;
 	};
 }
 

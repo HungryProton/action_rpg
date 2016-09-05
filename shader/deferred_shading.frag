@@ -10,7 +10,7 @@ uniform sampler2D bloom;
 uniform sampler2D flare;
 uniform vec3 viewPos;
 
-const int NB_LIGHTS = 4;
+const int NB_LIGHTS = 1;
 uniform float[NB_LIGHTS] lightsIntensity;
 uniform vec3[NB_LIGHTS] lightsPos;
 uniform vec3[NB_LIGHTS] lightsCol;

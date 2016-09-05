@@ -24,7 +24,7 @@ namespace game{
 
 		atlas->current_animation.texture->shift = atlas->current_animation.positions.find(atlas->current_direction)->second[current_frame];
 
-		if(current_frame == atlas->current_animation.frame_count){
+		if(current_frame == atlas->current_animation.frame_count-1){
 			if(!atlas->loop){return;}
 			atlas->start_time = current_time;
 			atlas->current_frame = 0;

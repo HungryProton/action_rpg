@@ -4,11 +4,12 @@
 #include "system/renderer/renderer.hpp"
 #include "system/gui/gui.hpp"
 #include "system/action/controllable.hpp"
-#include "system/action/simple_motion.hpp"
+#include "system/action/motion.hpp"
 #include "system/ai/random.hpp"
 #include "system/constraint_solver.hpp"
 #include "system/debug/stats.hpp"
 #include "system/graphics/texture_animator.hpp"
+#include "system/action/walk_run.hpp"
 
 namespace game{
 
@@ -19,10 +20,11 @@ namespace game{
 		CreateSystem<Input>();
 		CreateSystem<Controllable>();
 		CreateSystem<RandomAISystem>();
-		CreateSystem<SimpleMotionSystem>();
+		CreateSystem<WalkRunSystem>();
+		CreateSystem<MotionSystem>();
 		CreateSystem<Physic>();
-		CreateSystem<TextureAnimator>();
 		CreateSystem<Gui>();
+		CreateSystem<TextureAnimator>();
 		CreateSystem<ConstraintSolver>();
 		CreateSystem<Renderer>();
 		CreateSystem<DebugStats>();

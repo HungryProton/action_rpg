@@ -6,11 +6,12 @@
 #include "component/drawable.hpp"
 #include "component/mesh.hpp"
 #include "component/light/point.hpp"
-#include "component/action/player_controllable.hpp"
-#include "component/action/simple_motion.hpp"
+#include "component/player_controllable.hpp"
+#include "component/motion.hpp"
 #include "component/ai/random.hpp"
 #include "component/constraint.hpp"
 #include "component/atlas.hpp"
+#include "component/action/walk_run.hpp"
 
 #include "messaging/concrete_messages/rendering_intent.hpp"
 #include "messaging/message_bus.hpp"
@@ -35,7 +36,8 @@ namespace game{
 		ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
 		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/animated/female_1.txt");
 		ecs::CreateComponent<PlayerControllable>(sprite);
-		ecs::CreateComponent<SimpleMotion>(sprite)->speed = 10.f;
+		ecs::CreateComponent<Motion>(sprite);
+		ecs::CreateComponent<WalkRun>(sprite, 5.f, 12.f);
 
 		Entity light = ecs::CreateEntity();
 		Transform* lt = ecs::CreateComponent<Transform>(light);
@@ -61,7 +63,7 @@ namespace game{
 			Transform* pnj_t = ecs::CreateComponent<Transform>(pnj);
 			ecs::CreateComponent<Texture>(pnj, "../data/characters/female/single_idle.png");
 			ecs::CreateComponent<Drawable>(pnj)->type = DrawableType::SPRITE;
-			ecs::CreateComponent<SimpleMotion>(pnj)->speed = 1.f;
+			ecs::CreateComponent<Motion>(pnj)->target_speed = 1.f;
 			ecs::CreateComponent<RandomAI>(pnj);
 
 			pnj_t->position.x = -Random::NextFloat(5);
