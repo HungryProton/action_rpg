@@ -12,6 +12,7 @@
 #include "component/constraint.hpp"
 #include "component/atlas.hpp"
 #include "component/action/walk_run.hpp"
+#include "component/item/pickup.hpp"
 
 #include "messaging/concrete_messages/rendering_intent.hpp"
 #include "messaging/message_bus.hpp"
@@ -37,12 +38,12 @@ namespace game{
 		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/animated/female_1.txt");
 		ecs::CreateComponent<PlayerControllable>(sprite);
 		ecs::CreateComponent<Motion>(sprite);
-		ecs::CreateComponent<WalkRun>(sprite, 5.f, 12.f);
+		ecs::CreateComponent<WalkRun>(sprite, 1.f, 6.f);
 
 		Entity light = ecs::CreateEntity();
 		Transform* lt = ecs::CreateComponent<Transform>(light);
-		lt->position = glm::vec3(0.f, 0.5f, 10.f);
-		ecs::CreateComponent<PointLight>(light)->power = 100;
+		lt->position = glm::vec3(1.f, -4.5f, 15.f);
+		ecs::CreateComponent<PointLight>(light)->power = 300;
 		ecs::CreateComponent<Drawable>(light);
 
 		Constraint* lc = ecs::CreateComponent<Constraint>(light);
@@ -92,6 +93,11 @@ namespace game{
 		ecs::CreateComponent<Transform>(plate);
 		ecs::CreateComponent<Mesh>(plate)->LoadFromFile("../data/floor.obj");
 		ecs::CreateComponent<Drawable>(plate, DrawableType::MESH);
+
+		//Entity item = ecs::CreateEntity();
+		//ecs::CreateComponent<PickUp>(item);
+		//ecs::CreateComponent<Weapon>(item);
+
 	}
 
 	void SpawnBuildings(double seed){

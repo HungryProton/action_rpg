@@ -41,10 +41,10 @@ namespace game{
 			std::vector<Wall> PlaceWalls();
 
 			Wall GetWall(int, int, int, bool);
-			Wall GetWall(int, int, int, bool, bool);
+			Wall GetWall(int, int, int, bool, bool, bool);
 
 			void AddSquare(int, int, unsigned int, unsigned int);
-			void SubstractSquare(int, int, unsigned int, unsigned int);
+			void SubstractSquare(unsigned int, unsigned int, unsigned int, unsigned int);
 
 			IntGenerator random_;
 			WallParameters parameters_;

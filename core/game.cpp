@@ -7,12 +7,13 @@
 #include "ecs/system/system_register.hpp"
 #include "service/service.hpp"
 #include "world/world.hpp"
+#include "common/random.hpp"
 
 namespace game{
 
 	void Game::Initialize(){
 		SystemRegister::Initialize();
-		World::Initialize(10);
+		World::Initialize(Random::NextInt());
 		World::GenerateNew();
 	}
 

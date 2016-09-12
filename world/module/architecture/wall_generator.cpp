@@ -36,6 +36,8 @@ namespace game{
 		Structure::Fill2DVector(&foundations_, width, height, 0);
 		AddSquare(0, 0, width, height);
 
+		SubstractSquare(0, 0, 3, 3);
+
 		Structure::Display2DVector(&foundations_);
 
 		// Generate other square or maybe 2
@@ -63,27 +65,35 @@ namespace game{
 	Wall WallGenerator::GetWall(int wall_id, int x, int y,  bool inner){
 		switch(wall_id){
 			case 1:	// Standard facing down
-				return GetWall(x, y, 270, false, inner);
+				return GetWall(x, y, 270, false, inner, false);
 			case 2:	// Standard facing left
-				return GetWall(x, y, 180, false, inner);
+				return GetWall(x, y, 180, false, inner, false);
 			case 3: // Standard facing right
-				return GetWall(x, y, 0, false, inner);
+				return GetWall(x, y, 0, false, inner, false);
 			case 4: // Standard facing up
-				return GetWall(x, y, 90, false, inner);
+				return GetWall(x, y, 90, false, inner, false);
 			case 5:	// Top left corner
-				return GetWall(x, y, 270, true, inner);
+				return GetWall(x, y, 270, true, inner, false);
 			case 6: // Top right corner
-				return GetWall(x, y, 0, true, inner);
+				return GetWall(x, y, 0, true, inner, false);
 			case 7: // bottom left corner
-				return GetWall(x, y, 180, true, inner);
+				return GetWall(x, y, 180, true, inner, false);
 			case 8: // bottom right corner
-				return GetWall(x, y, 90, true, inner);
+				return GetWall(x, y, 90, true, inner, false);
+			case 9: // top left reverse corner
+				return GetWall(x, y, 0, true, inner, true);
+			case 10: // top right reverse corner
+				return GetWall(x, y, 0, true, inner, true);
+			case 11: // bottom left reverse corner
+				return GetWall(x, y, 0, true, inner, true);
+			case 12: // bottom right reverse corner
+				return GetWall(x, y, 90, true, inner, true);
 			default:
 				return Wall();
 		}
 	}
 
-	Wall WallGenerator::GetWall(int delta_x, int delta_y, int angle, bool corner, bool inner){
+	Wall WallGenerator::GetWall(int delta_x, int delta_y, int angle, bool corner, bool inner, bool reverse){
 		Wall wall;
 		wall.entity = ecs::CreateEntity();
 		Transform* t = ecs::CreateComponent<Transform>(wall.entity);
@@ -99,7 +109,11 @@ namespace game{
 			name += "outer";
 		}
 		if(corner){
-			name += "_corner_A1.obj";
+			if(reverse){
+				name += "_corner2_A1.obj";
+			} else {
+				name += "_corner_A1.obj";
+			}
 		} else {
 			name += "_standard_A1.obj";
 		}
@@ -137,6 +151,99 @@ namespace game{
 				} else if (i == width -1 && j == height - 1){
 					foundations_[i+x][j+y] = 8;
 				}
+			}
+		}
+	}
+
+	void WallGenerator::SubstractSquare(unsigned int x, unsigned int y, unsigned int width, unsigned int height){
+		if(width == 0 || height == 0){ return; }
+		if(width + x > foundations_.size()){ return; }
+		if(height + y > foundations_[0].size()){ return; }
+
+		for(unsigned int i = x; i < x+width; i++){
+			for(unsigned int j = y; j < y+height; j++){
+
+				// Handle corners
+				if(j == y && i == x){ // top left
+					if(foundations_[i][j] == 0){
+						foundations_[i][j] = 5;
+					} else if(foundations_[i][j] == 5){
+						foundations_[i][j] = 0;
+					} else if(foundations_[i][j] == 1) {
+						foundations_[i][j] = 5;
+					} else if(foundations_[i][j] == 3){
+						foundations_[i][j] = 11;
+					}
+					continue;
+				}
+
+				if(j == height - 1 && i == x){ // bottom left
+					if(foundations_[i][j] == 0){
+						foundations_[i][j] = 12;
+					} else if(foundations_[i][j] == 7){
+						foundations_[i][j] = 0;
+					} else if(foundations_[i][j] == 2) {
+						foundations_[i][j] = 12;
+					} else if(foundations_[i][j] == 1){
+						foundations_[i][j] = 5;
+					}
+					continue;
+				}
+
+				if(j == y && i == x+width - 1){ // bottom_left
+					if(foundations_[i][j] == 0){
+						foundations_[i][j] = 11;
+					} else if(foundations_[i][j] == 6){
+						foundations_[i][j] = 0;
+					} else if(foundations_[i][j] == 3){
+						foundations_[i][j] = 5;
+					} else if(foundations_[i][j] == 4){
+						foundations_[i][j] = 12;
+					}
+					continue;
+				}
+
+				if(j == height - 1 && i == width - 1){ // bottom right
+					if(foundations_[i][j] == 0){
+						foundations_[i][j] = 12;
+					} else if(foundations_[i][j] == 8){
+						foundations_[i][j] = 0;
+					} else if(foundations_[i][j] == 2) {
+						foundations_[i][j] = 5;
+					} else if(foundations_[i][j] == 4) {
+						foundations_[i][j] = 11;
+					}
+					continue;
+				}
+
+				if(j == y){ // Top border
+					if(foundations_[i][j] == 0){
+						foundations_[i][j] = 4;
+					} else {
+						foundations_[i][j] = 0;
+					}
+				} else if (j == height - 1){
+					if(foundations_[i][j] == 0){
+						foundations_[i][j] = 3;
+					} else {
+						foundations_[i][j] = 0;
+					}
+				}
+
+				if(i == x){ // Left border
+					if(foundations_[i][j] == 0){
+						foundations_[i][j] = 2;
+					} else {
+						foundations_[i][j] = 0;
+					}
+				} else if(i == width - 1){ // right border
+					if(foundations_[i][j] == 0){
+						foundations_[i][j] = 1;
+					} else {
+						foundations_[i][j] = 0;
+					}
+				}
+
 			}
 		}
 	}
