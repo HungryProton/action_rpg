@@ -13,6 +13,9 @@ namespace game{
 
 			template<class T>
 			static void Display2DVector(std::vector<std::vector<T>>*);
+
+			template<class T>
+			static void Display2DVectorTranspose(std::vector<std::vector<T>>*);
 	};
 }
 

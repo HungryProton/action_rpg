@@ -24,4 +24,15 @@ namespace game{
 			std::cout << std::endl;
 		}
 	}
+
+	template<class T>
+	void Structure::Display2DVectorTranspose(std::vector<std::vector<T>> *vector){
+		int line_count = (*vector)[0].size();
+		for(int line = 0; line < line_count; line++){
+			for(auto vec : *vector){
+				std::cout << vec[line_count - line -1] << " ";
+			}
+			std::cout << std::endl;
+		}
+	}
 }

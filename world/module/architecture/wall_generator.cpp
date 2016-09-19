@@ -37,8 +37,11 @@ namespace game{
 		AddSquare(0, 0, width, height);
 
 		SubstractSquare(0, 0, 3, 3);
+		SubstractSquare(width-3, 0, 3, 3);
+		SubstractSquare(width-3, height-3, 3, 3);
+		SubstractSquare(0, height-3, 3, 3);
 
-		Structure::Display2DVector(&foundations_);
+		Structure::Display2DVectorTranspose(&foundations_);
 
 		// Generate other square or maybe 2
 
@@ -64,30 +67,30 @@ namespace game{
 
 	Wall WallGenerator::GetWall(int wall_id, int x, int y,  bool inner){
 		switch(wall_id){
-			case 1:	// Standard facing down
+			case 1:	// Standard facing right
 				return GetWall(x, y, 270, false, inner, false);
-			case 2:	// Standard facing left
+			case 2:	// Standard facing down
 				return GetWall(x, y, 180, false, inner, false);
-			case 3: // Standard facing right
+			case 3: // Standard facing up
 				return GetWall(x, y, 0, false, inner, false);
-			case 4: // Standard facing up
+			case 4: // Standard facing left
 				return GetWall(x, y, 90, false, inner, false);
-			case 5:	// Top left corner
+			case 5:	// Bottom left corner
 				return GetWall(x, y, 270, true, inner, false);
-			case 6: // Top right corner
+			case 6: // corner
 				return GetWall(x, y, 0, true, inner, false);
-			case 7: // bottom left corner
+			case 7: // corner
 				return GetWall(x, y, 180, true, inner, false);
-			case 8: // bottom right corner
+			case 8: // corner
 				return GetWall(x, y, 90, true, inner, false);
-			case 9: // top left reverse corner
+			case 9: // corner
 				return GetWall(x, y, 0, true, inner, true);
-			case 10: // top right reverse corner
-				return GetWall(x, y, 0, true, inner, true);
-			case 11: // bottom left reverse corner
-				return GetWall(x, y, 0, true, inner, true);
-			case 12: // bottom right reverse corner
+			case 10: // reverse corner
 				return GetWall(x, y, 90, true, inner, true);
+			case 11: // bottom right reverse corner
+				return GetWall(x, y, 180, true, inner, true);
+			case 12: // Top right reverse corner
+				return GetWall(x, y, 270, true, inner, true);
 			default:
 				return Wall();
 		}
@@ -162,35 +165,38 @@ namespace game{
 
 		for(unsigned int i = x; i < x+width; i++){
 			for(unsigned int j = y; j < y+height; j++){
-
 				// Handle corners
-				if(j == y && i == x){ // top left
+
+				// Bottom left
+				if(j == y && i == x){
 					if(foundations_[i][j] == 0){
-						foundations_[i][j] = 5;
+						foundations_[i][j] = 10;
 					} else if(foundations_[i][j] == 5){
 						foundations_[i][j] = 0;
 					} else if(foundations_[i][j] == 1) {
-						foundations_[i][j] = 5;
+						foundations_[i][j] = 7;
 					} else if(foundations_[i][j] == 3){
-						foundations_[i][j] = 11;
+						foundations_[i][j] = 6;
 					}
 					continue;
 				}
 
-				if(j == height - 1 && i == x){ // bottom left
+				// Top left
+				if(j == (y+height) - 1 && i == x){
 					if(foundations_[i][j] == 0){
-						foundations_[i][j] = 12;
+						foundations_[i][j] = 9;
 					} else if(foundations_[i][j] == 7){
 						foundations_[i][j] = 0;
 					} else if(foundations_[i][j] == 2) {
-						foundations_[i][j] = 12;
+						foundations_[i][j] = 8;
 					} else if(foundations_[i][j] == 1){
 						foundations_[i][j] = 5;
 					}
 					continue;
 				}
 
-				if(j == y && i == x+width - 1){ // bottom_left
+				// Bottom right corner
+				if(j == y && i == x+width - 1){
 					if(foundations_[i][j] == 0){
 						foundations_[i][j] = 11;
 					} else if(foundations_[i][j] == 6){
@@ -198,31 +204,35 @@ namespace game{
 					} else if(foundations_[i][j] == 3){
 						foundations_[i][j] = 5;
 					} else if(foundations_[i][j] == 4){
-						foundations_[i][j] = 12;
+						foundations_[i][j] = 8;
 					}
 					continue;
 				}
 
-				if(j == height - 1 && i == width - 1){ // bottom right
+				// Top right
+				if(j == y+height - 1 && i == x+width - 1){
 					if(foundations_[i][j] == 0){
 						foundations_[i][j] = 12;
 					} else if(foundations_[i][j] == 8){
 						foundations_[i][j] = 0;
 					} else if(foundations_[i][j] == 2) {
-						foundations_[i][j] = 5;
+						foundations_[i][j] = 7;
 					} else if(foundations_[i][j] == 4) {
-						foundations_[i][j] = 11;
+						foundations_[i][j] = 6;
 					}
 					continue;
 				}
 
-				if(j == y){ // Top border
+				//foundations_[i][j] = 0;
+				//continue;
+
+				if(j == y){
 					if(foundations_[i][j] == 0){
-						foundations_[i][j] = 4;
+						foundations_[i][j] = 2;
 					} else {
 						foundations_[i][j] = 0;
 					}
-				} else if (j == height - 1){
+				} else if (j == y+height - 1){
 					if(foundations_[i][j] == 0){
 						foundations_[i][j] = 3;
 					} else {
@@ -230,20 +240,19 @@ namespace game{
 					}
 				}
 
-				if(i == x){ // Left border
-					if(foundations_[i][j] == 0){
-						foundations_[i][j] = 2;
+				if(i == x){
+					if(foundations_[i][j] == 0){	// Left Border
+						foundations_[i][j] = 4;
 					} else {
 						foundations_[i][j] = 0;
 					}
-				} else if(i == width - 1){ // right border
+				} else if(i == x+width - 1){
 					if(foundations_[i][j] == 0){
 						foundations_[i][j] = 1;
 					} else {
 						foundations_[i][j] = 0;
 					}
 				}
-
 			}
 		}
 	}
