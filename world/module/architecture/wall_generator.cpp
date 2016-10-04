@@ -19,7 +19,6 @@ namespace game{
 
 		GenerateFoundationsLayout();
 		return PlaceWalls();
-		//return std::vector<Wall>();
 	}
 
 	void WallGenerator::GenerateFoundationsLayout(){
@@ -36,10 +35,42 @@ namespace game{
 		Structure::Fill2DVector(&foundations_, width, height, 0);
 		AddSquare(0, 0, width, height);
 
-		SubstractSquare(0, 0, 3, 3);
+		if(width > 3 && height > 3){
+			bool symetrical = random_.Next(0, 10) > 5 ? true : false;
+			if(symetrical){
+				int w = width/2;
+				int h = height/2;
+				SubstractSquare(0, 0, w, h);
+				SubstractSquare(width-w, 0, w, h);
+			} else {
+				int w = random_.Next(std::max(2, width/4), std::max(3, width/2));
+				int h = random_.Next(std::max(2, height/4), std::max(3, height/2));
+				int corner = random_.Next(0, 4);
+				int x = 0;
+				int y = 0;
+				switch(corner){
+					case 1:
+						x = width-w;
+						break;
+					case 2:
+						y = height-h;
+						break;
+					case 3:
+						x = width-w;
+						y = height-h;
+						break;
+					case 0:
+					default:
+						break;
+				}
+				SubstractSquare(x, y, w, h);
+			}
+		}
+
+		/*SubstractSquare(0, 0, 3, 3);
 		SubstractSquare(width-3, 0, 3, 3);
 		SubstractSquare(width-3, height-3, 3, 3);
-		SubstractSquare(0, height-3, 3, 3);
+		SubstractSquare(0, height-3, 3, 3); */
 
 		Structure::Display2DVectorTranspose(&foundations_);
 

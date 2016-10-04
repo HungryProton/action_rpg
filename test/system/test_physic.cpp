@@ -102,7 +102,7 @@ namespace game{
 				}
 			}
 			WHEN("the order is reversed (circle -> box)"){
-				ecs::RemoveComponent<Box>(box);
+				ecs::RemoveAllComponent<Box>(box);
 				b1 = ecs::CreateComponent<Box>(box, 2.f, 2.f);
 
 				t2->position.y = 2.f;

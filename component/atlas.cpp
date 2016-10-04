@@ -97,7 +97,6 @@ namespace game{
 				animation.frame_size.y / TEX_RATIO,
 				animation.frame_size.y / TEX_RATIO);
 		animations.insert(std::make_pair(name, animation));
-
 	}
 
 	Direction Atlas::GetDirectionFromAngle(int angle){
@@ -119,7 +118,7 @@ namespace game{
 			case 315:
 				return Direction::SW;
 			default:
-				return Direction::S;
+				return Direction::LAST;
 		}
 	}
 }

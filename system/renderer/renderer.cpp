@@ -4,6 +4,7 @@
 #include "component/transform.hpp"
 #include "component/drawable.hpp"
 #include "component/light/point.hpp"
+#include "component/light/directional.hpp"
 
 namespace game{
 
@@ -11,7 +12,7 @@ namespace game{
 		context_controller_.Initialize();
 		glm::ivec2 size = context_controller_.GetWindowSize();
 		shader_controller_.Initialize(size.x, size.y);
-		Require<Transform, Drawable>();
+		Require<Drawable>();
 		max_lights = 12;
 	}
 
@@ -43,7 +44,7 @@ namespace game{
 		shader_controller_.Uniform1i("kernelSize", 1);
 		//shader_controller_.RenderToScreen();
 
-		shader_controller_.Enable(Program::BLOOM);
+		//shader_controller_.Enable(Program::BLOOM);
 		//shader_controller_.RenderToScreen();
 
 		shader_controller_.Enable(Program::LIGHTING);
@@ -55,31 +56,48 @@ namespace game{
 	void Renderer::ProcessLightIfAny(Entity entity){
 		if(lights_.size() >= max_lights){ return; }
 		PointLight* pl = ecs::GetComponent<PointLight>(entity);
-		if(pl == nullptr){ return; }
-		Transform* t = ecs::GetComponent<Transform>(entity);
+		DirectionalLight* dl = ecs::GetComponent<DirectionalLight>(entity);
+		if(pl == nullptr && dl == nullptr){ return; }
 
 		glLight light;
-		light.intensity = pl->power;
-		light.position = t->position;
-		light.color = pl->color;
 
+		if(pl){
+			Transform* t = ecs::GetComponent<Transform>(entity);
+			light.intensity = pl->power;
+			light.vector = t->position;
+			light.color = pl->color;
+			light.type = LightType::POINT;
+		}else if(dl){
+			light.intensity = dl->power;
+			light.vector = dl->direction;
+			light.color = dl->color;
+			light.type = LightType::DIRECTIONAL;
+		}
 		lights_.push_back(light);
 	}
 
 	void Renderer::SendLightsToShader(){
 		std::vector<float> power;
-		std::vector<glm::vec3> pos;
+		std::vector<glm::vec3> vec;
 		std::vector<glm::vec3> col;
+		std::vector<int> type;
 
 		for(glLight light : lights_){
+			int t = (int)light.type;
+			type.push_back(t);
 			power.push_back(light.intensity);
-			pos.push_back(glm::vec3(camera_controller_.GetView() * glm::vec4(light.position, 1.0)));
+			if(t == 0){
+				vec.push_back(glm::vec3(camera_controller_.GetView() * glm::vec4(light.vector, 1.0)));
+			} else {
+				vec.push_back(glm::vec3(camera_controller_.GetView() * glm::vec4(-light.vector, 0.0)));
+			}
 			col.push_back(light.color);
 		}
 
 		shader_controller_.Uniform1fv("lightsIntensity", power.size(), &power[0]);
-		shader_controller_.Uniform3fv("lightsPos", pos.size(), &pos[0].x);
+		shader_controller_.Uniform3fv("lightsVec", vec.size(), &vec[0].x);
 		shader_controller_.Uniform3fv("lightsCol", col.size(), &col[0].x);
+		shader_controller_.Uniform1iv("lightsType", type.size(), &type[0]);
 
 		lights_.clear();
 	}

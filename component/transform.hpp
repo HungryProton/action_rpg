@@ -22,6 +22,7 @@ namespace game{
 
 		// ---- Helper Methods ----
 		Transform();
+		Transform(glm::vec3);
 		void dbg_display();
 
 		private:

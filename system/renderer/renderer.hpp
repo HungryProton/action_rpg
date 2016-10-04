@@ -23,10 +23,12 @@ namespace game{
 		bool is_valid;
 	};
 
+	enum class LightType{POINT = 0, DIRECTIONAL, SPOT};
 	struct glLight{
+		LightType type;
 		glm::vec3 color;
 		float intensity;
-		glm::vec3 position;
+		glm::vec3 vector;
 	};
 
 	class Renderer : public System{

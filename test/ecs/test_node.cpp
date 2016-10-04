@@ -42,7 +42,7 @@ namespace game{
 					}
 				}
 				WHEN("Component A is removed from the entity"){
-					ecs::RemoveComponent<A>(e);
+					ecs::RemoveAllComponent<A>(e);
 
 					THEN("It should no longer appear in the entity list for the AB signature"){
 						auto list = ecs::GetEntitiesWithComponents<A,B>();

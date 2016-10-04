@@ -64,6 +64,10 @@ namespace game{
 		glUniform1i(GetUniformLocation(name), value);
 	}
 
+	void ShaderController::Uniform1iv(std::string name, int count, int* array){
+		glUniform1iv(GetUniformLocation(name), count, array);
+	}
+
 	void ShaderController::Uniform1fv(std::string name, int count, float* array){
 		glUniform1fv(GetUniformLocation(name), count, array);
 	}

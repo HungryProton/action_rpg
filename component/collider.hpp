@@ -14,6 +14,8 @@ namespace game{
 
 		bool sleeping;
 		bool is_static;
+		bool ghost; 	// if true, objects can pass through
+		bool sensor;	// if true, sends a message to the gameobject upon collision
 
 		float mass;
 		float inv_mass;

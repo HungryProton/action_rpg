@@ -6,6 +6,7 @@
 #include "component/drawable.hpp"
 #include "component/mesh.hpp"
 #include "component/light/point.hpp"
+#include "component/light/directional.hpp"
 #include "component/player_controllable.hpp"
 #include "component/motion.hpp"
 #include "component/ai/random.hpp"
@@ -13,7 +14,8 @@
 #include "component/atlas.hpp"
 #include "component/action/walk_run.hpp"
 #include "component/item/pickup.hpp"
-
+#include "component/collider.hpp"
+#include "component/shapes/circle.hpp"
 #include "messaging/concrete_messages/rendering_intent.hpp"
 #include "messaging/message_bus.hpp"
 #include "module/architecture/architecture_module.hpp"
@@ -24,7 +26,7 @@ namespace game{
 		Entity camera = ecs::CreateEntity();
 		Transform* cam_t = ecs::CreateComponent<Transform>(camera);
 		Camera* cam = ecs::CreateComponent<Camera>(camera);
-		cam_t->position = glm::vec3(0, -10, 8);
+		cam_t->position = glm::vec3(0, -15, 12);
 
 		RenderingIntent msg;
 		msg.id = 1;
@@ -35,20 +37,19 @@ namespace game{
 		Entity sprite = ecs::CreateEntity();
 		Transform* sprite_t = ecs::CreateComponent<Transform>(sprite);
 		ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
-		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/animated/female_1.txt");
+		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/body/f_body.txt");
 		ecs::CreateComponent<PlayerControllable>(sprite);
 		ecs::CreateComponent<Motion>(sprite);
 		ecs::CreateComponent<WalkRun>(sprite, 1.f, 6.f);
+		Collider* sc = ecs::CreateComponent<Collider>(sprite);
+		sc->SetMass(60.f);
+		sc->shape_type = Shape::CIRCLE;
+		ecs::CreateComponent<Circle>(sprite)->radius = 0.35;
 
 		Entity light = ecs::CreateEntity();
-		Transform* lt = ecs::CreateComponent<Transform>(light);
-		lt->position = glm::vec3(1.f, -4.5f, 15.f);
-		ecs::CreateComponent<PointLight>(light)->power = 300;
+		ecs::CreateComponent<DirectionalLight>(light, glm::vec3(-5, 5, -5), 0.8);
 		ecs::CreateComponent<Drawable>(light);
 
-		Constraint* lc = ecs::CreateComponent<Constraint>(light);
-		lc->type = ConstraintType::KEEP_OFFSET;
-		lc->SetOffset(&(lt->position), &(sprite_t->position));
 
 		Constraint* c = ecs::CreateComponent<Constraint>(camera);
 		c->type = ConstraintType::KEEP_OFFSET;
@@ -94,10 +95,16 @@ namespace game{
 		ecs::CreateComponent<Mesh>(plate)->LoadFromFile("../data/floor.obj");
 		ecs::CreateComponent<Drawable>(plate, DrawableType::MESH);
 
-		//Entity item = ecs::CreateEntity();
-		//ecs::CreateComponent<PickUp>(item);
-		//ecs::CreateComponent<Weapon>(item);
-
+		Entity item = ecs::CreateEntity();
+		ecs::CreateComponent<PickUp>(item, ItemType::MELEE, true);
+		ecs::CreateComponent<Texture>(item, "../data/item/weapon/melee/sword01.png");
+		ecs::CreateComponent<Transform>(item, glm::vec3(-6, 4, 0));
+		ecs::CreateComponent<Drawable>(item, DrawableType::SPRITE);
+		Collider* item_collider = ecs::CreateComponent<Collider>(item);
+		item_collider->sensor = true;
+		item_collider->SetMass(1.f);
+		item_collider->shape_type = Shape::CIRCLE;
+		ecs::CreateComponent<Circle>(item)->radius = 0.1;
 	}
 
 	void SpawnBuildings(double seed){

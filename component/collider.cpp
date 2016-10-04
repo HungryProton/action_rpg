@@ -14,6 +14,8 @@ namespace game{
 		this->SetMass(1.f);
 		this->restitution_factor = 0.8f;
 		this->target_velocity = glm::vec3(0.f, 0.f, 0.f);
+		this->sensor = false;
+		this->ghost = false;
 	}
 
 	// TODO : Use the shape to determine object's volume and multiply by

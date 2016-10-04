@@ -30,9 +30,9 @@ namespace game{
 
 			void UpdatePositions(PhysicComponents*);
 			void ResolveCollisions(Entity, PhysicComponents*);
-			void BoxvsBox(PhysicComponents*, PhysicComponents*);
-			void CirclevsCircle(PhysicComponents*, PhysicComponents*);
-			void BoxvsCircle(PhysicComponents*, PhysicComponents*);
+			bool BoxvsBox(PhysicComponents*, PhysicComponents*);
+			bool CirclevsCircle(PhysicComponents*, PhysicComponents*);
+			bool BoxvsCircle(PhysicComponents*, PhysicComponents*);
 			void ApplyImpulse(PhysicManifold);
 			void ApplyFriction(PhysicManifold);
 			void PositionalCorrection(PhysicManifold);

@@ -15,6 +15,10 @@ namespace game{
 		this->previous_position = glm::vec3(0.f, 0.f, 0.f);
 	}
 
+	Transform::Transform(glm::vec3 pos) : Transform(){
+		this->position = pos;
+	}
+
 	void Transform::dbg_display(){
 		std::cout << "x: " << this->position.x <<
 					" y: " << this->position.y <<

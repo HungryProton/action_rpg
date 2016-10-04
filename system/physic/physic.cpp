@@ -9,6 +9,7 @@
 #include "component/shapes/circle.hpp"
 #include "common/time.hpp"
 #include "common/math.hpp"
+#include "messaging/concrete_messages/event_message.hpp"
 
 namespace game{
 
@@ -68,6 +69,7 @@ namespace game{
 	}
 
 	void Physic::UpdatePositions(PhysicComponents* c){
+		if(glm::length(c->collider->target_velocity) == 0){ return; }
 		c->transform->position += c->collider->target_velocity*Time::GetPreviousDeltaTime();
 		float friction_modifier = 0.1; // Retrieve that from material when possible
 		glm::vec3 friction_vector = glm::normalize(c->collider->target_velocity)
@@ -88,20 +90,29 @@ namespace game{
 			// early return if both objects are static
 			if((collider_a->mass == 0) && (collider_b->mass == 0)){ continue; }
 
+			bool collided = false;
+
 			if(collider_a->shape_type == Shape::CIRCLE){
 
 				if(collider_b->shape_type == Shape::CIRCLE){
-					this->CirclevsCircle(ca, cb);
+					collided = this->CirclevsCircle(ca, cb);
 				} else if(collider_b->shape_type == Shape::BOX){
-					this->BoxvsCircle(ca, cb);
+					collided = this->BoxvsCircle(ca, cb);
 				}
 			} else if(collider_a->shape_type == Shape::BOX){
 
 				if(collider_b->shape_type == Shape::BOX){
-					this->BoxvsBox(ca, cb);
+					collided = this->BoxvsBox(ca, cb);
 				} else if(collider_b->shape_type == Shape::CIRCLE){
-					this->BoxvsCircle(ca, cb);
+					collided = this->BoxvsCircle(ca, cb);
 				}
+			}
+			if(collided){
+				EventMessage msg;
+				msg.from = entity;
+				msg.dest = Entity();
+				msg.dest.uid = pair.first;
+				msg.type = EventType::COLLISION;
 			}
 		}
 	}
@@ -110,7 +121,7 @@ namespace game{
 	// to avoid the other object trying to resolve the collisions once more
 	// during the same frame.
 
-	void Physic::BoxvsBox(PhysicComponents* a, PhysicComponents* b){
+	bool Physic::BoxvsBox(PhysicComponents* a, PhysicComponents* b){
 
 		Box* box_a = (Box*)a->shape;
 		Box* box_b = (Box*)b->shape;
@@ -127,7 +138,7 @@ namespace game{
 
 		float overlap_x = first_extent + second_extent - abs_nx;
 
-		if(overlap_x < 0){ return; }
+		if(overlap_x < 0){ return false; }
 
 		float ny = transform_a->position.y - transform_b->position.y;
 		float overlap_y;
@@ -138,7 +149,7 @@ namespace game{
 			overlap_y = box_b->height - ny;
 		}
 
-		if(overlap_y < 0){ return; }
+		if(overlap_y < 0){ return false; }
 
 		// If we reach that place, a collision occured
 
@@ -164,9 +175,10 @@ namespace game{
 		ApplyImpulse(m);
 		ApplyFriction(m);
 		PositionalCorrection(m);
+		return true;
 	}
 
-	void Physic::CirclevsCircle(PhysicComponents* a, PhysicComponents* b){
+	bool Physic::CirclevsCircle(PhysicComponents* a, PhysicComponents* b){
 
 		Transform* transform_a = a->transform;
 		Transform* transform_b = b->transform;
@@ -178,7 +190,7 @@ namespace game{
 		float r = circle_b->radius + circle_a->radius;
 		float r2 = r * r;
 
-		if(glm::length2(normal) > r2){ return; }
+		if(glm::length2(normal) > r2){ return false; }
 
 		float distance = glm::length(normal);
 		float penetration;
@@ -202,9 +214,11 @@ namespace game{
 		ApplyImpulse(m);
 		ApplyFriction(m);
 		PositionalCorrection(m);
+
+		return true;
 	}
 
-	void Physic::BoxvsCircle(PhysicComponents* a, PhysicComponents* b){
+	bool Physic::BoxvsCircle(PhysicComponents* a, PhysicComponents* b){
 
 		// First, determine wheter a or b is a circle or a box
 		Circle* circle;
@@ -258,7 +272,7 @@ namespace game{
 		float r = circle->radius;
 		r *= r;
 
-		if( (distance > r) && !inside ){ return; }
+		if( (distance > r) && !inside ){ return false; }
 
 		// Collision occured
 
@@ -277,6 +291,7 @@ namespace game{
 		ApplyImpulse(m);
 		ApplyFriction(m);
 		PositionalCorrection(m);
+		return true;
 	}
 
 	void Physic::ApplyImpulse(PhysicManifold m){

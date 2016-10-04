@@ -42,6 +42,10 @@ namespace game{
 			m->target_speed = wr->run_speed;
 		}
 
+		if(glm::length(msg.direction) == 0){
+			cmd.name = "idle";
+			cmd.direction = Direction::LAST;
+		}
 		MessageBus::Push(cmd);
 	}
 
