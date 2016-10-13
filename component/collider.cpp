@@ -27,6 +27,7 @@ namespace game{
 			this->inv_mass = 1.f / mass;
 		} else {
 			this->inv_mass = 0.f;
+			is_static = true;
 		}
 	}
 }

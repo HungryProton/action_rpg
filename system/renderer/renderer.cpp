@@ -5,6 +5,7 @@
 #include "component/drawable.hpp"
 #include "component/light/point.hpp"
 #include "component/light/directional.hpp"
+#include "shader/framebuffer.hpp"
 
 namespace game{
 
@@ -42,7 +43,9 @@ namespace game{
 		shader_controller_.Enable(Program::SSAO);
 		shader_controller_.UniformMatrix4fv("projection", camera_controller_.GetProjection());
 		shader_controller_.Uniform1i("kernelSize", 1);
-		//shader_controller_.RenderToScreen();
+		shader_controller_.RenderToScreen();
+
+		//ApplyBlur(Program::SSAO_BLUR, 3.f);
 
 		//shader_controller_.Enable(Program::BLOOM);
 		//shader_controller_.RenderToScreen();
@@ -167,6 +170,13 @@ namespace game{
 		node.atlas = ecs::GetComponent<Atlas>(entity);
 		node.is_valid = true;
 		return node;
+	}
+
+	void Renderer::ApplyBlur(Program prg, int rad){
+		glm::ivec2 size = context_controller_.GetWindowSize();
+		shader_controller_.Enable(prg);
+		shader_controller_.Uniform4f("dirResRad", glm::vec4(1.f, 0.f, size.x, rad));
+		shader_controller_.RenderToScreen();
 	}
 
 	GLFWwindow* Renderer::GetWindow(){

@@ -11,8 +11,7 @@ namespace game{
 	 * CAUTION : This class requires a valid OpenGL context to work
 	 */
 
-	enum class Program{NONE, G_BUFFER, SSAO, HBLUR, VBLUR,
-										 BLOOM, LIGHT_FLARE, LIGHTING};
+	enum class Program{NONE, G_BUFFER, SSAO, SSAO_BLUR, BLOOM, LIGHT_FLARE, LIGHTING};
 
 	class ShaderController{
 		public:
@@ -26,6 +25,7 @@ namespace game{
 			void UniformMatrix4fv(std::string, glm::mat4);
 			void Uniform2f(std::string, float, float);
 			void Uniform3f(std::string, glm::vec3);
+			void Uniform4f(std::string, glm::vec4);
 			void Uniform1i(std::string, int);
 			void Uniform1iv(std::string, int, int*);
 			void Uniform1fv(std::string, int, float*);

@@ -51,6 +51,7 @@ namespace game{
 			glm::mat4 GetModelMatrixFor(Transform*, glm::vec3);
 			void UpdateCamera();
 			void Draw(Drawable* drawable);
+			void ApplyBlur(Program, int);
 
 			ContextController context_controller_;
 			ShaderController shader_controller_;

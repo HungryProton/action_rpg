@@ -5,6 +5,8 @@
 #include "shader/gbuffer.hpp"
 #include "shader/deferred_lighting.hpp"
 #include "shader/ssao.hpp"
+#include "shader/blur.hpp"
+#include "shader/framebuffer.hpp"
 
 namespace game{
 
@@ -30,10 +32,12 @@ namespace game{
 		GBuffer* g_buffer = new GBuffer(width_, height_);
 		DeferredLighting* d_lighting = new DeferredLighting(width_, height_);
 		SSAO* ssao = new SSAO(width_, height_);
+		Blur* blur = new Blur(width_, height_, &Framebuffer::ssao_color_buffer_, &Framebuffer::ssao_blur_color_buffer_);
 
 		shaders_.insert(std::make_pair(Program::G_BUFFER, g_buffer));
 		shaders_.insert(std::make_pair(Program::LIGHTING, d_lighting));
 		shaders_.insert(std::make_pair(Program::SSAO, ssao));
+		shaders_.insert(std::make_pair(Program::SSAO_BLUR, blur));
 	}
 
 	void ShaderController::Enable(Program program){
@@ -58,6 +62,10 @@ namespace game{
 
 	void ShaderController::Uniform3f(std::string name, glm::vec3 val){
 		glUniform3f(GetUniformLocation(name), val.x, val.y, val.z);
+	}
+
+	void ShaderController::Uniform4f(std::string name, glm::vec4 val){
+		glUniform4f(GetUniformLocation(name), val[0], val[1], val[2], val[3]);
 	}
 
 	void ShaderController::Uniform1i(std::string name, int value){
