@@ -6,6 +6,8 @@
 #include "component/transform.hpp"
 #include "component/mesh.hpp"
 #include "component/drawable.hpp"
+#include "component/collider.hpp"
+#include "component/shapes/box.hpp"
 #include <dirent.h>
 
 namespace game{
@@ -150,6 +152,10 @@ namespace game{
 			}
 		} else {
 			name += "_standard_A1.obj";
+			Collider* c = ecs::CreateComponent<Collider>(wall.entity);
+			c->shape_type = Shape::BOX;
+			c->SetMass(0);
+			ecs::CreateComponent<Box>(wall.entity)->SetDimensions(glm::vec2(1, 0.4));
 		}
 
 		ecs::CreateComponent<Mesh>(wall.entity)->LoadFromFile(name);

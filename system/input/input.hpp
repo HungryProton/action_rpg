@@ -23,6 +23,8 @@ namespace game{
 			void AddEntryInKeymap(int, Command);
 			void SendCommandForKey(int, Command);
 			KeyStatus GetKeyStatus(int);
+			void DefineCursorParameters(GLFWwindow*);
+			static void OnCursorMove(GLFWwindow*, double, double);
 
 			GLFWwindow* window_;
 			std::map<int, Command> keymap_;

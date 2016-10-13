@@ -14,6 +14,7 @@ namespace game{
 
 	void Input::Initialize(GLFWwindow* window){
 		this->window_ = window;
+		DefineCursorParameters(window);
 	}
 
 	void Input::BeforeUpdate(){
@@ -22,6 +23,7 @@ namespace game{
 		for(auto it = this->keymap_.begin(); it != this->keymap_.end(); it++){
 			this->SendCommandForKey(it->first, it->second);
 		}
+
 	}
 
 	KeyStatus Input::GetKeyStatus(int key_code){
@@ -74,5 +76,17 @@ namespace game{
 
 	void Input::AddEntryInKeymap(int key_code, Command command){
 		this->keymap_.insert(std::pair<int, Command>(key_code, command));
+	}
+
+	void Input::DefineCursorParameters(GLFWwindow* window){
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		glfwSetCursorPosCallback(window, Input::OnCursorMove);
+	}
+
+	void Input::OnCursorMove(GLFWwindow*, double x, double y){
+		InputMessage msg;
+		msg.command = Command::TARGET;
+		msg.position = glm::vec2(x, y);
+		MessageBus::Push(msg);
 	}
 }
