@@ -15,6 +15,7 @@ namespace game{
 			void CreateAndBindFramebuffer();
 			GLuint* source_buffer_;
 			GLuint* target_buffer_;
+			GLuint buffer_;
 	};
 }
 

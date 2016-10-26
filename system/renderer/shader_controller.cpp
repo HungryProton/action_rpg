@@ -32,12 +32,12 @@ namespace game{
 		GBuffer* g_buffer = new GBuffer(width_, height_);
 		DeferredLighting* d_lighting = new DeferredLighting(width_, height_);
 		SSAO* ssao = new SSAO(width_, height_);
-		Blur* blur = new Blur(width_, height_, &Framebuffer::ssao_color_buffer_, &Framebuffer::ssao_blur_color_buffer_);
+		Blur* blur_ssao = new Blur(width_, height_, &Framebuffer::ssao_color_buffer_, &Framebuffer::ssao_blur_color_buffer_);
 
 		shaders_.insert(std::make_pair(Program::G_BUFFER, g_buffer));
 		shaders_.insert(std::make_pair(Program::LIGHTING, d_lighting));
 		shaders_.insert(std::make_pair(Program::SSAO, ssao));
-		shaders_.insert(std::make_pair(Program::SSAO_BLUR, blur));
+		shaders_.insert(std::make_pair(Program::SSAO_BLUR, blur_ssao));
 	}
 
 	void ShaderController::Enable(Program program){

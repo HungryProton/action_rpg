@@ -18,9 +18,21 @@ namespace game{
 	}
 
 	void Blur::CreateAndBindFramebuffer(){
-		glGenFramebuffers(1, target_buffer_);
-		glBindFramebuffer(GL_FRAMEBUFFER, *target_buffer_);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, *target_buffer_, 0);
+		glGenFramebuffers(1, &buffer_);
+		glBindFramebuffer(GL_FRAMEBUFFER, buffer_);
+
+		glGenTextures(1, target_buffer_);
+		glBindTexture(GL_TEXTURE_2D, *target_buffer_);
+		// If monochrome
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width_, height_, 0, GL_RGB,
+		GL_FLOAT, NULL);
+		// else make it full rgb
+			// Add code here maybe
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+		*target_buffer_, 0);
+
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         LOG(CRITICAL) << "Blur Framebuffer not complete!" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
