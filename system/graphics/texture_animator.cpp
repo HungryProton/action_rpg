@@ -21,15 +21,14 @@ namespace game{
 		float elapsed_time = current_time - atlas->start_time;
 		int current_frame = (int)(elapsed_time*24.f);
 		if(current_frame == atlas->current_frame){ return; }
-		LOG(DEBUG) << "dir" << (int)atlas->current_direction << std::endl;
 
-		atlas->current_animation.texture->shift = atlas->current_animation.positions.find(atlas->current_direction)->second[current_frame];
-
-		if(current_frame >= atlas->current_animation.frame_count-1){
+		if(current_frame >= atlas->current_animation->frame_count-1){
 			if(!atlas->loop){return;}
 			atlas->start_time = current_time;
-			atlas->current_frame = 0;
+			current_frame = 0;
 		}
+		atlas->current_frame = current_frame;
+		atlas->current_animation->texture->shift = atlas->current_animation->positions.find(atlas->current_direction)->second[current_frame];
 	}
 
 	void TextureAnimator::OnMessage(AnimationCommand message){
@@ -53,12 +52,11 @@ namespace game{
 	void TextureAnimator::Play(Atlas* atlas, std::string animation_name, Direction d){
 
 		// don't play the animation if it is already playing
-		if( atlas->play && (atlas->current_animation.name == animation_name) ){
+		if( atlas->play && (atlas->current_animation->name == animation_name) ){
 			if(d == Direction::LAST){ return; }
 			if(d == atlas->current_direction){ return; }
 		}
 
-		LOG(DEBUG) << "Playing " << animation_name << std::endl;
 		auto it = atlas->animations.find(animation_name);
 		if(it == atlas->animations.end()){ return; } // Animation not found
 
@@ -69,7 +67,7 @@ namespace game{
 		if(d != Direction::LAST){
 			atlas->current_direction = d;
 		}
-		atlas->current_animation = atlas->animations.find(animation_name)->second;
+		atlas->current_animation = &(atlas->animations.find(animation_name)->second);
 		//this->current_priority = it->second.priority;
 		atlas->start_time = Time::GetCurrentTime();
 		atlas->current_frame = -1;

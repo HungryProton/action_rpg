@@ -27,8 +27,12 @@ namespace game{
 	}
 
 	Direction GetDirectionFromVector(glm::vec3 dir){
+		if(glm::length(dir) == 0){ return Direction::LAST; }
 		float angle = atan2(dir.y, dir.x) * 180 / PI;
+		return GetDirectionFromAngle(angle);
+	}
 
+	Direction GetDirectionFromAngle(float angle){
 		if((angle > -180 && angle < -157.5) || (angle < 180 && angle > 157.5)){
 			return Direction::W;
 		} else if (angle > -157.5 && angle < -112.5){
@@ -47,6 +51,29 @@ namespace game{
 			return Direction::SW;
 		}
 		return Direction::LAST;
+	}
+
+	std::string DirectionToString(Direction d){
+		switch(d){
+			case Direction::N:
+				return "N";
+			case Direction::S:
+				return "S";
+			case Direction::E:
+				return "E";
+			case Direction::W:
+				return "W";
+			case Direction::NE:
+				return "NE";
+			case Direction::NW:
+				return "NW";
+			case Direction::SE:
+				return "SE";
+			case Direction::SW:
+				return "SW";
+			case Direction::LAST:
+				return "LAST";
+		}
 	}
 }
 

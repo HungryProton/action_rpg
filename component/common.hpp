@@ -27,7 +27,9 @@ namespace game{
 		bool IsObjectWithin(Entity);
 	};
 
+	Direction GetDirectionFromAngle(float angle);
 	Direction GetDirectionFromVector(glm::vec3);
+	std::string DirectionToString(Direction);
 }
 
 #endif //GAME_CORE_COMPONENT_COMMON_HPP

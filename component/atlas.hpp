@@ -21,7 +21,7 @@ namespace game{
 	struct Atlas{
 		std::map<std::string, Animation> animations;
 		std::string base_name;
-		Animation current_animation;
+		Animation* current_animation;
 		int current_frame;
 		float start_time;
 		bool loop;

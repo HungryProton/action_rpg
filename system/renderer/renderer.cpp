@@ -111,7 +111,7 @@ namespace game{
 
 		Texture* texture = nullptr;
 		if(node.atlas){
-			texture = node.atlas->current_animation.texture;
+			texture = node.atlas->current_animation->texture;
 		} else if(node.texture){
 			texture = node.texture;
 		}

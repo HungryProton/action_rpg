@@ -7,6 +7,7 @@ namespace game{
 
 	Controllable::Controllable() : System(){
 		Require<PlayerControllable>();
+		intent_modified_ = false;
 	}
 
 	Controllable::~Controllable(){}
@@ -19,6 +20,7 @@ namespace game{
 	// Usually we only have a single controllable entity but this system allows
 	// simultaneous control of multiple entities
 	void Controllable::OnUpdate(Entity entity){
+		if(!intent_modified_){ return; }
 		intent_.dest = entity;
 		MessageBus::Push(intent_);
 	}
@@ -26,12 +28,14 @@ namespace game{
 	// Reset intent once they were applied to the entities.
 	void Controllable::AfterUpdate(){
 		intent_ = IntentMessage();
+		intent_modified_ = false;
 	}
 
 	// When an input message is received, convert it into an intent and
 	// store it. It does not broadcast the intent directly as we need
 	// to inject the entities id inside first.
 	void Controllable::OnMessage(InputMessage message){
+		intent_modified_ = true;
 		int modifier = 1;
 		if(message.status == KeyStatus::JUST_RELEASED){
 			modifier = 0;

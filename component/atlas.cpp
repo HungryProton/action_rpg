@@ -33,7 +33,7 @@ namespace game{
 			}
 			file.close();
 		}
-		current_animation = animations.begin()->second;
+		current_animation = &(animations.begin()->second);
 	}
 
 	void Atlas::LoadSpriteSheet(std::string name, std::string path, int priority){

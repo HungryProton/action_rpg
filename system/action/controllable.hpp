@@ -23,6 +23,7 @@ namespace game{
 			void OnMessage(InputMessage);
 
 			IntentMessage intent_;
+			bool intent_modified_;
 	};
 }
 

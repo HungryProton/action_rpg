@@ -31,7 +31,7 @@ namespace game{
 		cmd.dest = e;
 		cmd.action = AnimationAction::PLAY;
 		cmd.loop = true;
-		cmd.direction = GetDirectionFromVector(msg.motion_direction);
+		cmd.direction = GetDirectionFromVector(glm::vec3(msg.motion_direction.x, -msg.motion_direction.y, msg.motion_direction.z));
 		m->direction = msg.motion_direction;
 
 		if(msg.intent == Intent::WALK){
