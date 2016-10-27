@@ -19,7 +19,6 @@ namespace game{
 			void BeforeUpdate();
 			void OnUpdate(Entity);
 			void OnMessage(IntentMessage);
-			Direction GetDirectionFromVector(glm::vec3);
 	};
 }
 

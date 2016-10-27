@@ -31,8 +31,8 @@ namespace game{
 		cmd.dest = e;
 		cmd.action = AnimationAction::PLAY;
 		cmd.loop = true;
-		cmd.direction = GetDirectionFromVector(msg.direction);
-		m->direction = msg.direction;
+		cmd.direction = GetDirectionFromVector(msg.motion_direction);
+		m->direction = msg.motion_direction;
 
 		if(msg.intent == Intent::WALK){
 			cmd.name = "walk";
@@ -42,22 +42,10 @@ namespace game{
 			m->target_speed = wr->run_speed;
 		}
 
-		if(glm::length(msg.direction) == 0){
+		if(glm::length(msg.motion_direction) == 0){
 			cmd.name = "idle";
 			cmd.direction = Direction::LAST;
 		}
 		MessageBus::Push(cmd);
-	}
-
-	Direction WalkRunSystem::GetDirectionFromVector(glm::vec3 vec){
-		if(vec.x == 0 && vec.y > 0){ return Direction::N; }
-		if(vec.x == 0 && vec.y < 0){ return Direction::S; }
-		if(vec.x > 0 && vec.y == 0){ return Direction::E; }
-		if(vec.x < 0 && vec.y == 0){ return Direction::W; }
-		if(vec.x > 0 && vec.y > 0){ return Direction::NE; }
-		if(vec.x < 0 && vec.y > 0){ return Direction::NW; }
-		if(vec.x > 0 && vec.y < 0){ return Direction::SE; }
-		if(vec.x < 0 && vec.y < 0){ return Direction::SW; }
-		return Direction::LAST;
 	}
 }

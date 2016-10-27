@@ -25,6 +25,7 @@ namespace game{
 			KeyStatus GetKeyStatus(int);
 			void DefineCursorParameters(GLFWwindow*);
 			static void OnCursorMove(GLFWwindow*, double, double);
+			static glm::vec2 GetPositionFromScreenCoordinates(GLFWwindow*, int, int);
 
 			GLFWwindow* window_;
 			std::map<int, Command> keymap_;

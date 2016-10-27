@@ -26,6 +26,8 @@ namespace game{
 
 		bool IsObjectWithin(Entity);
 	};
+
+	Direction GetDirectionFromVector(glm::vec3);
 }
 
 #endif //GAME_CORE_COMPONENT_COMMON_HPP

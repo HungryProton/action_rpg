@@ -1,6 +1,10 @@
 #ifndef CORE_TOOLS_MATH_HPP
 #define CORE_TOOLS_MATH_HPP
 
+#include <math.h>
+
+#define PI 3.14159
+
 namespace game{
 
 	class Math{

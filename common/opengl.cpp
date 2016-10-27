@@ -23,4 +23,10 @@ namespace game{
 		}
 		return 0;	// No error
 	}
+
+	glm::vec2 GetWindowSize(GLFWwindow* window){
+		glm::ivec2 size;
+		glfwGetWindowSize(window, &size.x, &size.y);
+		return size;
+	}
 }

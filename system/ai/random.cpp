@@ -15,7 +15,7 @@ namespace game{
 	void RandomAISystem::OnUpdate(Entity e){
 		IntentMessage msg;
 		msg.intent = Intent::WALK;
-		msg.direction = glm::vec3(1.f, 0.f, 0.f);
+		msg.motion_direction = glm::vec3(1.f, 0.f, 0.f);
 		msg.dest = e;
 
 		MessageBus::Push(msg);

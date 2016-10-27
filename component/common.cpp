@@ -1,6 +1,7 @@
 #include "common.hpp"
 #include "transform.hpp"
 #include "ecs/ecs.hpp"
+#include "common/math.hpp"
 
 namespace game{
 
@@ -23,6 +24,29 @@ namespace game{
 			default:
 				return false;
 		}
+	}
+
+	Direction GetDirectionFromVector(glm::vec3 dir){
+		float angle = atan2(dir.y, dir.x) * 180 / PI;
+
+		if((angle > -180 && angle < -157.5) || (angle < 180 && angle > 157.5)){
+			return Direction::W;
+		} else if (angle > -157.5 && angle < -112.5){
+			return Direction::NW;
+		} else if (angle > -112.5 && angle < -67.5){
+			return Direction::N;
+		} else if (angle > -67.5 && angle < -22.5){
+			return Direction::NE;
+		} else if (angle > -22.5 && angle < 22.5){
+			return Direction::E;
+		} else if (angle > 22.5 && angle < 67.5){
+			return Direction::SE;
+		} else if (angle > 67.5 && angle < 112.5){
+			return Direction::S;
+		} else if (angle > 112.5 && angle < 157.5){
+			return Direction::SW;
+		}
+		return Direction::LAST;
 	}
 }
 

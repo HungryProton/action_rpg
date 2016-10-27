@@ -20,6 +20,7 @@
 
 namespace game{
 	int _check_gl_error(const char* file, int line);
+	glm::vec2 GetWindowSize(GLFWwindow*);
 }
 
 #endif //GAME_TOOLS_OPENGL_HPP

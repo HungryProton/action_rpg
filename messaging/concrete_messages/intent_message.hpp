@@ -16,9 +16,10 @@ namespace game{
 
 	struct IntentMessage : public Message{
 		Intent intent;
-		glm::vec3 direction;
+		glm::vec3 motion_direction;
+		glm::vec3 target_direction;
 
-		IntentMessage(){ direction = glm::vec3(0.f, 0.f, 0.f); }
+		IntentMessage();
 	};
 }
 #endif //GAME_CORE_MESSAGING_CONCRETE_COMMAND_HPP

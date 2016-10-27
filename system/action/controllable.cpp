@@ -23,6 +23,7 @@ namespace game{
 		MessageBus::Push(intent_);
 	}
 
+	// Reset intent once they were applied to the entities.
 	void Controllable::AfterUpdate(){
 		intent_ = IntentMessage();
 	}
@@ -43,29 +44,34 @@ namespace game{
 
 		switch(message.command){
 			case Command::UP:
-				intent_.direction.y = +modifier;
+				intent_.motion_direction.y = +modifier;
 				break;
 
 			case Command::DOWN:
-				intent_.direction.y = -modifier;
+				intent_.motion_direction.y = -modifier;
 				break;
 
 			case Command::LEFT:
-				intent_.direction.x = -modifier;
+				intent_.motion_direction.x = -modifier;
 				break;
 
 			case Command::RIGHT:
-				intent_.direction.x = +modifier;
+				intent_.motion_direction.x = +modifier;
 				break;
 
 			case Command::ATTACK:
 				intent_.intent = Intent::ATTACK;
+				break;
 
 			case Command::BLOCK:
+				break;
 
 			case Command::ACTION:
+				break;
 
 			case Command::TARGET:
+				intent_.target_direction = glm::vec3(message.position, 0.f);
+				break;
 
 			default:
 				break;

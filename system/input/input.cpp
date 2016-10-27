@@ -83,10 +83,17 @@ namespace game{
 		glfwSetCursorPosCallback(window, Input::OnCursorMove);
 	}
 
-	void Input::OnCursorMove(GLFWwindow*, double x, double y){
+	void Input::OnCursorMove(GLFWwindow* window, double x, double y){
 		InputMessage msg;
 		msg.command = Command::TARGET;
-		msg.position = glm::vec2(x, y);
+		msg.position = GetPositionFromScreenCoordinates(window, x, y);
 		MessageBus::Push(msg);
+	}
+
+	glm::vec2 Input::GetPositionFromScreenCoordinates(GLFWwindow* window, int x, int y){
+		// Assumes the character is in the middle of the screen
+		glm::vec2 size = GetWindowSize(window);
+		glm::vec2 dir = glm::vec2(x, y) - size/2.f;
+		return glm::normalize(dir);
 	}
 }
