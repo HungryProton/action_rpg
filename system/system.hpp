@@ -19,8 +19,8 @@ namespace game{
 			template<class...Components>
 			void Require();
 
-			virtual void OnUpdate(Entity);
 			virtual void BeforeUpdate();
+			virtual void OnUpdate(Entity);
 			virtual void AfterUpdate();
 
 		private:

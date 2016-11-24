@@ -24,7 +24,7 @@ namespace game{
 		glm::vec3 offset;
 
 		Constraint();
-		void SetOffset(glm::vec3*, glm::vec3*);
+		void SetOffset(glm::vec3* value, glm::vec3* target_value);
 	};
 }
 

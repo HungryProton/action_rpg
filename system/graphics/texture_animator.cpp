@@ -17,6 +17,13 @@ namespace game{
 	void TextureAnimator::OnUpdate(Entity e){
 		Atlas* atlas = ecs::GetComponent<Atlas>(e);
 
+		// If atlas should be synchronized with another, put it in a buffer
+		// and sync it after everything else is up to date
+		if(atlas->master != nullptr){
+			sync_buffer_.push_back(atlas);
+			return;
+		}
+
 		float current_time = Time::GetCurrentTime();
 		float elapsed_time = current_time - atlas->start_time;
 		int current_frame = (int)(elapsed_time*24.f);
@@ -29,6 +36,20 @@ namespace game{
 		}
 		atlas->current_frame = current_frame;
 		atlas->current_animation->texture->shift = atlas->current_animation->positions.find(atlas->current_direction)->second[current_frame];
+	}
+
+	void TextureAnimator::AfterUpdate(){
+		for(Atlas* atlas : sync_buffer_){
+			Atlas* master = atlas->master;
+			std::string name = master->current_animation->name;
+			if(master->current_animation->name != atlas->current_animation->name){
+				atlas->current_animation = &(atlas->animations.find(name)->second);
+			}
+			atlas->current_frame = master->current_frame;
+			atlas->current_direction = master->current_direction;
+			atlas->current_animation->texture->shift = master->current_animation->texture->shift;
+		}
+		sync_buffer_.clear();
 	}
 
 	void TextureAnimator::OnMessage(AnimationCommand message){
@@ -64,13 +85,17 @@ namespace game{
 		//if(it->second.priority >= this->current_priority
 		//		&& this->current_priority != -1){ return; }
 
+		// Dont change current frame if we only changed direction
+		if(atlas->current_animation->name != animation_name){
+			atlas->current_frame = -1;
+			atlas->start_time = Time::GetCurrentTime();
+		}
+
 		if(d != Direction::LAST){
 			atlas->current_direction = d;
 		}
 		atlas->current_animation = &(atlas->animations.find(animation_name)->second);
 		//this->current_priority = it->second.priority;
-		atlas->start_time = Time::GetCurrentTime();
-		atlas->current_frame = -1;
 		atlas->play = true;
 	}
 

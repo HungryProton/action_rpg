@@ -13,6 +13,7 @@ namespace game{
 		loop = true;
 		play = true;
 		current_direction = Direction::S;
+		master = nullptr;
 	}
 
 	Atlas::Atlas(std::string file_path) : Atlas(){
@@ -34,6 +35,10 @@ namespace game{
 			file.close();
 		}
 		current_animation = &(animations.begin()->second);
+	}
+
+	void Atlas::SynchronizeWith(Atlas* atlas){
+		master = atlas;
 	}
 
 	void Atlas::LoadSpriteSheet(std::string name, std::string path, int priority){
@@ -104,19 +109,19 @@ namespace game{
 			case 0:
 				return Direction::S;
 			case 45:
-				return Direction::SE;
+				return Direction::SW;
 			case 90:
-				return Direction::E;
+				return Direction::W;
 			case 135:
-				return Direction::NE;
+				return Direction::NW;
 			case 180:
 				return Direction::N;
 			case 225:
-				return Direction::NW;
+				return Direction::NE;
 			case 270:
-				return Direction::W;
+				return Direction::E;
 			case 315:
-				return Direction::SW;
+				return Direction::SE;
 			default:
 				return Direction::LAST;
 		}

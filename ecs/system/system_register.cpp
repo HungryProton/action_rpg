@@ -10,6 +10,8 @@
 #include "system/debug/stats.hpp"
 #include "system/graphics/texture_animator.hpp"
 #include "system/action/walk_run.hpp"
+#include "system/action/follow_pointer.hpp"
+#include "system/item/equipment_system.hpp"
 
 namespace game{
 
@@ -19,7 +21,9 @@ namespace game{
 	void SystemRegister::Initialize(){
 		CreateSystem<Input>();
 		CreateSystem<Controllable>();
+		CreateSystem<EquipmentSystem>();
 		CreateSystem<RandomAISystem>();
+		CreateSystem<FollowPointer>();
 		CreateSystem<WalkRunSystem>();
 		CreateSystem<MotionSystem>();
 		CreateSystem<Physic>();

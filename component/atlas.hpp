@@ -27,10 +27,12 @@ namespace game{
 		bool loop;
 		bool play;
 		Direction current_direction;
+		Atlas* master;
 
 		Atlas();
 		Atlas(std::string);
 		void LoadFromFile(std::string);
+		void SynchronizeWith(Atlas*);
 
 		protected:
 			void LoadSpriteSheet(std::string, std::string, int);

@@ -19,14 +19,18 @@
 #include "messaging/concrete_messages/rendering_intent.hpp"
 #include "messaging/message_bus.hpp"
 #include "module/architecture/architecture_module.hpp"
+#include "component/action/follow_pointer.hpp"
+#include "component/item/equipment.hpp"
 
 namespace game{
+
+	void SpawnMesh(std::string, int, float);
 
 	void SpawnBasicEntities_tmp(){
 		Entity camera = ecs::CreateEntity();
 		Transform* cam_t = ecs::CreateComponent<Transform>(camera);
 		Camera* cam = ecs::CreateComponent<Camera>(camera);
-		cam_t->position = glm::vec3(0, -15, 12);
+		cam_t->position = glm::vec3(0, -5, 12);
 
 		RenderingIntent msg;
 		msg.id = 1;
@@ -35,7 +39,7 @@ namespace game{
 		MessageBus::Push(msg);
 
 		Entity sprite = ecs::CreateEntity();
-		Transform* sprite_t = ecs::CreateComponent<Transform>(sprite);
+		Transform* sprite_t = ecs::CreateComponent<Transform>(sprite, glm::vec3(0, 10, 0));
 		ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
 		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/body/f_body.txt");
 		ecs::CreateComponent<PlayerControllable>(sprite);
@@ -45,6 +49,23 @@ namespace game{
 		sc->SetMass(60.f);
 		sc->shape_type = Shape::CIRCLE;
 		ecs::CreateComponent<Circle>(sprite)->radius = 0.35;
+		ecs::CreateComponent<FollowPointer>(sprite);
+
+
+		Entity player_hair = ecs::CreateEntity();
+		ecs::CreateComponent<Transform>(player_hair);
+		ecs::CreateComponent<Drawable>(player_hair)->type = DrawableType::SPRITE;
+		ecs::CreateComponent<Atlas>(player_hair, "../data/characters/female/hair/long_02/long_hair_02.txt");
+
+		Entity player_armor = ecs::CreateEntity();
+		ecs::CreateComponent<Transform>(player_armor);
+		ecs::CreateComponent<Drawable>(player_armor)->type = DrawableType::SPRITE;
+		ecs::CreateComponent<Atlas>(player_armor, "../data/characters/female/clothes/01/clothes_01.txt");
+
+		Equipment* equipment = ecs::CreateComponent<Equipment>(sprite, EquipmentType::HEAD);
+		equipment->Equip(player_hair);
+		Equipment* equipment2 = ecs::CreateComponent<Equipment>(sprite, EquipmentType::BODY);
+		equipment2->Equip(player_armor);
 
 		Entity light = ecs::CreateEntity();
 		ecs::CreateComponent<DirectionalLight>(light, glm::vec3(-5, 5, -5), 0.8);
@@ -105,11 +126,33 @@ namespace game{
 		item_collider->SetMass(1.f);
 		item_collider->shape_type = Shape::CIRCLE;
 		ecs::CreateComponent<Circle>(item)->radius = 0.1;
+
+		SpawnMesh("../data/environment/terrain/vegetation/bush.obj", 10, 0.2);
+		SpawnMesh("../data/environment/terrain/vegetation/tree.obj", 10, 0.2);
+		SpawnMesh("../data/environment/terrain/rock/rock_01.obj", 5, 1.1);
+		SpawnMesh("../data/environment/terrain/rock/rock_02.obj", 5, 1.1);
 	}
 
 	void SpawnBuildings(double seed){
 		ArchitectureModule module;
 		module.Generate(seed);
+	}
+
+	void SpawnMesh(std::string item, int count, float radius){
+		for(int i = 0; i < count; i++){
+
+			int x = 10 - Random::NextFloat(20);
+			int y = 10 - Random::NextFloat(20);
+
+			Entity e = ecs::CreateEntity();
+			ecs::CreateComponent<Transform>(e, glm::vec3(x, y, 0));
+			ecs::CreateComponent<Mesh>(e)->LoadFromFile(item);
+			Collider* c = ecs::CreateComponent<Collider>(e);
+			c->SetMass(0);
+			c->shape_type = Shape::CIRCLE;
+			ecs::CreateComponent<Circle>(e)->radius = radius;
+			ecs::CreateComponent<Drawable>(e)->type = DrawableType::MESH;
+		}
 	}
 
 	void World::Initialize(double seed){
