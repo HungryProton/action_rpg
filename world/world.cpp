@@ -75,11 +75,13 @@ namespace game{
 		Constraint* c = ecs::CreateComponent<Constraint>(camera);
 		c->type = ConstraintType::KEEP_OFFSET;
 		c->SetOffset(&(cam_t->position), &(sprite_t->position));
+		c->name = "Camera, keep offset wth target";
 
 		Constraint* c2 = ecs::CreateComponent<Constraint>(camera);
 		c2->type = ConstraintType::COPY;
 		c2->value = &(cam->target);
 		c2->target_value = &(sprite_t->position);
+		c->name = "Camera, copy target from player position";
 
 		for(int i = 0; i < 10; i++){
 			Entity pnj = ecs::CreateEntity();

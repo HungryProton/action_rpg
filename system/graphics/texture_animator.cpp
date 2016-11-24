@@ -47,7 +47,7 @@ namespace game{
 			}
 			atlas->current_frame = master->current_frame;
 			atlas->current_direction = master->current_direction;
-			atlas->current_animation->texture->shift = master->current_animation->texture->shift;
+			atlas->current_animation->texture->shift = atlas->current_animation->positions.find(atlas->current_direction)->second[atlas->current_frame];
 		}
 		sync_buffer_.clear();
 	}

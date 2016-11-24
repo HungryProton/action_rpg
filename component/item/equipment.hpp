@@ -9,7 +9,7 @@ namespace game{
 
 	// First value appears behind
 	// Last value appears on top
-	enum class EquipmentType{WEAPON, BODY, HEAD};
+	enum class EquipmentType{BODY, WEAPON, HEAD};
 
 	struct Equipment{
 		bool initialized;

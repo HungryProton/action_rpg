@@ -5,6 +5,7 @@
 #include "component/constraint.hpp"
 #include "component/atlas.hpp"
 #include "ecs/ecs.hpp"
+#include <string>
 
 namespace game{
 
@@ -39,6 +40,7 @@ namespace game{
 			constraint->soft_resolve = false;
 			constraint->type = ConstraintType::KEEP_OFFSET;
 			constraint->SetOffset(&(equipment_t->position), &(parent_t->position));
+			constraint->name = "Equipment " + std::to_string((int)equipment->type);
 
 			Atlas* equipment_atlas = ecs::GetComponent<Atlas>(equipment->equiped_item);
 			Atlas* parent_atlas = ecs::GetComponent<Atlas>(e);
