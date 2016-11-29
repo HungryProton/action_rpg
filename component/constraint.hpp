@@ -1,6 +1,7 @@
 #ifndef GAME_COMPONENT_CONSTRAINT_HPP_
 #define GAME_COMPONENT_CONSTRAINT_HPP_
 
+#include <string>
 #include "common/glm.hpp"
 
 namespace game{
@@ -23,6 +24,7 @@ namespace game{
 		glm::vec3* value;
 		glm::vec3 offset;
 
+		std::string name;
 		Constraint();
 		void SetOffset(glm::vec3* value, glm::vec3* target_value);
 	};

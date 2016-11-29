@@ -9,6 +9,7 @@ namespace game{
 		target_value = nullptr;
 		soft_resolve = false;
 		coefficient = 0.5f;
+		name = "";
 	}
 
 	void Constraint::SetOffset(glm::vec3* val, glm::vec3* target){
