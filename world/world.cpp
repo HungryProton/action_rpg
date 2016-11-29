@@ -20,7 +20,7 @@
 #include "messaging/message_bus.hpp"
 #include "module/architecture/architecture_module.hpp"
 #include "component/action/follow_pointer.hpp"
-#include "component/item/equipment.hpp"
+#include "component/item/equipment_slot.hpp"
 
 namespace game{
 
@@ -62,9 +62,9 @@ namespace game{
 		ecs::CreateComponent<Drawable>(player_armor)->type = DrawableType::SPRITE;
 		ecs::CreateComponent<Atlas>(player_armor, "../data/characters/female/clothes/01/clothes_01.txt");
 
-		Equipment* equipment = ecs::CreateComponent<Equipment>(sprite, EquipmentType::HEAD);
+		EquipmentSlot* equipment = ecs::CreateComponent<EquipmentSlot>(sprite, EquipmentType::HEAD);
 		equipment->Equip(player_hair);
-		Equipment* equipment2 = ecs::CreateComponent<Equipment>(sprite, EquipmentType::BODY);
+		EquipmentSlot* equipment2 = ecs::CreateComponent<EquipmentSlot>(sprite, EquipmentType::BODY);
 		equipment2->Equip(player_armor);
 
 		Entity light = ecs::CreateEntity();

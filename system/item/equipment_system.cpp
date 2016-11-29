@@ -1,6 +1,6 @@
 #include "equipment_system.hpp"
 #include "component/item/pickup.hpp"
-#include "component/item/equipment.hpp"
+#include "component/item/equipment_slot.hpp"
 #include "component/transform.hpp"
 #include "component/constraint.hpp"
 #include "component/atlas.hpp"
@@ -10,7 +10,7 @@
 namespace game{
 
 	EquipmentSystem::EquipmentSystem() : System(){
-		Require<Transform, Equipment>();
+		Require<Transform, EquipmentSlot>();
 	}
 
 	EquipmentSystem::~EquipmentSystem(){}
@@ -21,34 +21,34 @@ namespace game{
 	}
 
 	void EquipmentSystem::OnUpdate(Entity e){
-		std::vector<Equipment*> equipment_list = ecs::GetAllComponents<Equipment>(e);
+		std::vector<EquipmentSlot*> equipment_list = ecs::GetAllComponents<EquipmentSlot>(e);
 
-		for(Equipment* equipment : equipment_list){
-			if(equipment->initialized){ continue; }
-			if(equipment->equiped_item.uid == 0){ continue; }
+		for(EquipmentSlot* slot : equipment_list){
+			if(slot->initialized){ continue; }
+			if(slot->equiped_item.uid == 0){ continue; }
 
 			LOG(DEBUG) << "Initializing " << e.uid << std::endl;
 			Transform* parent_t = ecs::GetComponent<Transform>(e);
-			Transform* equipment_t = ecs::GetComponent<Transform>(equipment->equiped_item);
+			Transform* equipment_t = ecs::GetComponent<Transform>(slot->equiped_item);
 
-			float offset = 0.01 * ((int)equipment->type+1);
+			float offset = 0.01 * ((int)slot->type+1);
 
 			equipment_t->position = parent_t->position;
 			equipment_t->position.y -= offset;
 
-			Constraint* constraint = ecs::CreateComponent<Constraint>(equipment->equiped_item);
+			Constraint* constraint = ecs::CreateComponent<Constraint>(slot->equiped_item);
 			constraint->soft_resolve = false;
 			constraint->type = ConstraintType::KEEP_OFFSET;
 			constraint->SetOffset(&(equipment_t->position), &(parent_t->position));
-			constraint->name = "Equipment " + std::to_string((int)equipment->type);
+			constraint->name = "Equipment " + std::to_string((int)slot->type);
 
-			Atlas* equipment_atlas = ecs::GetComponent<Atlas>(equipment->equiped_item);
+			Atlas* equipment_atlas = ecs::GetComponent<Atlas>(slot->equiped_item);
 			Atlas* parent_atlas = ecs::GetComponent<Atlas>(e);
 			if(equipment_atlas != nullptr && parent_atlas != nullptr){
 				equipment_atlas->SynchronizeWith(parent_atlas);
 			}
 
-			equipment->initialized = true;
+			slot->initialized = true;
 		}
 	}
 
@@ -80,7 +80,7 @@ namespace game{
 		}
 		if(pickup == nullptr){return; } // no entity can be picked, return;
 
-		Equipment* equipment_component = ecs::GetComponent<Equipment>(has_equipment);
+		EquipmentSlot* equipment_component = ecs::GetComponent<EquipmentSlot>(has_equipment);
 		if(equipment_component == nullptr){ return; }
 		// Past this point, we detected that a pickable item entered in collision
 		// with an entity with equipement

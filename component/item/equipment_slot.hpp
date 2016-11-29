@@ -1,5 +1,5 @@
-#ifndef GAME_COMPONENT_ITEMS_EQUIPMENT_HPP_
-#define GAME_COMPONENT_ITEMS_EQUIPMENT_HPP_
+#ifndef GAME_COMPONENT_ITEMS_EQUIPMENT_SLOT_HPP_
+#define GAME_COMPONENT_ITEMS_EQUIPMENT_SLOT_HPP_
 
 #include <vector>
 #include <string>
@@ -11,14 +11,14 @@ namespace game{
 	// Last value appears on top
 	enum class EquipmentType{BODY, WEAPON, HEAD};
 
-	struct Equipment{
+	struct EquipmentSlot{
 		bool initialized;
 		const EquipmentType type;
 		Entity equiped_item;
 
-		Equipment(EquipmentType);
+		EquipmentSlot(EquipmentType);
 		void Equip(Entity);
 	};
 }
 
-#endif //GAME_COMPONENT_ITEMS_EQUIPMENT_HPP_
+#endif //GAME_COMPONENT_ITEMS_EQUIPMENT_SLOT_HPP_
