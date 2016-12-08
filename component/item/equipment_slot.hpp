@@ -4,14 +4,12 @@
 #include <vector>
 #include <string>
 #include "ecs/entity/entity.hpp"
+#include "component/common.hpp"
 
 namespace game{
 
-	// First value appears behind
-	// Last value appears on top
-	enum class EquipmentType{BODY, WEAPON, HEAD};
-
 	struct EquipmentSlot{
+
 		bool initialized;
 		const EquipmentType type;
 		Entity equiped_item;

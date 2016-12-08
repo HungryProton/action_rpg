@@ -4,10 +4,10 @@ namespace game{
 
 	PickUp::PickUp(){
 		auto_pick = false;
-		type = ItemType::MISC;
+		type = EquipmentType::NONE;
 	}
 
-	PickUp::PickUp(ItemType _type, bool _auto){
+	PickUp::PickUp(EquipmentType _type, bool _auto){
 		type = _type;
 		auto_pick = _auto;
 	}

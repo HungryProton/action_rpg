@@ -119,7 +119,7 @@ namespace game{
 		ecs::CreateComponent<Drawable>(plate, DrawableType::MESH);
 
 		Entity item = ecs::CreateEntity();
-		ecs::CreateComponent<PickUp>(item, ItemType::MELEE, true);
+		ecs::CreateComponent<PickUp>(item, EquipmentType::WEAPON, true);
 		ecs::CreateComponent<Texture>(item, "../data/item/weapon/melee/sword01.png");
 		ecs::CreateComponent<Transform>(item, glm::vec3(-6, 4, 0));
 		ecs::CreateComponent<Drawable>(item, DrawableType::SPRITE);
