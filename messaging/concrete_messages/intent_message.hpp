@@ -12,6 +12,7 @@ namespace game{
 		IDLE,
 		ATTACK,
 		BLOCK,
+		DODGE
 	};
 
 	struct IntentMessage : public Message{

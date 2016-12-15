@@ -6,10 +6,12 @@
 #include "messaging/concrete_messages/intent_message.hpp"
 #include "messaging/message_bus.hpp"
 #include "component/common.hpp"
+#include "system/action/behavior_controller.hpp"
 
 namespace game{
 
 	class WalkRunSystem : public System,
+												public BehaviorController,
 												public MessageHandler<IntentMessage>{
 		public:
 			WalkRunSystem();

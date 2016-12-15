@@ -8,7 +8,7 @@ namespace game{
 	class Time{
 		public:
 			static void NotifyFrameStart();
-			static float GetCurrentTime();
+			static float GetCurrentTime();	// In seconds
 			static float GetPreviousDeltaTime();
 			static float GetCurrentFrameAdvance();
 

@@ -1,11 +1,13 @@
 #include "walk_run.hpp"
 #include "component/action/walk_run.hpp"
+#include "component/action/behavior.hpp"
 #include "component/motion.hpp"
 #include "messaging/concrete_messages/animation_command.hpp"
+#include "common/uid.hpp"
 
 namespace game{
 
-	WalkRunSystem::WalkRunSystem() : System(){
+	WalkRunSystem::WalkRunSystem() : System(), BehaviorController(50){
 		Require<WalkRun, Motion>();
 	}
 
@@ -16,7 +18,12 @@ namespace game{
 	}
 
 	void WalkRunSystem::OnUpdate(Entity){
-
+		// TODO : Refactor that thing
+		// Set a flag in the walkRun component
+		// If currently walking / running, update accordingly
+		// If blocked, stop updating,
+		// but find a way to prevent messagebus spamming with a new
+		// walk message every 16 ms
 	}
 
 	void WalkRunSystem::OnMessage(IntentMessage msg){
@@ -26,6 +33,18 @@ namespace game{
 		WalkRun* wr = ecs::GetComponent<WalkRun>(e);
 		Motion* m = ecs::GetComponent<Motion>(e);
 		if(wr == nullptr || m == nullptr){ return; }
+
+		Behavior* b = ecs::GetComponent<Behavior>(e);
+		if(b != nullptr){
+			if(b->current_action_id != this->BehaviorController::action_id_){
+				if(b->priority < this->BehaviorController::priority_ && b->blocking){
+					return;
+				} else {
+					b->current_action_id = this->BehaviorController::action_id_;
+					b->blocking= this->BehaviorController::blocking_;
+				}
+			}
+		}
 
 		AnimationCommand cmd;
 		cmd.dest = e;

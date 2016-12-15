@@ -19,6 +19,7 @@ namespace game{
 		RIGHT,
 		ATTACK,
 		BLOCK,
+		DODGE,
 		ACTION,
 		TARGET,
 		RETURN

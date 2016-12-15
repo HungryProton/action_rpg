@@ -70,6 +70,7 @@ namespace game{
 		AddEntryInKeymap(GLFW_KEY_D, Command::RIGHT);
 		AddEntryInKeymap(GLFW_KEY_X, Command::ATTACK);
 		AddEntryInKeymap(GLFW_KEY_F, Command::ACTION);
+		AddEntryInKeymap(GLFW_KEY_SPACE, Command::DODGE);
 		AddEntryInKeymap(GLFW_KEY_ESCAPE, Command::RETURN);
 		this->first_modifier_code = GLFW_KEY_LEFT_SHIFT;
 		this->second_modifier_code = GLFW_KEY_LEFT_ALT;

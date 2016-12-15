@@ -11,6 +11,7 @@
 #include "system/graphics/texture_animator.hpp"
 #include "system/action/walk_run.hpp"
 #include "system/action/follow_pointer.hpp"
+#include "system/action/dodge.hpp"
 #include "system/item/equipment_system.hpp"
 
 namespace game{
@@ -25,6 +26,7 @@ namespace game{
 		CreateSystem<RandomAISystem>();
 		CreateSystem<FollowPointer>();
 		CreateSystem<WalkRunSystem>();
+		CreateSystem<DodgeSystem>();
 		CreateSystem<MotionSystem>();
 		CreateSystem<Physic>();
 		CreateSystem<Gui>();

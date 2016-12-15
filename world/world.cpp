@@ -13,6 +13,7 @@
 #include "component/constraint.hpp"
 #include "component/atlas.hpp"
 #include "component/action/walk_run.hpp"
+#include "component/action/dodge.hpp"
 #include "component/item/pickup.hpp"
 #include "component/collider.hpp"
 #include "component/shapes/circle.hpp"
@@ -20,6 +21,7 @@
 #include "messaging/message_bus.hpp"
 #include "module/architecture/architecture_module.hpp"
 #include "component/action/follow_pointer.hpp"
+#include "component/action/behavior.hpp"
 #include "component/item/equipment_slot.hpp"
 
 namespace game{
@@ -45,6 +47,7 @@ namespace game{
 		ecs::CreateComponent<PlayerControllable>(sprite);
 		ecs::CreateComponent<Motion>(sprite);
 		ecs::CreateComponent<WalkRun>(sprite, 1.f, 6.f);
+		ecs::CreateComponent<Dodge>(sprite);
 		Collider* sc = ecs::CreateComponent<Collider>(sprite);
 		sc->SetMass(60.f);
 		sc->shape_type = Shape::CIRCLE;
@@ -90,6 +93,7 @@ namespace game{
 			ecs::CreateComponent<Drawable>(pnj)->type = DrawableType::SPRITE;
 			ecs::CreateComponent<Motion>(pnj)->target_speed = 1.f;
 			ecs::CreateComponent<RandomAI>(pnj);
+			ecs::CreateComponent<WalkRun>(pnj);
 
 			pnj_t->position.x = -Random::NextFloat(5);
 			pnj_t->position.y = 5 - Random::NextFloat(10);
@@ -99,9 +103,9 @@ namespace game{
 			Entity light = ecs::CreateEntity();
 
 			Transform* t = ecs::CreateComponent<Transform>(light);
-			t->position.x = 4 - Random::NextFloat()*8;
-			t->position.y = 4 - Random::NextFloat()*8;
-			t->position.z = .5f + Random::NextFloat()*2;
+			t->position.x = 4 - Random::NextFloat()*8.f;
+			t->position.y = 4 - Random::NextFloat()*8.f;
+			t->position.z = .5f + Random::NextFloat()*2.f;
 
 			PointLight* pl = ecs::CreateComponent<PointLight>(light);
 			pl->power = Random::NextFloat(3);
@@ -111,7 +115,6 @@ namespace game{
 
 			ecs::CreateComponent<Drawable>(light);
 		}
-
 
 		Entity plate = ecs::CreateEntity();
 		ecs::CreateComponent<Transform>(plate);

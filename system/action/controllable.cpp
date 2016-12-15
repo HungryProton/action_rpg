@@ -73,6 +73,12 @@ namespace game{
 			case Command::ACTION:
 				break;
 
+			case Command::DODGE:
+				intent_.intent = Intent::DODGE;
+				intent_.motion_direction.x = 0;
+				intent_.motion_direction.y = -1;
+				break;
+
 			case Command::TARGET:
 				intent_.target_direction = glm::vec3(message.position, 0.f);
 				break;
