@@ -2,7 +2,7 @@
 #define GAME_SYSTEM_RENDERER_DRAWABLE_BUILDER_HPP
 
 #include "ecs/entity/entity.hpp"
-#include "component/drawable.hpp"
+#include "component/graphic/drawable.hpp"
 
 namespace game{
 

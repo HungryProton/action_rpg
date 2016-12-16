@@ -3,7 +3,7 @@
 #include "component/item/equipment_slot.hpp"
 #include "component/transform.hpp"
 #include "component/constraint.hpp"
-#include "component/atlas.hpp"
+#include "component/graphic/atlas.hpp"
 #include "ecs/ecs.hpp"
 #include <string>
 

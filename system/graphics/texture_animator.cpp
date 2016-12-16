@@ -1,5 +1,5 @@
 #include "texture_animator.hpp"
-#include "component/atlas.hpp"
+#include "component/graphic/atlas.hpp"
 #include "common/time.hpp"
 
 namespace game{

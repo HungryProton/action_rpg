@@ -4,8 +4,8 @@
 #include "common/structure.hpp"
 #include "ecs/ecs.hpp"
 #include "component/transform.hpp"
-#include "component/mesh.hpp"
-#include "component/drawable.hpp"
+#include "component/graphic/mesh.hpp"
+#include "component/graphic/drawable.hpp"
 #include "component/collider.hpp"
 #include "component/shapes/box.hpp"
 #include <dirent.h>

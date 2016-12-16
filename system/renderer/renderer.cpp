@@ -2,7 +2,7 @@
 #include "ecs/ecs.hpp"
 #include "component/camera.hpp"
 #include "component/transform.hpp"
-#include "component/drawable.hpp"
+#include "component/graphic/drawable.hpp"
 #include "component/light/point.hpp"
 #include "component/light/directional.hpp"
 #include "shader/framebuffer.hpp"

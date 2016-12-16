@@ -5,7 +5,7 @@
 #include "system/system.hpp"
 #include "messaging/message_handler.hpp"
 #include "messaging/concrete_messages/animation_command.hpp"
-#include "component/atlas.hpp"
+#include "component/graphic/atlas.hpp"
 
 namespace game{
 

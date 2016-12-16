@@ -2,11 +2,11 @@
 #define GAME_SYSTEM_RENDERER_HPP
 
 #include "../system.hpp"
-#include "component/drawable.hpp"
-#include "component/texture.hpp"
-#include "component/mesh.hpp"
+#include "component/graphic/drawable.hpp"
+#include "component/graphic/texture.hpp"
+#include "component/graphic/mesh.hpp"
 #include "component/transform.hpp"
-#include "component/atlas.hpp"
+#include "component/graphic/atlas.hpp"
 #include "context_controller.hpp"
 #include "shader_controller.hpp"
 #include "drawable_builder.hpp"

@@ -1,5 +1,5 @@
 #include "controllable.hpp"
-#include "component/player_controllable.hpp"
+#include "component/input/player_controllable.hpp"
 #include "messaging/concrete_messages/intent_message.hpp"
 #include "messaging/message_bus.hpp"
 

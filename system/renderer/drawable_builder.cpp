@@ -2,9 +2,9 @@
 #include "ecs/ecs.hpp"
 #include "service/geometry_helper.hpp"
 #include "service/service.hpp"
-#include "component/texture.hpp"
-#include "component/atlas.hpp"
-#include "component/mesh.hpp"
+#include "component/graphic/texture.hpp"
+#include "component/graphic/atlas.hpp"
+#include "component/graphic/mesh.hpp"
 
 namespace game{
 

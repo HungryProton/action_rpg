@@ -4,8 +4,8 @@
 #include "messaging/message_handler.hpp"
 #include "test/context_util.hpp"
 #include "ecs/ecs.hpp"
-#include "component/texture.hpp"
-#include "component/drawable.hpp"
+#include "component/graphic/texture.hpp"
+#include "component/graphic/drawable.hpp"
 #include "system/renderer/drawable_builder.hpp"
 #include "service/service.hpp"
 

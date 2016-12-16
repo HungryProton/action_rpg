@@ -3,7 +3,7 @@
 
 #include <map>
 #include "common/opengl.hpp"
-#include "component/drawable.hpp"
+#include "component/graphic/drawable.hpp"
 #include "shader/shader.hpp"
 
 namespace game{

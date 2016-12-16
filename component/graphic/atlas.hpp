@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "common.hpp"
+#include "component/common.hpp"
 #include "texture.hpp"
 
 namespace game{
