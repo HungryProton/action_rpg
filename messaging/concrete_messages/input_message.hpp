@@ -8,6 +8,7 @@ namespace game{
 
 	enum class KeyStatus{
 		PRESSED,
+		JUST_PRESSED,
 		RELEASED,
 		JUST_RELEASED
 	};

@@ -23,12 +23,11 @@ namespace game{
 		Dodge* d = ecs::GetComponent<Dodge>(e);
 		if(!d->is_dodging){ return; }
 
-		float remaining_time = Time::GetCurrentTime() - d->start_time;
-		if(remaining_time <= 0){
+		float elapsed_time = Time::GetCurrentTime() - d->start_time;
+		LOG(DEBUG) << elapsed_time << " duration: " << d->duration << std::endl;
+		if(elapsed_time >= d->duration){
 			d->is_dodging = false;
-			Behavior* b = ecs::GetComponent<Behavior>(e);
-			if(b == nullptr){ return; }
-			b->current_action_id = -1;
+			this->BehaviorController::FreeLock(e);
 		}
 	}
 
@@ -37,8 +36,12 @@ namespace game{
 		Entity e = msg.dest;
 		Dodge* d = ecs::GetComponent<Dodge>(e);
 		if(d == nullptr){ return; }
+		if(d->is_dodging){ return; } // already dodging, ignore
 
-		UpdateBehaviorComponentFor(e);
+		if(!this->BehaviorController::AcquireLock(e)){ return; }
+		LOG(DEBUG) << "Dodged" << std::endl;
+		d->is_dodging = true;
+		d->start_time = Time::GetCurrentTime();
 
 		AnimationCommand cmd;
 		cmd.dest = e;
@@ -53,18 +56,5 @@ namespace game{
 
 		MessageBus::Push(cmd);
 		MessageBus::Push(intent);
-	}
-
-	void DodgeSystem::UpdateBehaviorComponentFor(Entity e){
-		Behavior* b = ecs::GetComponent<Behavior>(e);
-		if(b == nullptr){ return; }
-		if(b->current_action_id >= 0){
-			if(b->priority < this->BehaviorController::priority_){ return; }
-			if(b->current_action_id == this->BehaviorController::action_id_){ return; }
-		}
-
-		b->current_action_id = this->BehaviorController::action_id_;
-		b->priority = this->BehaviorController::priority_;
-		b->blocking = true;
 	}
 }

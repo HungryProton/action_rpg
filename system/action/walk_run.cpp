@@ -34,17 +34,7 @@ namespace game{
 		Motion* m = ecs::GetComponent<Motion>(e);
 		if(wr == nullptr || m == nullptr){ return; }
 
-		Behavior* b = ecs::GetComponent<Behavior>(e);
-		if(b != nullptr){
-			if(b->current_action_id != this->BehaviorController::action_id_){
-				if(b->priority < this->BehaviorController::priority_ && b->blocking){
-					return;
-				} else {
-					b->current_action_id = this->BehaviorController::action_id_;
-					b->blocking= this->BehaviorController::blocking_;
-				}
-			}
-		}
+		if(this->BehaviorController::AcquireLock(e) == false){ return; }
 
 		AnimationCommand cmd;
 		cmd.dest = e;

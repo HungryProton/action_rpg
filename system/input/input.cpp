@@ -23,7 +23,6 @@ namespace game{
 		for(auto it = this->keymap_.begin(); it != this->keymap_.end(); it++){
 			this->SendCommandForKey(it->first, it->second);
 		}
-
 	}
 
 	KeyStatus Input::GetKeyStatus(int key_code){
@@ -45,21 +44,24 @@ namespace game{
 
 			if(glfw_status == GLFW_RELEASE){
 				status = KeyStatus::JUST_RELEASED;
+			} else if (glfw_status == GLFW_PRESS) {
+				status = KeyStatus::JUST_PRESSED;
 			}
 		}
 		return status;
 	}
 
 	void Input::SendCommandForKey(int key_code, Command command){
+		KeyStatus current_key_status = GetKeyStatus(key_code);
+		if(current_key_status == KeyStatus::RELEASED){ return; }
+
 		InputMessage msg;
-		msg.status = GetKeyStatus(key_code);
+		msg.status = current_key_status;
 		msg.command = command;
 		msg.first_modifier_pressed = (GetKeyStatus(this->first_modifier_code) == KeyStatus::PRESSED);
 		msg.second_modifier_pressed = (GetKeyStatus(this->second_modifier_code) == KeyStatus::PRESSED);
 
-		if(msg.status != KeyStatus::RELEASED){
-			MessageBus::Push(msg);
-		}
+		MessageBus::Push(msg);
 	}
 
 	void Input::LoadDefaultKeymap(){

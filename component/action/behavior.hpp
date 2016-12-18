@@ -7,6 +7,8 @@ namespace game{
 		int current_action_id; // if set to -1, it means no actions currently are active
 		int priority;
 		bool blocking;
+
+		Behavior();
 	};
 }
 

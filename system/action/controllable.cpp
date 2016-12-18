@@ -74,6 +74,7 @@ namespace game{
 				break;
 
 			case Command::DODGE:
+				if(message.status != KeyStatus::JUST_PRESSED){ return; }
 				intent_.intent = Intent::DODGE;
 				intent_.motion_direction.x = 0;
 				intent_.motion_direction.y = -1;
