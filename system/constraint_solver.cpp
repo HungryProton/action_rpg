@@ -41,7 +41,7 @@ namespace game{
 		}
 
 		glm::vec3 diff = *(c->target_value) - *(c->value);
-		if(dot(diff, diff) <= c->coefficient*Time::GetPreviousDeltaTime()){
+		if(dot(diff, diff) <= 0.01*c->coefficient*Time::GetPreviousDeltaTime()){
 			*(c->value) = *(c->target_value);
 			return;
 		}

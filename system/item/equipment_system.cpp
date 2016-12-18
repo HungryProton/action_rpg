@@ -4,6 +4,7 @@
 #include "component/transform.hpp"
 #include "component/constraint.hpp"
 #include "component/graphic/atlas.hpp"
+#include "component/collider.hpp"
 #include "ecs/ecs.hpp"
 #include <string>
 
@@ -16,8 +17,8 @@ namespace game{
 	EquipmentSystem::~EquipmentSystem(){}
 
 	void EquipmentSystem::BeforeUpdate(){
-		this->MessageHandler<ItemCommand>::PollMessages();
 		this->MessageHandler<EventMessage>::PollMessages();
+		this->MessageHandler<ItemCommand>::PollMessages();
 	}
 
 	void EquipmentSystem::OnUpdate(Entity e){
@@ -27,7 +28,9 @@ namespace game{
 			if(slot->initialized){ continue; }
 			if(slot->equiped_item.uid == 0){ continue; }
 
-			LOG(DEBUG) << "Initializing " << e.uid << std::endl;
+			LOG(DEBUG) << "slot " << slot->initialized << std::endl;
+
+			LOG(DEBUG) << "Initializing " << slot->equiped_item.uid << std::endl;
 			Transform* parent_t = ecs::GetComponent<Transform>(e);
 			Transform* equipment_t = ecs::GetComponent<Transform>(slot->equiped_item);
 
@@ -48,7 +51,9 @@ namespace game{
 				equipment_atlas->SynchronizeWith(parent_atlas);
 			}
 
+			LOG(DEBUG) << "Initialization complete" << std::endl;
 			slot->initialized = true;
+			LOG(DEBUG) << "after slot " << slot->initialized << std::endl;
 		}
 	}
 
@@ -69,25 +74,40 @@ namespace game{
 	void EquipmentSystem::OnMessage(EventMessage msg){
 		if(msg.type != EventType::COLLISION){ return; }
 		Entity pickable = msg.from;
-		Entity has_equipment = msg.dest;
+		Entity holder = msg.dest;
 
 		// Check if one of the two entity can be picked up;
 		PickUp* pickup = ecs::GetComponent<PickUp>(msg.from);
 		if(pickup == nullptr){
 			pickup = ecs::GetComponent<PickUp>(msg.dest);
 			pickable = msg.dest;
-			has_equipment = msg.from;
+			holder = msg.from;
 		}
 		if(pickup == nullptr){return; } // no entity can be picked, return;
 
-		EquipmentSlot* equipment_component = ecs::GetComponent<EquipmentSlot>(has_equipment);
-		if(equipment_component == nullptr){ return; }
+		std::vector<EquipmentSlot*> slot_list = ecs::GetAllComponents<EquipmentSlot>(holder);
+		if(slot_list.empty()){ return; }
+
+		EquipmentSlot* slot = nullptr;
+		for(EquipmentSlot* s : slot_list){
+			if(s->type == pickup->type){
+				slot = s;
+			}
+		}
+		if(slot == nullptr){ return; }
 		// Past this point, we detected that a pickable item entered in collision
 		// with an entity with equipement
 
+		LOG(DEBUG) << "Equiping " << pickable.uid << " on " << holder.uid << std::endl;
+
 		if(!(pickup->auto_pick)){ return; } // handle that case later
 
+		ecs::RemoveAllComponent<Collider>(pickable);
+		ecs::RemoveAllComponent<Texture>(pickable);
 
+		ecs::CreateComponent<Atlas>(pickable)->LoadFromFile(pickup->equiped_atlas);
+
+		slot->Equip(pickable);
 	}
 
 	void EquipmentSystem::PickUpItem(){}

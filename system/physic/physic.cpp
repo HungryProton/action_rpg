@@ -112,11 +112,7 @@ namespace game{
 				}
 			}
 			if(collided){
-				EventMessage msg;
-				msg.from = entity;
-				msg.dest = Entity();
-				msg.dest.uid = pair.first;
-				msg.type = EventType::COLLISION;
+				SendMessageToSensors(entity, collider_a, Entity(pair.first), collider_b);
 			}
 		}
 	}
@@ -353,5 +349,20 @@ namespace game{
 
 		m.transform_a->position += (-1 * m.collider_a->inv_mass * correction);
 		m.transform_b->position += (m.collider_b->inv_mass * correction);
+	}
+
+	void Physic::SendMessageToSensors(Entity a, Collider* ca, Entity b, Collider* cb){
+		EventMessage msg;
+		msg.type = EventType::COLLISION;
+		if(ca->sensor){
+			msg.from = b;
+			msg.dest = a;
+			MessageBus::Push(msg);
+		}
+		if(cb->sensor){
+			msg.from = a;
+			msg.dest = b;
+			MessageBus::Push(msg);
+		}
 	}
 }

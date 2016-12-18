@@ -36,6 +36,7 @@ namespace game{
 			void ApplyImpulse(PhysicManifold);
 			void ApplyFriction(PhysicManifold);
 			void PositionalCorrection(PhysicManifold);
+			void SendMessageToSensors(Entity, Collider*, Entity, Collider*);
 			PhysicComponents* GetComponentsFor(Entity);
 
 			std::map<unsigned long, PhysicComponents> entities_;

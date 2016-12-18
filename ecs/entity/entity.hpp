@@ -7,6 +7,7 @@ namespace game{
 		unsigned long uid;
 
 		Entity(){ uid = 0; }
+		Entity(unsigned long i){ uid = i; }
 	};
 }
 #endif //GAME_ECS_ENTITY_HPP_

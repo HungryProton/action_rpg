@@ -52,6 +52,7 @@ namespace game{
 		Collider* sc = ecs::CreateComponent<Collider>(sprite);
 		sc->SetMass(60.f);
 		sc->shape_type = Shape::CIRCLE;
+		sc->sensor = true;
 		ecs::CreateComponent<Circle>(sprite)->radius = 0.35;
 		ecs::CreateComponent<FollowPointer>(sprite);
 
@@ -76,6 +77,7 @@ namespace game{
 		equipment->Equip(player_hair);
 		EquipmentSlot* equipment2 = ecs::CreateComponent<EquipmentSlot>(sprite, EquipmentType::ARMOR);
 		equipment2->Equip(player_armor);
+		ecs::CreateComponent<EquipmentSlot>(sprite, EquipmentType::WEAPON);
 
 		Entity light = ecs::CreateEntity();
 		ecs::CreateComponent<DirectionalLight>(light, glm::vec3(-5, 5, -5), 0.8);
@@ -86,12 +88,16 @@ namespace game{
 		c->type = ConstraintType::KEEP_OFFSET;
 		c->SetOffset(&(cam_t->position), &(sprite_t->position));
 		c->name = "Camera, keep offset wth target";
+		//c->soft_resolve = true;
+		//c->coefficient = 3;
 
 		Constraint* c2 = ecs::CreateComponent<Constraint>(camera);
 		c2->type = ConstraintType::COPY;
 		c2->value = &(cam->target);
 		c2->target_value = &(sprite_t->position);
-		c->name = "Camera, copy target from player position";
+		c2->name = "Camera, copy target from player position";
+		//c2->soft_resolve = true;
+		//c2->coefficient = 4;
 
 		for(int i = 0; i < 10; i++){
 			Entity pnj = ecs::CreateEntity();
@@ -129,8 +135,10 @@ namespace game{
 		ecs::CreateComponent<Drawable>(plate, DrawableType::MESH);
 
 		Entity item = ecs::CreateEntity();
-		ecs::CreateComponent<PickUp>(item, EquipmentType::WEAPON, true);
-		ecs::CreateComponent<Texture>(item, "../data/item/weapon/melee/sword01.png");
+		PickUp* p = ecs::CreateComponent<PickUp>(item, EquipmentType::WEAPON, true);
+		p->exposition_texture = "../data/item/weapon/melee/sword01.png";
+		p->equiped_atlas = "../data/item/weapon/melee/sword1/sword_1.txt";
+		ecs::CreateComponent<Texture>(item, p->exposition_texture);
 		ecs::CreateComponent<Transform>(item, glm::vec3(-6, 4, 0));
 		ecs::CreateComponent<Drawable>(item, DrawableType::SPRITE);
 		Collider* item_collider = ecs::CreateComponent<Collider>(item);
