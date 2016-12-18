@@ -7,7 +7,7 @@
 namespace game{
 
 	// First value appears behind, Last value appears on top
-	enum class EquipmentType{NONE, BODY, WEAPON, HEAD};
+	enum class EquipmentType{NONE, BODY, ARMOR, WEAPON, HEAD};
 	enum class SystemEvent{NEW_COMPONENT, CHANNEL_CHANGED};
 	enum class Direction{N,S,E,W,NE,NW,SE,SW,LAST};
 

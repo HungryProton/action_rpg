@@ -143,6 +143,10 @@ namespace game{
 			name += "inner";
 		} else {
 			name += "outer";
+			Collider* c = ecs::CreateComponent<Collider>(wall.entity);
+			c->shape_type = Shape::BOX;
+			c->SetMass(0);
+			ecs::CreateComponent<Box>(wall.entity)->SetDimensions(glm::vec2(1, 1));
 		}
 		if(corner){
 			if(reverse){
@@ -152,10 +156,6 @@ namespace game{
 			}
 		} else {
 			name += "_standard_A1.obj";
-			Collider* c = ecs::CreateComponent<Collider>(wall.entity);
-			c->shape_type = Shape::BOX;
-			c->SetMass(0);
-			ecs::CreateComponent<Box>(wall.entity)->SetDimensions(glm::vec2(1, 0.4));
 		}
 
 		ecs::CreateComponent<Mesh>(wall.entity)->LoadFromFile(name);

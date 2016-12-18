@@ -42,7 +42,7 @@ namespace game{
 
 		Entity sprite = ecs::CreateEntity();
 		Transform* sprite_t = ecs::CreateComponent<Transform>(sprite, glm::vec3(0, 10, 0));
-		ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
+		//ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
 		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/body/f_body.txt");
 		ecs::CreateComponent<PlayerControllable>(sprite);
 		ecs::CreateComponent<Motion>(sprite);
@@ -55,6 +55,10 @@ namespace game{
 		ecs::CreateComponent<Circle>(sprite)->radius = 0.35;
 		ecs::CreateComponent<FollowPointer>(sprite);
 
+		Entity player_base = ecs::CreateEntity();
+		ecs::CreateComponent<Transform>(player_base);
+		ecs::CreateComponent<Drawable>(player_base)->type = DrawableType::SPRITE;
+		ecs::CreateComponent<Atlas>(player_base, "../data/characters/female/body/f_body.txt");
 
 		Entity player_hair = ecs::CreateEntity();
 		ecs::CreateComponent<Transform>(player_hair);
@@ -66,9 +70,11 @@ namespace game{
 		ecs::CreateComponent<Drawable>(player_armor)->type = DrawableType::SPRITE;
 		ecs::CreateComponent<Atlas>(player_armor, "../data/characters/female/clothes/01/clothes_01.txt");
 
+		EquipmentSlot* base = ecs::CreateComponent<EquipmentSlot>(sprite, EquipmentType::BODY);
+		base->Equip(player_base);
 		EquipmentSlot* equipment = ecs::CreateComponent<EquipmentSlot>(sprite, EquipmentType::HEAD);
 		equipment->Equip(player_hair);
-		EquipmentSlot* equipment2 = ecs::CreateComponent<EquipmentSlot>(sprite, EquipmentType::BODY);
+		EquipmentSlot* equipment2 = ecs::CreateComponent<EquipmentSlot>(sprite, EquipmentType::ARMOR);
 		equipment2->Equip(player_armor);
 
 		Entity light = ecs::CreateEntity();

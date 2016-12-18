@@ -345,7 +345,7 @@ namespace game{
 		// Positionnal correction :
 		// Prevent objects from sinking into infinite mass objects
 
-		const float percent = 1.0f;
+		const float percent = 1.8f;
 		const float slop = 0.002f;
 		float correction_ratio = std::max(m.penetration-slop, 0.f) / (m.collider_a->inv_mass + m.collider_b->inv_mass) * percent;
 		glm::vec3 correction = m.normal;

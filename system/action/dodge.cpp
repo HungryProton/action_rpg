@@ -27,6 +27,14 @@ namespace game{
 		if(elapsed_time >= d->duration){
 			d->is_dodging = false;
 			this->BehaviorController::FreeLock(e);
+
+			AnimationCommand cmd;
+			cmd.dest = e;
+			cmd.action = AnimationAction::PLAY;
+			cmd.loop = true;
+			cmd.direction = Direction::LAST;
+			cmd.name = "idle";
+			MessageBus::Push(cmd);
 		}
 	}
 
