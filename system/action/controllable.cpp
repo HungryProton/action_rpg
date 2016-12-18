@@ -7,85 +7,117 @@ namespace game{
 
 	Controllable::Controllable() : System(){
 		Require<PlayerControllable>();
-		intent_modified_ = false;
 	}
 
 	Controllable::~Controllable(){}
 
 	void Controllable::BeforeUpdate(){
 		this->MessageHandler<InputMessage>::PollMessages();
+		GenerateIntentsFromMessages();
 	}
 
 	// Take all stored intents, and apply them to every controllable entity
 	// Usually we only have a single controllable entity but this system allows
 	// simultaneous control of multiple entities
 	void Controllable::OnUpdate(Entity entity){
-		if(!intent_modified_){ return; }
-		intent_.dest = entity;
-		MessageBus::Push(intent_);
+		for(IntentMessage intent : intent_list_){
+			intent.dest = entity;
+			MessageBus::Push(intent);
+		}
 	}
 
 	// Reset intent once they were applied to the entities.
 	void Controllable::AfterUpdate(){
-		intent_ = IntentMessage();
-		intent_modified_ = false;
+		intent_list_.clear();
+		message_list_.clear();
 	}
 
-	// When an input message is received, convert it into an intent and
-	// store it. It does not broadcast the intent directly as we need
-	// to inject the entities id inside first.
+	// Store the message upon reception to convert them into intents later
 	void Controllable::OnMessage(InputMessage message){
-		intent_modified_ = true;
-		int modifier = 1;
-		if(message.status == KeyStatus::JUST_RELEASED){
-			modifier = 0;
+		message_list_.push_back(message);
+	}
+
+	void Controllable::GenerateIntentsFromMessages(){
+		if(message_list_.empty()){ return; }
+		GenerateMotionIntent();
+		GenerateDodgeIntent();
+		GenerateActionIntent();
+		GenerateAttackIntent();
+	}
+
+	bool Controllable::HasMotionCommand(InputMessage msg){
+		return (msg.command == Command::UP ||
+				msg.command == Command::DOWN ||
+				msg.command == Command::LEFT ||
+				msg.command == Command::RIGHT);
+	}
+
+	void Controllable::GenerateMotionIntent(){
+		IntentMessage intent;
+		bool valid_intent = false;
+		int modifier = 0;
+
+		for(InputMessage msg : message_list_){
+			msg.status == KeyStatus::JUST_RELEASED ? modifier = 0 : modifier = 1;
+
+			switch(msg.command){
+				case Command::UP:
+					intent.motion_direction.y = modifier;
+					break;
+				case Command::DOWN:
+					intent.motion_direction.y = -modifier;
+					break;
+				case Command::LEFT:
+					intent.motion_direction.x = -modifier;
+					break;
+				case Command::RIGHT:
+					intent.motion_direction.x = modifier;
+					break;
+				default:
+					break;
+			}
+			if(HasMotionCommand(msg)){
+				valid_intent = true;
+				if(msg.first_modifier_pressed){
+					intent.intent = Intent::WALK;
+				} else {
+					intent.intent = Intent::RUN;
+				}
+			}
 		}
 
-		intent_.intent = Intent::RUN;
-		if(message.second_modifier_pressed){
-			intent_.intent = Intent::WALK;
+		if(valid_intent){
+			intent_list_.push_back(intent);
 		}
+	}
 
-		switch(message.command){
-			case Command::UP:
-				intent_.motion_direction.y = +modifier;
-				break;
+	void Controllable::GenerateDodgeIntent(){
+		for(InputMessage msg : message_list_){
+			if(msg.command != Command::DODGE){ continue; }
+			if(msg.status != KeyStatus::JUST_PRESSED){ continue; }
 
-			case Command::DOWN:
-				intent_.motion_direction.y = -modifier;
-				break;
-
-			case Command::LEFT:
-				intent_.motion_direction.x = -modifier;
-				break;
-
-			case Command::RIGHT:
-				intent_.motion_direction.x = +modifier;
-				break;
-
-			case Command::ATTACK:
-				intent_.intent = Intent::ATTACK;
-				break;
-
-			case Command::BLOCK:
-				break;
-
-			case Command::ACTION:
-				break;
-
-			case Command::DODGE:
-				if(message.status != KeyStatus::JUST_PRESSED){ return; }
-				intent_.intent = Intent::DODGE;
-				intent_.motion_direction.x = 0;
-				intent_.motion_direction.y = -1;
-				break;
-
-			case Command::TARGET:
-				intent_.target_direction = glm::vec3(message.position, 0.f);
-				break;
-
-			default:
-				break;
+			IntentMessage intent;
+			intent.intent = Intent::DODGE;
+			intent.motion_direction = GetDesiredDirectionVector();
+			intent_list_.push_back(intent);
+			return;
 		}
+	}
+
+	void Controllable::GenerateActionIntent(){
+	
+	}
+
+	void Controllable::GenerateAttackIntent(){
+	
+	}
+
+	glm::vec3 Controllable::GetDesiredDirectionVector(){
+		for(IntentMessage intent : intent_list_){
+			if(intent.intent == Intent::RUN || intent.intent == Intent::WALK){
+				return intent.motion_direction;
+			}
+		}
+		return glm::vec3(0.f);
 	}
 }

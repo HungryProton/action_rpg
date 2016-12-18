@@ -71,11 +71,15 @@ namespace game{
 	void Physic::UpdatePositions(PhysicComponents* c){
 		if(glm::length(c->collider->target_velocity) == 0){ return; }
 		c->transform->position += c->collider->target_velocity*Time::GetPreviousDeltaTime();
-		float friction_modifier = 0.1; // Retrieve that from material when possible
+		float friction_modifier = 70.f; // Retrieve that from material when possible
 		glm::vec3 friction_vector = glm::normalize(c->collider->target_velocity)
 			* friction_modifier
 			* Time::GetPreviousDeltaTime();
-		c->collider->target_velocity -= friction_vector;
+		if(glm::length2(friction_vector) >= glm::length2(c->collider->target_velocity)){
+			c->collider->target_velocity = glm::vec3(0.f);
+		} else {
+			c->collider->target_velocity -= friction_vector;
+		}
 	}
 
 	void Physic::ResolveCollisions(Entity entity, PhysicComponents* ca){

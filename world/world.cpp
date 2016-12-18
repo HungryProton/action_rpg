@@ -46,6 +46,7 @@ namespace game{
 		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/body/f_body.txt");
 		ecs::CreateComponent<PlayerControllable>(sprite);
 		ecs::CreateComponent<Motion>(sprite);
+		ecs::CreateComponent<Behavior>(sprite);
 		ecs::CreateComponent<WalkRun>(sprite, 1.f, 6.f);
 		ecs::CreateComponent<Dodge>(sprite);
 		Collider* sc = ecs::CreateComponent<Collider>(sprite);

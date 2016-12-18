@@ -22,8 +22,16 @@ namespace game{
 			void AfterUpdate();
 			void OnMessage(InputMessage);
 
-			IntentMessage intent_;
-			bool intent_modified_;
+			void GenerateIntentsFromMessages();
+			void GenerateMotionIntent();
+			void GenerateDodgeIntent();
+			void GenerateAttackIntent();
+			void GenerateActionIntent();
+			bool HasMotionCommand(InputMessage);
+			glm::vec3 GetDesiredDirectionVector();
+
+			std::vector<InputMessage> message_list_;
+			std::vector<IntentMessage> intent_list_;
 	};
 }
 

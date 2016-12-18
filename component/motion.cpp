@@ -4,7 +4,7 @@ namespace game{
 
 	Motion::Motion(){
 		target_speed = 0;
-		friction = 0.5;
+		friction = 50.f;
 		direction = glm::vec3(0.f, 0.f, 0.f);
 		type = MotionType::SIMPLE;
 	}

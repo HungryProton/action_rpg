@@ -30,7 +30,7 @@ namespace game{
 		}
 
 		if(motion->target_speed != 0 && motion->friction != 0){
-			motion->target_speed -= dt / motion->friction;
+			motion->target_speed -= dt * motion->friction;
 			motion->target_speed = std::max(0.f, motion->target_speed);
 		}
 	}

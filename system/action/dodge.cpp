@@ -24,7 +24,6 @@ namespace game{
 		if(!d->is_dodging){ return; }
 
 		float elapsed_time = Time::GetCurrentTime() - d->start_time;
-		LOG(DEBUG) << elapsed_time << " duration: " << d->duration << std::endl;
 		if(elapsed_time >= d->duration){
 			d->is_dodging = false;
 			this->BehaviorController::FreeLock(e);
@@ -39,7 +38,6 @@ namespace game{
 		if(d->is_dodging){ return; } // already dodging, ignore
 
 		if(!this->BehaviorController::AcquireLock(e)){ return; }
-		LOG(DEBUG) << "Dodged" << std::endl;
 		d->is_dodging = true;
 		d->start_time = Time::GetCurrentTime();
 
@@ -51,8 +49,9 @@ namespace game{
 		cmd.name = "dodge";
 
 		PhysicIntent intent;
+		intent.dest = e;
 		intent.action = PhysicAction::APPLY_FORCE;
-		intent.force = msg.motion_direction * d->distance;
+		intent.force = msg.motion_direction * d->distance * 50000.f;
 
 		MessageBus::Push(cmd);
 		MessageBus::Push(intent);

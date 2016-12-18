@@ -30,6 +30,7 @@ namespace game{
 		if(b == nullptr){ return true; }
 		if(IsBlocked(b)){ return false; }
 		b->current_action_id = this->BehaviorController::action_id_;
+		b->priority = this->BehaviorController::priority_;
 		b->blocking = this->BehaviorController::blocking_;
 		return true;
 	}
