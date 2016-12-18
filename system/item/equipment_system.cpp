@@ -28,8 +28,6 @@ namespace game{
 			if(slot->initialized){ continue; }
 			if(slot->equiped_item.uid == 0){ continue; }
 
-			LOG(DEBUG) << "slot " << slot->initialized << std::endl;
-
 			LOG(DEBUG) << "Initializing " << slot->equiped_item.uid << std::endl;
 			Transform* parent_t = ecs::GetComponent<Transform>(e);
 			Transform* equipment_t = ecs::GetComponent<Transform>(slot->equiped_item);
@@ -51,9 +49,7 @@ namespace game{
 				equipment_atlas->SynchronizeWith(parent_atlas);
 			}
 
-			LOG(DEBUG) << "Initialization complete" << std::endl;
 			slot->initialized = true;
-			LOG(DEBUG) << "after slot " << slot->initialized << std::endl;
 		}
 	}
 
@@ -85,6 +81,8 @@ namespace game{
 		}
 		if(pickup == nullptr){return; } // no entity can be picked, return;
 
+		if(pickup->equiped){ return; } // already equiped, duplicate message, do not process
+
 		std::vector<EquipmentSlot*> slot_list = ecs::GetAllComponents<EquipmentSlot>(holder);
 		if(slot_list.empty()){ return; }
 
@@ -106,7 +104,7 @@ namespace game{
 		ecs::RemoveAllComponent<Texture>(pickable);
 
 		ecs::CreateComponent<Atlas>(pickable)->LoadFromFile(pickup->equiped_atlas);
-
+		pickup->equiped = true;
 		slot->Equip(pickable);
 	}
 

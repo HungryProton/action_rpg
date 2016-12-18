@@ -7,6 +7,7 @@ namespace game{
 
 	struct PickUp{
 		EquipmentType type;
+		bool equiped;
 		bool auto_pick; // if false, user have to press a key to pick the item
 										// if true, item will be automatically picked on contact
 		std::string exposition_texture; // Texture used when item is on ground
