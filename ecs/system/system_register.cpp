@@ -13,6 +13,7 @@
 #include "system/action/follow_pointer.hpp"
 #include "system/action/dodge.hpp"
 #include "system/item/equipment_system.hpp"
+#include "system/trigger/door.hpp"
 
 namespace game{
 
@@ -28,6 +29,7 @@ namespace game{
 		CreateSystem<WalkRunSystem>();
 		CreateSystem<DodgeSystem>();
 		CreateSystem<MotionSystem>();
+		CreateSystem<DoorSystem>();
 		CreateSystem<Physic>();
 		CreateSystem<Gui>();
 		CreateSystem<TextureAnimator>();

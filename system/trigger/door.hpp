@@ -4,6 +4,7 @@
 #include "system/system.hpp"
 #include "messaging/message_handler.hpp"
 #include "messaging/concrete_messages/intent_message.hpp"
+#include "component/trigger/door.hpp"
 
 namespace game{
 
@@ -16,7 +17,12 @@ namespace game{
 		protected:
 			void BeforeUpdate();
 			void OnUpdate(Entity);
+			void AfterUpdate();
 			void OnMessage(IntentMessage);
+
+			void ToggleDoor(Entity, Door*);
+
+			std::vector<IntentMessage> message_list;
 	};
 }
 

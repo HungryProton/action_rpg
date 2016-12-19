@@ -15,6 +15,7 @@ namespace game{
 		int vertex_amount;
 		int offset;
 		float alpha;
+		bool invisible;
 
 		Drawable();
 		Drawable(DrawableType);

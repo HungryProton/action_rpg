@@ -21,6 +21,7 @@ namespace game{
 	// simultaneous control of multiple entities
 	void Controllable::OnUpdate(Entity entity){
 		for(IntentMessage intent : intent_list_){
+			intent.from = entity;
 			intent.dest = entity;
 			MessageBus::Push(intent);
 		}
@@ -105,11 +106,17 @@ namespace game{
 	}
 
 	void Controllable::GenerateActionIntent(){
-	
+		for(InputMessage msg : message_list_){
+			if(msg.command != Command::ACTION){ continue; }
+			if(msg.status != KeyStatus::JUST_PRESSED){ continue; }
+			IntentMessage intent;
+			intent.intent = Intent::ACTION;
+			intent_list_.push_back(intent);
+		}
 	}
 
 	void Controllable::GenerateAttackIntent(){
-	
+
 	}
 
 	glm::vec3 Controllable::GetDesiredDirectionVector(){

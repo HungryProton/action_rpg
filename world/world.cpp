@@ -23,6 +23,8 @@
 #include "component/action/follow_pointer.hpp"
 #include "component/action/behavior.hpp"
 #include "component/item/equipment_slot.hpp"
+#include "component/shapes/box.hpp"
+#include "component/trigger/door.hpp"
 
 namespace game{
 
@@ -42,8 +44,7 @@ namespace game{
 
 		Entity sprite = ecs::CreateEntity();
 		Transform* sprite_t = ecs::CreateComponent<Transform>(sprite, glm::vec3(0, 10, 0));
-		//ecs::CreateComponent<Drawable>(sprite)->type = DrawableType::SPRITE;
-		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/body/f_body.txt");
+		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/body/f_body.txt"); // necessary for the syncrhonization
 		ecs::CreateComponent<PlayerControllable>(sprite);
 		ecs::CreateComponent<Motion>(sprite);
 		ecs::CreateComponent<Behavior>(sprite);
@@ -133,6 +134,16 @@ namespace game{
 		ecs::CreateComponent<Transform>(plate);
 		ecs::CreateComponent<Mesh>(plate)->LoadFromFile("../data/floor.obj");
 		ecs::CreateComponent<Drawable>(plate, DrawableType::MESH);
+
+		Entity door = ecs::CreateEntity();
+		ecs::CreateComponent<Transform>(door, glm::vec3(-4, 10, 0));
+		ecs::CreateComponent<Mesh>(door)->LoadFromFile("../data/environment/architecture/door/door.obj");
+		ecs::CreateComponent<Drawable>(door, DrawableType::MESH);
+		Collider* door_c = ecs::CreateComponent<Collider>(door);
+		door_c->SetMass(0.f);
+		door_c->shape_type = Shape::BOX;
+		ecs::CreateComponent<Box>(door, 1, 1);
+		ecs::CreateComponent<Door>(door);
 
 		Entity item = ecs::CreateEntity();
 		PickUp* p = ecs::CreateComponent<PickUp>(item, EquipmentType::WEAPON, true);

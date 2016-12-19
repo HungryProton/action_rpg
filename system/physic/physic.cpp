@@ -295,6 +295,9 @@ namespace game{
 	}
 
 	void Physic::ApplyImpulse(PhysicManifold m){
+		// Do no apply if at least one of the collider is a ghost
+		if(m.collider_a->ghost || m.collider_b->ghost){ return; }
+
 		// Relative velocity
 		glm::vec3 relative_velocity = m.transform_b->velocity - m.transform_a->velocity;
 
@@ -340,6 +343,9 @@ namespace game{
 	void Physic::PositionalCorrection(PhysicManifold m){
 		// Positionnal correction :
 		// Prevent objects from sinking into infinite mass objects
+
+		// Do no apply if at least one of the collider is a ghost
+		if(m.collider_a->ghost || m.collider_b->ghost){ return; }
 
 		const float percent = 1.8f;
 		const float slop = 0.002f;

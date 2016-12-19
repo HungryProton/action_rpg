@@ -5,8 +5,10 @@ namespace game{
 
 	struct Door{
 		bool locked;
+		bool is_open;
+		float range; // maximum distance from the door (in m) to be opened
 
-		Door(bool locked = false);
+		Door(bool is_open = false, bool locked = false);
 	};
 }
 

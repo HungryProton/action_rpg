@@ -160,6 +160,7 @@ namespace game{
 		node.drawable = ecs::GetComponent<Drawable>(entity);
 
 		if(!node.drawable){ return node; }
+		if(node.drawable->invisible){ return node; } // Ignore invisible
 		if(node.drawable->vao == 0){
 			int err = drawable_builder_.UpdateDrawableOf(entity);
 			if(err){ return node; }

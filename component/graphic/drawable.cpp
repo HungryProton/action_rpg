@@ -12,6 +12,7 @@ namespace game{
 		this->offset = 0;
 		this->alpha = 1.0;
 		this->type = DrawableType::NONE;
+		this->invisible = false;
 	}
 
 	Drawable::Drawable(DrawableType type) : Drawable(){
