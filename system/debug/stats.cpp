@@ -5,7 +5,7 @@
 namespace game{
 
 	DebugStats::DebugStats() : System(){
-		min_ = -1;
+		min_ = -2;
 		max_ = -1;
 		avg_ = -1;
 	}
@@ -16,6 +16,9 @@ namespace game{
 
 	void DebugStats::BeforeUpdate(){
 		float current = 1.f/Time::GetPreviousDeltaTime();
+
+		// trick to ignore the very first frame where all initialization takes place
+		if(min_ == -2){ min_++; return; }
 		if(min_ == -1){
 			min_ = current;
 			max_ = current;

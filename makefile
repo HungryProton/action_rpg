@@ -18,7 +18,7 @@ DCOMPILE_FLAGS = -D DEBUG -D_GLIBCXX_DEBUG
 # Add additional include paths
 INCLUDES = -I $(SRC_PATH)/
 # GLFW link flags
-GLFW_LINK_FLAGS = -lglfw -lpthread
+GLFW_LINK_FLAGS = -lglfw -lpthread -lopenal -lsndfile
 #OpenGL link flags
 OPENGL_LINK_FLAGS = -lGL -lGLU -lGLEW -DGL_GLEXT_PROTOTYPES
 #Coverage flags for gcov

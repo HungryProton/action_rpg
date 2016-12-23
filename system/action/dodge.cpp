@@ -46,6 +46,7 @@ namespace game{
 		if(d->is_dodging){ return; } // already dodging, ignore
 
 		if(!this->BehaviorController::AcquireLock(e)){ return; }
+		if(glm::length(msg.motion_direction) == 0){ return; }
 		d->is_dodging = true;
 		d->start_time = Time::GetCurrentTime();
 
@@ -59,7 +60,7 @@ namespace game{
 		PhysicIntent intent;
 		intent.dest = e;
 		intent.action = PhysicAction::APPLY_FORCE;
-		intent.force = msg.motion_direction * d->distance * 50000.f;
+		intent.force = glm::normalize(msg.motion_direction) * d->distance * 40000.f;
 
 		MessageBus::Push(cmd);
 		MessageBus::Push(intent);
