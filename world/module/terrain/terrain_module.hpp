@@ -15,6 +15,9 @@ namespace game{
 			std::vector<std::vector<bool>> RunSimulation(int, std::vector<std::vector<bool>> map);
 			int CountAliveNeighbors(std::vector<std::vector<bool>>, int, int);
 			Entity CreateCell(int, int);
+			void PlaceObstacles(Terrain);
+			Entity CreateRandomObstacle(int, int);
+			Entity CreateObstacle(std::string, float radius, int, int);
 
 			RealGenerator random_;
 

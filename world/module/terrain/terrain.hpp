@@ -11,6 +11,7 @@ namespace game{
 	struct Terrain{
 		std::vector<Entity> blocks;
 		std::vector<std::vector<TerrainState>> map;
+		std::vector<Entity> obstacles;
 	};
 }
 

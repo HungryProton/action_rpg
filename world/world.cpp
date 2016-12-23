@@ -173,11 +173,6 @@ namespace game{
 		item_collider->SetMass(1.f);
 		item_collider->shape_type = Shape::CIRCLE;
 		ecs::CreateComponent<Circle>(item)->radius = 0.1;
-
-		SpawnMesh("../data/environment/terrain/vegetation/bush.obj", 10, 0.2);
-		SpawnMesh("../data/environment/terrain/vegetation/tree.obj", 10, 0.2);
-		SpawnMesh("../data/environment/terrain/rock/rock_01.obj", 5, 1.1);
-		SpawnMesh("../data/environment/terrain/rock/rock_02.obj", 5, 1.1);
 	}
 
 	void SpawnBuildings(double seed){
