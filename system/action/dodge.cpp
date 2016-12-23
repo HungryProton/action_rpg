@@ -45,8 +45,8 @@ namespace game{
 		if(d == nullptr){ return; }
 		if(d->is_dodging){ return; } // already dodging, ignore
 
-		if(!this->BehaviorController::AcquireLock(e)){ return; }
 		if(glm::length(msg.motion_direction) == 0){ return; }
+		if(!this->BehaviorController::AcquireLock(e)){ return; }
 		d->is_dodging = true;
 		d->start_time = Time::GetCurrentTime();
 

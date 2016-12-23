@@ -25,6 +25,7 @@
 #include "component/item/equipment_slot.hpp"
 #include "component/shapes/box.hpp"
 #include "component/trigger/door.hpp"
+#include "world/module/terrain/terrain_module.hpp"
 
 namespace game{
 
@@ -113,7 +114,22 @@ namespace game{
 			pnj_t->position.y = 5 - Random::NextFloat(10);
 		}
 
-		for(int i = 0; i < 0; i++){
+		Entity plight = ecs::CreateEntity();
+		Transform* plt = ecs::CreateComponent<Transform>(plight);
+		plt->position = glm::vec3(0, 10, 1);
+		PointLight* ppl = ecs::CreateComponent<PointLight>(plight);
+		ppl->power = 3;
+		ppl->color.x = Random::NextFloat();
+		ppl->color.y = Random::NextFloat();
+		ppl->color.z = Random::NextFloat();
+
+		ecs::CreateComponent<Drawable>(plight);
+
+		Constraint* plc = ecs::CreateComponent<Constraint>(plight);
+		plc->type = ConstraintType::KEEP_OFFSET;
+		plc->SetOffset(&(plt->position), &(sprite_t->position));
+
+		for(int i = 0; i < 2; i++){
 			Entity light = ecs::CreateEntity();
 
 			Transform* t = ecs::CreateComponent<Transform>(light);
@@ -130,10 +146,10 @@ namespace game{
 			ecs::CreateComponent<Drawable>(light);
 		}
 
-		Entity plate = ecs::CreateEntity();
+		/*Entity plate = ecs::CreateEntity();
 		ecs::CreateComponent<Transform>(plate);
 		ecs::CreateComponent<Mesh>(plate)->LoadFromFile("../data/floor.obj");
-		ecs::CreateComponent<Drawable>(plate, DrawableType::MESH);
+		ecs::CreateComponent<Drawable>(plate, DrawableType::MESH);*/
 
 		Entity door = ecs::CreateEntity();
 		ecs::CreateComponent<Transform>(door, glm::vec3(-4, 10, 0));
@@ -186,6 +202,11 @@ namespace game{
 		}
 	}
 
+	void GenerateMap(double seed){
+		TerrainModule module;
+		module.Generate(seed);
+	}
+
 	void World::Initialize(double seed){
 		seed_ = seed;
 
@@ -196,6 +217,7 @@ namespace game{
 		// Add story-related stuff and procedural narrative
 		// Spawn the player somewhere
 
+		GenerateMap(seed);
 		SpawnBasicEntities_tmp();
 		SpawnBuildings(seed);
 	}
