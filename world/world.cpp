@@ -44,7 +44,7 @@ namespace game{
 
 		Entity sprite = ecs::CreateEntity();
 		Transform* sprite_t = ecs::CreateComponent<Transform>(sprite, glm::vec3(0, 10, 0));
-		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/body/f_body.txt"); // necessary for the syncrhonization
+		ecs::CreateComponent<Atlas>(sprite, "../data/characters/female/body/f_body.txt"); // necessary for the synchronization
 		ecs::CreateComponent<PlayerControllable>(sprite);
 		ecs::CreateComponent<Motion>(sprite);
 		ecs::CreateComponent<Behavior>(sprite);

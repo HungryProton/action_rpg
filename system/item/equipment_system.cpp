@@ -28,7 +28,6 @@ namespace game{
 			if(slot->initialized){ continue; }
 			if(slot->equiped_item.uid == 0){ continue; }
 
-			LOG(DEBUG) << "Initializing " << slot->equiped_item.uid << std::endl;
 			Transform* parent_t = ecs::GetComponent<Transform>(e);
 			Transform* equipment_t = ecs::GetComponent<Transform>(slot->equiped_item);
 
