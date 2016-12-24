@@ -5,8 +5,8 @@
 #include <map>
 #include "common/opengl.hpp"
 #include "common/glm.hpp"
-#include "deps/tiny_obj_loader.hpp"
 #include "ecs/entity/entity.hpp"
+#include "service/mesh_data.hpp"
 
 namespace game{
 
@@ -19,11 +19,9 @@ namespace game{
 	 */
 	struct Mesh{
 
-		std::vector<tinyobj::shape_t> shapes;
-		std::vector<tinyobj::material_t> materials;
-
+		MeshData* data;
 		GLenum draw_type;
-		std::string file_path;
+		std::string file_name;
 		std::string base_path;
 
 		Entity parent;

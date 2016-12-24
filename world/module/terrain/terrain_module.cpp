@@ -99,11 +99,11 @@ namespace game{
 
 	void TerrainModule::PlaceObstacles(Terrain terrain){
 		// TODO : get this value from some sort of perlin map
-		float chance_to_place_obstacle = 0.2f;
+		float chance_to_place_obstacle = 0.3f;
 
 		for(int x = 0; x < width_; x++){
 			for(int y = 0; y < height_; y++){
-				if(terrain.map[x][y] == TerrainState::EMPTY){
+				if(terrain.map[x][y] != TerrainState::EMPTY){
 					if(chance_to_place_obstacle > random_.Next(1.f)){
 						terrain.obstacles.push_back(CreateRandomObstacle(x, y));
 						terrain.map[x][y] = TerrainState::OCCUPIED;

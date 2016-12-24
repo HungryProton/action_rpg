@@ -151,26 +151,31 @@ namespace game{
 	*/
 
 	void GeometryHelper::MakeDrawableUseMeshBuffer(Mesh* mesh, Drawable* drawable){
-		std::string file_path = mesh->file_path;
+		std::string full_path = mesh->base_path + mesh->file_name;
+		drawable->vertex_amount = mesh->data->shapes[0].mesh.indices.size();
+		drawable->draw_type = GL_TRIANGLES;
 
-		auto it = this->meshes_.find(file_path);
-
-		if( it != this->meshes_.end() ){
-			drawable->vao = it->second;
+		auto it = this->meshes_.find(full_path);
+		if(it != this->meshes_.end()){
+			drawable->vao = it->second.vao;
+			drawable->offset = it->second.offset;
 			return;
 		}
 
 		// else load the mesh in video memory
 
 		std::multimap<int, std::vector<float>> data;
-		data.insert(std::pair<int, std::vector<float>>(VERTEX_ARRAY, mesh->shapes[0].mesh.positions));
-		data.insert(std::pair<int, std::vector<float>>(NORMAL_ARRAY, mesh->shapes[0].mesh.normals));
-		data.insert(std::pair<int, std::vector<float>>(TEXTURE_COORDS, mesh->shapes[0].mesh.texcoords));
-		std::vector<unsigned int> indices = mesh->shapes[0].mesh.indices;
+		data.insert(std::pair<int, std::vector<float>>(VERTEX_ARRAY, mesh->data->shapes[0].mesh.positions));
+		data.insert(std::pair<int, std::vector<float>>(NORMAL_ARRAY, mesh->data->shapes[0].mesh.normals));
+		data.insert(std::pair<int, std::vector<float>>(TEXTURE_COORDS, mesh->data->shapes[0].mesh.texcoords));
+		std::vector<unsigned int> indices = mesh->data->shapes[0].mesh.indices;
 
-		drawable->vao = Service::Get<BufferAllocator>()->RegisterData(data, indices, &(drawable->offset));
-		drawable->vertex_amount = mesh->shapes[0].mesh.indices.size();
-		drawable->draw_type = GL_TRIANGLES;
+		BufferData buffer;
+
+		buffer.vao = Service::Get<BufferAllocator>()->RegisterData(data, indices, &(buffer.offset));
+		drawable->vao = buffer.vao;
+		drawable->offset = buffer.offset;
+		this->meshes_.insert(std::pair<std::string, BufferData>(full_path, buffer));
 	}
 
 	void GeometryHelper::MakeDrawableUseScreenSpaceBox(Drawable* drawable){

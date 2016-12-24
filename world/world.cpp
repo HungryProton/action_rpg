@@ -29,8 +29,6 @@
 
 namespace game{
 
-	void SpawnMesh(std::string, int, float);
-
 	void SpawnBasicEntities_tmp(){
 		Entity camera = ecs::CreateEntity();
 		Transform* cam_t = ecs::CreateComponent<Transform>(camera);
@@ -101,7 +99,7 @@ namespace game{
 		//c2->soft_resolve = true;
 		//c2->coefficient = 4;
 
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 0; i++){
 			Entity pnj = ecs::CreateEntity();
 			Transform* pnj_t = ecs::CreateComponent<Transform>(pnj);
 			ecs::CreateComponent<Texture>(pnj, "../data/characters/female/single_idle.png");
@@ -129,7 +127,7 @@ namespace game{
 		plc->type = ConstraintType::KEEP_OFFSET;
 		plc->SetOffset(&(plt->position), &(sprite_t->position));
 
-		for(int i = 0; i < 2; i++){
+		for(int i = 0; i < 0; i++){
 			Entity light = ecs::CreateEntity();
 
 			Transform* t = ecs::CreateComponent<Transform>(light);
@@ -145,11 +143,6 @@ namespace game{
 
 			ecs::CreateComponent<Drawable>(light);
 		}
-
-		/*Entity plate = ecs::CreateEntity();
-		ecs::CreateComponent<Transform>(plate);
-		ecs::CreateComponent<Mesh>(plate)->LoadFromFile("../data/floor.obj");
-		ecs::CreateComponent<Drawable>(plate, DrawableType::MESH);*/
 
 		Entity door = ecs::CreateEntity();
 		ecs::CreateComponent<Transform>(door, glm::vec3(-4, 10, 0));
@@ -180,23 +173,6 @@ namespace game{
 		module.Generate(seed);
 	}
 
-	void SpawnMesh(std::string item, int count, float radius){
-		for(int i = 0; i < count; i++){
-
-			int x = 10 - Random::NextFloat(20);
-			int y = 10 - Random::NextFloat(20);
-
-			Entity e = ecs::CreateEntity();
-			ecs::CreateComponent<Transform>(e, glm::vec3(x, y, 0));
-			ecs::CreateComponent<Mesh>(e)->LoadFromFile(item);
-			Collider* c = ecs::CreateComponent<Collider>(e);
-			c->SetMass(0);
-			c->shape_type = Shape::CIRCLE;
-			ecs::CreateComponent<Circle>(e)->radius = radius;
-			ecs::CreateComponent<Drawable>(e)->type = DrawableType::MESH;
-		}
-	}
-
 	void GenerateMap(double seed){
 		TerrainModule module;
 		module.Generate(seed);
@@ -213,8 +189,8 @@ namespace game{
 		// Spawn the player somewhere
 
 		GenerateMap(seed);
-		SpawnBasicEntities_tmp();
 		SpawnBuildings(seed);
+		SpawnBasicEntities_tmp();
 	}
 
 	void World::GenerateNew(){

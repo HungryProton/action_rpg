@@ -9,6 +9,11 @@
 
 namespace game{
 
+	struct BufferData{
+		GLuint vao;
+		int offset;
+	};
+
 	class GeometryHelper : public ServiceWorker{
 		public:
 			GeometryHelper();
@@ -31,7 +36,7 @@ namespace game{
 			 * @brief Stores the meshes ibo sorted associated with their file name
 			 */
 
-			std::map<std::string, GLuint> meshes_;
+			std::map<std::string, BufferData> meshes_;
 
 			/**
 			 * @brief All the boxes are the same, they are scaled to their

@@ -13,7 +13,6 @@ namespace game{
 
 		private:
 			WallGenerator wall_generator_;
-
 	};
 }
 

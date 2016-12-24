@@ -3,7 +3,6 @@
 
 #include <map>
 #include "image.hpp"
-#include "image_loader.hpp"
 #include "service_worker.hpp"
 
 namespace game{
