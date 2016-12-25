@@ -79,11 +79,6 @@ namespace game{
 		equipment2->Equip(player_armor);
 		ecs::CreateComponent<EquipmentSlot>(sprite, EquipmentType::WEAPON);
 
-		Entity light = ecs::CreateEntity();
-		ecs::CreateComponent<DirectionalLight>(light, glm::vec3(-5, 5, -5), 0.8);
-		ecs::CreateComponent<Drawable>(light);
-
-
 		Constraint* c = ecs::CreateComponent<Constraint>(camera);
 		c->type = ConstraintType::KEEP_OFFSET;
 		c->SetOffset(&(cam_t->position), &(sprite_t->position));

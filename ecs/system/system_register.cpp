@@ -14,6 +14,7 @@
 #include "system/action/dodge.hpp"
 #include "system/item/equipment_system.hpp"
 #include "system/trigger/door.hpp"
+#include "system/world/day_night.hpp"
 
 namespace game{
 
@@ -33,6 +34,7 @@ namespace game{
 		CreateSystem<Physic>();
 		CreateSystem<Gui>();
 		CreateSystem<TextureAnimator>();
+		CreateSystem<DayNightSystem>();
 		CreateSystem<ConstraintSolver>();
 		CreateSystem<Renderer>();
 		CreateSystem<DebugStats>();
