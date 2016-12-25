@@ -19,6 +19,7 @@ namespace game{
 		step_count_ = 4;
 
 		FillCellData();
+		FillCellItems();
 	}
 
 	// TODO : Read these data from files
@@ -41,6 +42,41 @@ namespace game{
 		cell_data_.push_back(grass);
 		cell_data_.push_back(rock);
 		cell_data_.push_back(dirt);
+	}
+
+	void TerrainModule::FillCellItems(){
+		CellItem bush;
+		bush.radius = 0.2;
+		bush.path = "../data/environment/terrain/vegetation/bush.obj";
+		bush.affinity.insert(std::make_pair(CellType::GRASS, 0.9f));
+		bush.affinity.insert(std::make_pair(CellType::DIRT, 0.1f));
+		bush.affinity.insert(std::make_pair(CellType::ROCK, 0.f));
+
+		CellItem tree;
+		tree.path = "../data/environment/terrain/vegetation/tree.obj";
+		tree.radius = 0.2;
+		tree.affinity.insert(std::make_pair(CellType::GRASS, 0.9f));
+		tree.affinity.insert(std::make_pair(CellType::DIRT, 0.1f));
+		tree.affinity.insert(std::make_pair(CellType::ROCK, 0.f));
+
+		CellItem rock1;
+		rock1.path = "../data/environment/terrain/rock/rock_01.obj";
+		rock1.radius = 1.1;
+		rock1.affinity.insert(std::make_pair(CellType::GRASS, 0.3f));
+		rock1.affinity.insert(std::make_pair(CellType::DIRT, 0.3f));
+		rock1.affinity.insert(std::make_pair(CellType::ROCK, 0.4f));
+
+		CellItem rock2;
+	  rock2.path = "../data/environment/terrain/rock/rock_02.obj";
+		rock2.radius = 1.1;
+		rock1.affinity.insert(std::make_pair(CellType::GRASS, 0.1f));
+		rock1.affinity.insert(std::make_pair(CellType::DIRT, 0.2f));
+		rock1.affinity.insert(std::make_pair(CellType::ROCK, 0.7f));
+
+		cell_items_.push_back(bush);
+		cell_items_.push_back(tree);
+		cell_items_.push_back(rock1);
+		cell_items_.push_back(rock2);
 	}
 
 	Terrain TerrainModule::Generate(double seed){
@@ -209,28 +245,19 @@ namespace game{
 	}
 
 	Entity TerrainModule::CreateRandomObstacle(int x, int y){
-		std::string path;
-		float radius;
-		switch((int)random_.Next(4.f)){
-			case 0:
-				path = "../data/environment/terrain/vegetation/bush.obj";
-				radius = 0.2;
-				break;
-			case 1:
-				path = "../data/environment/terrain/vegetation/tree.obj";
-				radius = 0.2;
-				break;
-			case 2:
-				path ="../data/environment/terrain/rock/rock_01.obj";
-				radius = 1.1;
-				break;
-			case 3:
-			default:
-				path = "../data/environment/terrain/rock/rock_02.obj";
-				radius = 1.1;
-				break;
+		float rand = random_.Next(1.f);
+		CellType current_cell = type_map_[x][y];
+
+		while(1){
+			for(CellItem item : cell_items_){
+				LOG(DEBUG) << rand << std::endl;
+				float affinity = item.affinity.find(current_cell)->second;
+				if(affinity > rand){
+					return CreateObstacle(item.path, item.radius, (x*2)-(width_/2), (y*2)-(height_/2));
+				}
+				rand -= affinity;
+			}
 		}
-		return CreateObstacle(path, radius, (x*2)-(width_/2), (y*2)-(height_/2));
 	}
 
 	Entity TerrainModule::CreateObstacle(std::string path, float radius, int x, int y){

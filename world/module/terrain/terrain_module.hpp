@@ -15,6 +15,12 @@ namespace game{
 		float probability;
 	};
 
+	struct CellItem{
+		std::string path;
+		float radius;
+		std::map<CellType, float> affinity;
+	};
+
 	class TerrainModule{
 		public:
 			TerrainModule();
@@ -33,6 +39,7 @@ namespace game{
 
 			void FillInitialStates();
 			void FillCellData();
+			void FillCellItems();
 			CellType GetRandomCellType();
 			std::string GetPathForCell(CellType);
 
@@ -47,6 +54,7 @@ namespace game{
 			std::vector<std::vector<bool>> occupation_map_;
 			std::vector<std::vector<CellType>> type_map_;
 			std::vector<CellData> cell_data_;
+			std::vector<CellItem> cell_items_;
 
 			RealGenerator random_;
 	};
