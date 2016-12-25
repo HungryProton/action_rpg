@@ -60,6 +60,10 @@ namespace game{
 		glUniform2f(GetUniformLocation(uname), x, y);
 	}
 
+	void ShaderController::Uniform2i(std::string name, glm::ivec2 val){
+		glUniform2i(GetUniformLocation(name), val.x, val.y);
+	}
+
 	void ShaderController::Uniform3f(std::string name, glm::vec3 val){
 		glUniform3f(GetUniformLocation(name), val.x, val.y, val.z);
 	}

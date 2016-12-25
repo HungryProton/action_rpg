@@ -52,6 +52,7 @@ namespace game{
 
 		shader_controller_.Enable(Program::LIGHTING);
 		shader_controller_.Uniform3f("viewPos", camera_controller_.GetPosition());
+		shader_controller_.Uniform2i("screenRes", context_controller_.GetWindowSize());
 		SendLightsToShader();
 		shader_controller_.RenderToScreen();
 	}

@@ -250,7 +250,6 @@ namespace game{
 
 		while(1){
 			for(CellItem item : cell_items_){
-				LOG(DEBUG) << rand << std::endl;
 				float affinity = item.affinity.find(current_cell)->second;
 				if(affinity > rand){
 					return CreateObstacle(item.path, item.radius, (x*2)-(width_/2), (y*2)-(height_/2));

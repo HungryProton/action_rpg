@@ -9,15 +9,16 @@ uniform sampler2D ssao;
 uniform sampler2D bloom;
 uniform sampler2D flare;
 uniform vec3 viewPos;
+uniform vec2 screenRes;
 
-const int NB_LIGHTS = 1;
+const int NB_LIGHTS = 2;
 uniform float[NB_LIGHTS] lightsIntensity;
 uniform vec3[NB_LIGHTS] lightsVec;
 uniform vec3[NB_LIGHTS] lightsCol;
 uniform int[NB_LIGHTS] lightsType;
 
 float GetVignetteFactor(){
-	vec2 position_from_center = gl_FragCoord.xy / vec2(1366.f, 768.f) - vec2(0.5f);
+	vec2 position_from_center = gl_FragCoord.xy / screenRes - vec2(0.5f);
 	return smoothstep( 0.9, 0.05, length(position_from_center) );
 }
 
@@ -37,7 +38,7 @@ void main(){
 	float linear = 0;
 	float quadratic = 1.2;
 
-	vec3 lighting = Albedo * 0.55 * SSAO; // hard-coded ambient component
+	vec3 lighting = Albedo * 0.12 * SSAO; // hard-coded ambient component
 	vec3 viewDir = normalize(FragPos);
 
 	for(int i = 0; i < NB_LIGHTS; i++){
@@ -60,6 +61,7 @@ void main(){
 
 	//FragColor = vec4(lighting, 1.0);
 	FragColor = vec4(mix(lighting, lighting * GetVignetteFactor() * SSAO, 0.5f), 1.0);
+	//FragColor *= 0.05;
 
 
 	//FragColor = vec4(1.0) - exp(-color * exposure);

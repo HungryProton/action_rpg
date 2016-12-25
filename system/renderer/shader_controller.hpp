@@ -24,6 +24,7 @@ namespace game{
 			GLuint GetUniformLocation(std::string);
 			void UniformMatrix4fv(std::string, glm::mat4);
 			void Uniform2f(std::string, float, float);
+			void Uniform2i(std::string, glm::ivec2);
 			void Uniform3f(std::string, glm::vec3);
 			void Uniform4f(std::string, glm::vec4);
 			void Uniform1i(std::string, int);
