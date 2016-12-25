@@ -9,9 +9,11 @@ namespace game{
 	class System{
 		public:
 			System();
+			System(float);
 			virtual ~System() = 0;
 			virtual void Update() final;
 			virtual float GetExecutionTime() final;
+			virtual void SetDesiredFrameDuration(float);
 
 		protected:
 			// The derived class must call this function to specify in which
@@ -24,8 +26,11 @@ namespace game{
 			virtual void AfterUpdate();
 
 		private:
+			bool IsReadyToUpdate();
+
 			float start_time_;
 			float last_execution_time_;
+			float target_frame_duration_;
 			std::vector<Entity>(*get_matching_entities_)(); // Pointer to templated function
 	};
 }

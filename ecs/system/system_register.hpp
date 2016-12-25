@@ -12,7 +12,7 @@ namespace game{
 		friend Game;
 		public:
 			template<class T>
-			static T* CreateSystem();
+			static T* CreateSystem(float t = -1);
 
 			template<class T>
 			static T* Get();

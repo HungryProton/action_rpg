@@ -13,11 +13,12 @@ namespace game{
 	}
 
 	template<class T>
-	T* SystemRegister::CreateSystem(){
+	T* SystemRegister::CreateSystem(float duration){
 		T* system = Get<T>();
 		if(system != nullptr){ return system; }
 
 		system = new T();
+		system->SetDesiredFrameDuration(duration);
 		systems_.insert(std::pair<std::type_index, System*>(typeid(T), system));
 		return system;
 	}
