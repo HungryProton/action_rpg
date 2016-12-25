@@ -1,10 +1,19 @@
 #ifndef GAME_WORLD_MODULE_TERRAIN_GENERATOR_HPP_
 #define GAME_WORLD_MODULE_TERRAIN_GENERATOR_HPP_
 
+#include <map>
 #include "terrain.hpp"
 #include "common/random.hpp"
 
 namespace game{
+
+	enum class CellType{ROCK, GRASS, DIRT};
+
+	struct CellData{
+		CellType type;
+		std::string path;
+		float probability;
+	};
 
 	class TerrainModule{
 		public:
@@ -12,14 +21,17 @@ namespace game{
 			Terrain Generate(double);
 
 		private:
-			std::vector<std::vector<bool>> RunSimulation(int, std::vector<std::vector<bool>> map);
-			int CountAliveNeighbors(std::vector<std::vector<bool>>, int, int);
+			void RunSimulation(int);
+			int CountAliveNeighbors(int, int);
 			Entity CreateCell(int, int);
 			void PlaceObstacles(Terrain);
 			Entity CreateRandomObstacle(int, int);
 			Entity CreateObstacle(std::string, float radius, int, int);
 
-			RealGenerator random_;
+			void FillInitialStates();
+			void FillCellData();
+			CellType GetRandomCellType();
+			std::string GetPathForCell(CellType);
 
 			int width_;
 			int height_;
@@ -28,6 +40,12 @@ namespace game{
 			int step_count_;
 			float chance_to_start_alive_;
 			float chance_of_z_displacement_;
+
+			std::vector<std::vector<bool>> occupation_map_;
+			std::vector<std::vector<CellType>> type_map_;
+			std::vector<CellData> cell_data_;
+
+			RealGenerator random_;
 	};
 }
 
