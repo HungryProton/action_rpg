@@ -22,6 +22,9 @@ namespace game{
 
 		private:
 			void RunSimulation(int);
+			bool OccupationStep(int, int);
+			CellType TypeStep(int, int);
+			void CellTypeStep(int, int);
 			int CountAliveNeighbors(int, int);
 			Entity CreateCell(int, int);
 			void PlaceObstacles(Terrain);

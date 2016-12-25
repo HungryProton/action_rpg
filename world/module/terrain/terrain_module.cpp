@@ -26,7 +26,7 @@ namespace game{
 		CellData grass;
 		grass.type = CellType::GRASS;
 		grass.path = "../data/environment/terrain/block/grass/grass_block_01.obj";
-		grass.probability = 0.5;
+		grass.probability = 0.4;
 
 		CellData rock;
 		rock.type = CellType::ROCK;
@@ -36,7 +36,7 @@ namespace game{
 		CellData dirt;
 		dirt.type = CellType::DIRT;
 		dirt.path = "../data/environment/terrain/block/dirt/dirt_block_01.obj";
-		dirt.probability = 0.15;
+		dirt.probability = 0.25;
 
 		cell_data_.push_back(grass);
 		cell_data_.push_back(rock);
@@ -102,20 +102,65 @@ namespace game{
 	void TerrainModule::RunSimulation(int count){
 		if(count <= 0){ return; }
 		std::vector<std::vector<bool>> new_map = occupation_map_;
+		std::vector<std::vector<CellType>> new_type_map = type_map_;
 
 		for(unsigned int x = 0; x < occupation_map_.size(); x++){
 			for(unsigned int y = 0; y < occupation_map_[0].size(); y++){
-				int neighbors = CountAliveNeighbors(x, y);
-
-				if(occupation_map_[x][y]){
-					new_map[x][y] = neighbors > death_limit_;
-				} else {
-					new_map[x][y] = neighbors > birth_limit_;
-				}
+				new_map[x][y] = OccupationStep(x, y);
+				new_type_map[x][y] = TypeStep(x, y);
 			}
 		}
 		occupation_map_ = new_map;
+		type_map_ = new_type_map;
 		RunSimulation(--count);
+	}
+
+	bool TerrainModule::OccupationStep(int x, int y){
+		int neighbors = CountAliveNeighbors(x, y);
+
+		if(occupation_map_[x][y]){
+			return neighbors > death_limit_;
+		} else {
+			return neighbors > birth_limit_;
+		}
+	}
+
+	CellType TerrainModule::TypeStep(int x, int y){
+		CellType initial = type_map_[x][y];
+		int grass_count = 0;
+		int rock_count = 0;
+		int dirt_count = 0;
+    for(int i=-1; i<2; i++){
+			for(int j=-1; j<2; j++){
+				int neighbour_x = x+i;
+				int neighbour_y = y+j;
+				if(i == 0 && j == 0){ continue; }
+				if(neighbour_x < 0 || neighbour_y < 0 || neighbour_x >= width_ || neighbour_y >= height_){
+						continue;
+				}
+				switch(type_map_[neighbour_x][neighbour_y]){
+					case CellType::GRASS:
+						grass_count++;
+						break;
+					case CellType::ROCK:
+						rock_count++;
+						break;
+					case CellType::DIRT:
+						dirt_count++;
+						break;
+				}
+			}
+		}
+		if(grass_count > rock_count && grass_count > dirt_count){
+			return CellType::GRASS;
+		}
+		if(rock_count > grass_count && rock_count > dirt_count){
+			return CellType::ROCK;
+		}
+		if(dirt_count > grass_count && dirt_count > rock_count){
+			return CellType::DIRT;
+		}
+		return initial;
 	}
 
 	int TerrainModule::CountAliveNeighbors(int x, int y){
