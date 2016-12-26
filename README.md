@@ -1,6 +1,6 @@
-ECS functionnality : 95%	- Coef 1
+### ECS functionnality : 95%	- Coef 1
 
-Features : [9.5%]			- Coef 2
+### Features : [9.5%]			- Coef 2
 
 - Procedural world generation [5%]
  + Buildings    [10%]
@@ -19,7 +19,8 @@ Features : [9.5%]			- Coef 2
  + Sound distraction
  + Hacking
  + Hide
-- Graphics : [1%]			- Coef 1
+
+### Graphics : [1%]			- Coef 1
 - Characters	[1%]
  + Weapons
  + Clothes
@@ -27,4 +28,4 @@ Features : [9.5%]			- Coef 2
 - Terrain		[2%]
 - Items			[0%]
 
-Total : [38%]
+### Total : [26.4%]
