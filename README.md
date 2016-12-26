@@ -19,7 +19,7 @@ Features : [9.5%]			- Coef 2
  + Sound distraction
  + Hacking
  + Hide
-Graphics : [1%]			- Coef 1
+- Graphics : [1%]			- Coef 1
 - Characters	[1%]
  + Weapons
  + Clothes
