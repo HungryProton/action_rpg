@@ -1,31 +1,4 @@
-### ECS functionnality : 95%	- Coef 1
+This is a very old project I made when I was trying to make my own game engine.
+I don't even know why I'm hosting this, it's not usable.
 
-### Features : [9.5%]			- Coef 2
-
-- Procedural world generation [5%]
- + Buildings    [10%]
- + Terrain	    [10%]
- + Items	    [0%]
- + Pnjs		    [0%]
-- Procedural narrative	[0%]
-- Fighting mecanics	[12.5%]
- + Melee     [0%]
- + Ranged    [0%]
- + Block     [0%]
- + Dodge     [50%]
-- Exploration mecanics	[20%]
- + Treasure chests
-- Stealth mecanics		[0%]
- + Sound distraction
- + Hacking
- + Hide
-
-### Graphics : [1%]			- Coef 1
-- Characters	[1%]
- + Weapons
- + Clothes
-- Buildings		[1%]
-- Terrain		[2%]
-- Items			[0%]
-
-### Total : [26.4%]
+Precompiled Windows binaries in the release.0.0.1.rar archive. Open the bin folder and start the executable in there.
